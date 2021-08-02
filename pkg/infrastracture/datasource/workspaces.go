@@ -1,17 +1,24 @@
 package datasource
 
 import (
+	"context"
 	"drello-api/pkg/domain/workspace"
+	"drello-api/pkg/infrastracture/mysql"
+	"fmt"
 )
 
 type Workspace struct{}
 
-func (w Workspace) ListWorkspaces() *[]*workspace.Workspace {
+func (w Workspace) ListWorkspaces(ctx context.Context) (*[]*workspace.Workspace, error) {
+	ws, err := mysql.Client().Workspace.Query().All(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed querying user: %w", err)
+	}
 
 	workspaces := []*workspace.Workspace{}
-	workspaces = append(workspaces, workspace.New(1, "one"))
-	workspaces = append(workspaces, workspace.New(2, "two"))
-	workspaces = append(workspaces, workspace.New(3, "three"))
+	for _, w := range ws {
+		workspaces = append(workspaces, workspace.New(w.ID, w.Title))
+	}
 
-	return &workspaces
+	return &workspaces, nil
 }

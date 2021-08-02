@@ -1,11 +1,15 @@
 package workspaces
 
 import (
+	"context"
 	"drello-api/pkg/app/repository"
 )
 
-func List(workspaceRepo repository.Workspace) *ListOutput {
-	workspaces := workspaceRepo.ListWorkspaces()
+func List(ctx context.Context, workspaceRepo repository.Workspace) (*ListOutput, error) {
+	workspaces, err := workspaceRepo.ListWorkspaces(ctx)
+	if err != nil {
+		return nil, err
+	}
 
 	titles := []string{}
 
@@ -13,7 +17,7 @@ func List(workspaceRepo repository.Workspace) *ListOutput {
 		titles = append(titles, w.Title())
 	}
 
-	return &ListOutput{titles: titles}
+	return &ListOutput{titles: titles}, nil
 }
 
 type ListOutput struct {
