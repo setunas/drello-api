@@ -7,4 +7,5 @@ import (
 
 type Workspace interface {
 	ListWorkspaces(ctx context.Context) (*[]*workspace.Workspace, error)
+	Create(ctx context.Context, title string) (*workspace.Workspace, error)
 }

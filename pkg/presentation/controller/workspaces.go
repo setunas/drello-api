@@ -16,5 +16,16 @@ func Workspaces(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err)
 		}
 		json.NewEncoder(w).Encode(o.Titles())
+
+	case http.MethodPost:
+		output, err := workspaces.Create(r.Context(), datasource.Workspace{}, &workspaces.CreateInput{Title: r.FormValue("title")})
+		if err != nil {
+			fmt.Println(err)
+		}
+		json.NewEncoder(w).Encode(resPost{Title: output.Workspace.Title()})
 	}
+}
+
+type resPost struct {
+	Title string `json:"title"`
 }
