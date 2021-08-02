@@ -6,7 +6,7 @@ import (
 )
 
 func List(ctx context.Context, workspaceRepo repository.Workspace) (*ListOutput, error) {
-	workspaces, err := workspaceRepo.ListWorkspaces(ctx)
+	workspaces, err := workspaceRepo.ListAll(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -17,13 +17,9 @@ func List(ctx context.Context, workspaceRepo repository.Workspace) (*ListOutput,
 		titles = append(titles, w.Title())
 	}
 
-	return &ListOutput{titles: titles}, nil
+	return &ListOutput{Titles: titles}, nil
 }
 
 type ListOutput struct {
-	titles []string
-}
-
-func (lo ListOutput) Titles() []string {
-	return lo.titles
+	Titles []string
 }

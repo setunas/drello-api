@@ -11,11 +11,11 @@ import (
 func Workspaces(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
-		o, err := workspaces.List(r.Context(), datasource.Workspace{})
+		output, err := workspaces.List(r.Context(), datasource.Workspace{})
 		if err != nil {
 			fmt.Println(err)
 		}
-		json.NewEncoder(w).Encode(o.Titles())
+		json.NewEncoder(w).Encode(output.Titles)
 
 	case http.MethodPost:
 		output, err := workspaces.Create(r.Context(), datasource.Workspace{}, &workspaces.CreateInput{Title: r.FormValue("title")})
