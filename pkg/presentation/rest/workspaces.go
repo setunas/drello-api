@@ -1,4 +1,4 @@
-package controller
+package rest
 
 import (
 	"drello-api/pkg/app/workspaces"

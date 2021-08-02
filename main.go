@@ -2,7 +2,7 @@ package main
 
 import (
 	"drello-api/pkg/infrastracture/mysql"
-	"drello-api/pkg/presentation/http/rest"
+	"drello-api/pkg/presentation/rest"
 	"fmt"
 )
 
