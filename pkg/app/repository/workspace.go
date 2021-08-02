@@ -1,7 +1,10 @@
 package repository
 
-import "drello-api/pkg/domain/workspace"
+import (
+	"context"
+	"drello-api/pkg/domain/workspace"
+)
 
 type Workspace interface {
-	ListWorkspaces() *[]*workspace.Workspace
+	ListWorkspaces(ctx context.Context) (*[]*workspace.Workspace, error)
 }
