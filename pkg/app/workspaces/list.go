@@ -6,7 +6,7 @@ import (
 )
 
 func List(ctx context.Context, workspaceRepo repository.Workspace) (*ListOutput, error) {
-	workspaces, err := workspaceRepo.ListAll(ctx)
+	workspaces, err := workspaceRepo.List(ctx)
 	if err != nil {
 		return nil, err
 	}

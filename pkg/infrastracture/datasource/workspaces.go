@@ -9,7 +9,7 @@ import (
 
 type Workspace struct{}
 
-func (w Workspace) ListAll(ctx context.Context) (*[]*workspace.Workspace, error) {
+func (w Workspace) List(ctx context.Context) (*[]*workspace.Workspace, error) {
 	ws, err := mysql.Client().Workspace.Query().All(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed querying user: %w", err)
