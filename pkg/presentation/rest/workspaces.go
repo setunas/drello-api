@@ -15,7 +15,16 @@ func Workspaces(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Println(err)
 		}
-		json.NewEncoder(w).Encode(output.Titles)
+
+		var wolist []*resWorkspace
+		for _, wo := range output.Workspaces {
+			wolist = append(wolist, &resWorkspace{
+				ID:    wo.ID(),
+				Title: wo.Title(),
+			})
+		}
+
+		json.NewEncoder(w).Encode(wolist)
 
 	case http.MethodPost:
 		output, err := workspaces.Create(r.Context(), datasource.Workspace{}, &workspaces.CreateInput{Title: r.FormValue("title")})

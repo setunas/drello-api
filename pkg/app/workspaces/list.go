@@ -3,23 +3,24 @@ package workspaces
 import (
 	"context"
 	"drello-api/pkg/app/repository"
+	wdomain "drello-api/pkg/domain/workspace"
 )
 
 func List(ctx context.Context, workspaceRepo repository.Workspace) (*ListOutput, error) {
-	workspaces, err := workspaceRepo.List(ctx)
+	wNodes, err := workspaceRepo.List(ctx)
 	if err != nil {
 		return nil, err
 	}
 
-	titles := []string{}
+	var wdomains []*wdomain.Workspace
 
-	for _, w := range *workspaces {
-		titles = append(titles, w.Title())
+	for _, w := range *wNodes {
+		wdomains = append(wdomains, wdomain.New(w.ID(), w.Title()))
 	}
 
-	return &ListOutput{Titles: titles}, nil
+	return &ListOutput{Workspaces: wdomains}, nil
 }
 
 type ListOutput struct {
-	Titles []string
+	Workspaces []*wdomain.Workspace
 }
