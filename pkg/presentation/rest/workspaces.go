@@ -22,10 +22,11 @@ func Workspaces(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Println(err)
 		}
-		json.NewEncoder(w).Encode(resPost{Title: output.Workspace.Title()})
+		json.NewEncoder(w).Encode(resWorkspace{ID: output.Workspace.ID(), Title: output.Workspace.Title()})
 	}
 }
 
-type resPost struct {
+type resWorkspace struct {
+	ID    int    `json:"id"`
 	Title string `json:"title"`
 }
