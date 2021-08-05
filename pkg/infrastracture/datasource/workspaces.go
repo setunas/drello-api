@@ -9,7 +9,7 @@ import (
 
 type Workspace struct{}
 
-func (w Workspace) ListWorkspaces(ctx context.Context) (*[]*workspace.Workspace, error) {
+func (w Workspace) List(ctx context.Context) (*[]*workspace.Workspace, error) {
 	ws, err := mysql.Client().Workspace.Query().All(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed querying user: %w", err)
@@ -21,4 +21,13 @@ func (w Workspace) ListWorkspaces(ctx context.Context) (*[]*workspace.Workspace,
 	}
 
 	return &workspaces, nil
+}
+
+func (w Workspace) Create(ctx context.Context, title string) (*workspace.Workspace, error) {
+	wNode, err := mysql.Client().Workspace.Create().SetTitle(title).Save(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed querying user: %w", err)
+	}
+
+	return workspace.New(wNode.ID, wNode.Title), nil
 }
