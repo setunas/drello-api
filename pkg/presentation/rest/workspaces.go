@@ -2,6 +2,7 @@ package rest
 
 import (
 	"drello-api/pkg/app/workspaces"
+	"drello-api/pkg/constants"
 	"drello-api/pkg/infrastracture/datasource"
 	"encoding/json"
 	"fmt"
@@ -36,7 +37,7 @@ func Workspaces(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(resWorkspace{ID: output.Workspace.ID(), Title: output.Workspace.Title()})
 
 	case http.MethodPatch:
-		id, err := strconv.Atoi(strings.TrimPrefix(r.URL.Path, "/workspaces/"))
+		id, err := strconv.Atoi(strings.TrimPrefix(r.URL.Path, constants.Workspaces))
 		if err != nil {
 			fmt.Println(err)
 		}
