@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 func Workspaces(w http.ResponseWriter, r *http.Request) {
@@ -35,7 +36,7 @@ func Workspaces(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(resWorkspace{ID: output.Workspace.ID(), Title: output.Workspace.Title()})
 
 	case http.MethodPatch:
-		id, err := strconv.Atoi(r.FormValue("id"))
+		id, err := strconv.Atoi(strings.TrimPrefix(r.URL.Path, "/workspaces/"))
 		if err != nil {
 			fmt.Println(err)
 		}
