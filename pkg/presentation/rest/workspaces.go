@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 )
 
 func Workspaces(w http.ResponseWriter, r *http.Request) {
@@ -31,6 +32,19 @@ func Workspaces(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Println(err)
 		}
+		json.NewEncoder(w).Encode(resWorkspace{ID: output.Workspace.ID(), Title: output.Workspace.Title()})
+
+	case http.MethodPatch:
+		id, err := strconv.Atoi(r.FormValue("id"))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		output, err := workspaces.Update(r.Context(), datasource.Workspace{}, &workspaces.UpdateInput{ID: id, Title: r.FormValue("title")})
+		if err != nil {
+			fmt.Println(err)
+		}
+
 		json.NewEncoder(w).Encode(resWorkspace{ID: output.Workspace.ID(), Title: output.Workspace.Title()})
 	}
 }

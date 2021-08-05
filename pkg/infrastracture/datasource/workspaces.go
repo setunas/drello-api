@@ -31,3 +31,12 @@ func (w Workspace) Create(ctx context.Context, title string) (*workspace.Workspa
 
 	return workspace.New(wNode.ID, wNode.Title), nil
 }
+
+func (w Workspace) Update(ctx context.Context, id int, title string) (*workspace.Workspace, error) {
+	wNode, err := mysql.Client().Workspace.UpdateOneID(id).SetTitle(title).Save(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed querying user: %w", err)
+	}
+
+	return workspace.New(wNode.ID, wNode.Title), nil
+}
