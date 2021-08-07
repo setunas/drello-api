@@ -34,6 +34,8 @@ func Workspaces(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Println(err)
 		}
+
+		w.WriteHeader(http.StatusCreated)
 		json.NewEncoder(w).Encode(resWorkspace{ID: output.Workspace.ID(), Title: output.Workspace.Title()})
 
 	case http.MethodPatch:
