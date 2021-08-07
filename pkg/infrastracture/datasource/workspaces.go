@@ -40,3 +40,12 @@ func (w Workspace) Update(ctx context.Context, id int, title string) (*workspace
 
 	return workspace.New(wNode.ID, wNode.Title), nil
 }
+
+func (w Workspace) Delete(ctx context.Context, id int) error {
+	err := mysql.Client().Workspace.DeleteOneID(id).Exec(ctx)
+	if err != nil {
+		return fmt.Errorf("failed querying user: %w", err)
+	}
+
+	return nil
+}

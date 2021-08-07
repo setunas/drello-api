@@ -48,6 +48,19 @@ func Workspaces(w http.ResponseWriter, r *http.Request) {
 		}
 
 		json.NewEncoder(w).Encode(resWorkspace{ID: output.Workspace.ID(), Title: output.Workspace.Title()})
+
+	case http.MethodDelete:
+		id, err := strconv.Atoi(strings.TrimPrefix(r.URL.Path, constants.Workspaces))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		err = workspaces.Delete(r.Context(), datasource.Workspace{}, workspaces.NewDeleteInput(id))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		w.WriteHeader(http.StatusNoContent)
 	}
 }
 
