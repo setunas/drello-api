@@ -10,7 +10,12 @@ import (
 	"strings"
 )
 
-func Workspaces(w http.ResponseWriter, r *http.Request) {
+type workspaceResponse struct {
+	ID    int    `json:"id"`
+	Title string `json:"title"`
+}
+
+func workspaceHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
 		output, err := workspaces.List(r.Context(), datasource.Workspace{})
@@ -19,9 +24,9 @@ func Workspaces(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		var wolist []*resWorkspace
+		var wolist []*workspaceResponse
 		for _, wo := range output.Workspaces {
-			wolist = append(wolist, &resWorkspace{
+			wolist = append(wolist, &workspaceResponse{
 				ID:    wo.ID(),
 				Title: wo.Title(),
 			})
@@ -37,7 +42,7 @@ func Workspaces(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.WriteHeader(http.StatusCreated)
-		json.NewEncoder(w).Encode(resWorkspace{ID: output.Workspace.ID(), Title: output.Workspace.Title()})
+		json.NewEncoder(w).Encode(workspaceResponse{ID: output.Workspace.ID(), Title: output.Workspace.Title()})
 
 	case http.MethodPatch:
 		id, err := strconv.Atoi(strings.TrimPrefix(r.URL.Path, constants.Workspaces))
@@ -52,7 +57,7 @@ func Workspaces(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		json.NewEncoder(w).Encode(resWorkspace{ID: output.Workspace.ID(), Title: output.Workspace.Title()})
+		json.NewEncoder(w).Encode(workspaceResponse{ID: output.Workspace.ID(), Title: output.Workspace.Title()})
 
 	case http.MethodDelete:
 		id, err := strconv.Atoi(strings.TrimPrefix(r.URL.Path, constants.Workspaces))
@@ -68,9 +73,4 @@ func Workspaces(w http.ResponseWriter, r *http.Request) {
 
 		w.WriteHeader(http.StatusNoContent)
 	}
-}
-
-type resWorkspace struct {
-	ID    int    `json:"id"`
-	Title string `json:"title"`
 }
