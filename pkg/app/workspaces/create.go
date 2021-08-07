@@ -7,7 +7,7 @@ import (
 )
 
 func Create(ctx context.Context, workspaceRepo repository.Workspace, input *CreateInput) (*CreateOutput, error) {
-	wdomain, err := workspaceRepo.Create(ctx, input.Title)
+	wdomain, err := workspaceRepo.Create(ctx, input.title)
 	if err != nil {
 		return nil, err
 	}
@@ -16,7 +16,11 @@ func Create(ctx context.Context, workspaceRepo repository.Workspace, input *Crea
 }
 
 type CreateInput struct {
-	Title string
+	title string
+}
+
+func NewCreateInput(title string) *CreateInput {
+	return &CreateInput{title: title}
 }
 
 type CreateOutput struct {

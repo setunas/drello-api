@@ -7,7 +7,7 @@ import (
 )
 
 func Update(ctx context.Context, workspaceRepo repository.Workspace, input *UpdateInput) (*UpdateOutput, error) {
-	wdomain, err := workspaceRepo.Update(ctx, input.ID, input.Title)
+	wdomain, err := workspaceRepo.Update(ctx, input.id, input.title)
 	if err != nil {
 		return nil, err
 	}
@@ -16,8 +16,12 @@ func Update(ctx context.Context, workspaceRepo repository.Workspace, input *Upda
 }
 
 type UpdateInput struct {
-	ID    int
-	Title string
+	id    int
+	title string
+}
+
+func NewUpdateInput(id int, title string) *UpdateInput {
+	return &UpdateInput{id: id, title: title}
 }
 
 type UpdateOutput struct {

@@ -35,7 +35,7 @@ func workspaceHandler(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(wolist)
 
 	case http.MethodPost:
-		output, err := workspaces.Create(r.Context(), datasource.Workspace{}, &workspaces.CreateInput{Title: r.FormValue("title")})
+		output, err := workspaces.Create(r.Context(), datasource.Workspace{}, workspaces.NewCreateInput(r.FormValue("title")))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
@@ -51,7 +51,7 @@ func workspaceHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		output, err := workspaces.Update(r.Context(), datasource.Workspace{}, &workspaces.UpdateInput{ID: id, Title: r.FormValue("title")})
+		output, err := workspaces.Update(r.Context(), datasource.Workspace{}, workspaces.NewUpdateInput(id, r.FormValue("title")))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
