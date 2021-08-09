@@ -2,10 +2,13 @@ package rest
 
 import (
 	"drello-api/pkg/app/workspaces"
+	"drello-api/pkg/constants"
 	"drello-api/pkg/infrastracture/datasource"
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
+	"strings"
 )
 
 func Workspaces(w http.ResponseWriter, r *http.Request) {
@@ -31,7 +34,35 @@ func Workspaces(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			fmt.Println(err)
 		}
+
+		w.WriteHeader(http.StatusCreated)
 		json.NewEncoder(w).Encode(resWorkspace{ID: output.Workspace.ID(), Title: output.Workspace.Title()})
+
+	case http.MethodPatch:
+		id, err := strconv.Atoi(strings.TrimPrefix(r.URL.Path, constants.Workspaces))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		output, err := workspaces.Update(r.Context(), datasource.Workspace{}, &workspaces.UpdateInput{ID: id, Title: r.FormValue("title")})
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		json.NewEncoder(w).Encode(resWorkspace{ID: output.Workspace.ID(), Title: output.Workspace.Title()})
+
+	case http.MethodDelete:
+		id, err := strconv.Atoi(strings.TrimPrefix(r.URL.Path, constants.Workspaces))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		err = workspaces.Delete(r.Context(), datasource.Workspace{}, workspaces.NewDeleteInput(id))
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		w.WriteHeader(http.StatusNoContent)
 	}
 }
 
