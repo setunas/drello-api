@@ -11,7 +11,7 @@ import (
 var client *ent.Client
 
 func Open() (*ent.Client, error) {
-	drv, err := sql.Open("mysql", "root@tcp(127.0.0.1:3306)/drello-dev")
+	drv, err := sql.Open("mysql", "root:password@tcp(127.0.0.1:4306)/drello-dev")
 	if err != nil {
 		return nil, err
 	}
