@@ -33,6 +33,7 @@ func workspacesHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		json.NewEncoder(w).Encode(wolist)
+		return
 
 	case http.MethodPost:
 		output, err := workspaces.Create(r.Context(), datasource.Workspace{}, workspaces.NewCreateInput(r.FormValue("title")))
@@ -43,6 +44,7 @@ func workspacesHandler(w http.ResponseWriter, r *http.Request) {
 
 		w.WriteHeader(http.StatusCreated)
 		json.NewEncoder(w).Encode(workspaceResponse{ID: output.Workspace.ID(), Title: output.Workspace.Title()})
+		return
 	}
 
 	handleClientError(w, nil, 404, "Invalid method")
@@ -67,6 +69,7 @@ func workspaceHandler(w http.ResponseWriter, r *http.Request) {
 			ID:    output.Workspace.ID(),
 			Title: output.Workspace.Title(),
 		})
+		return
 
 	case http.MethodPatch:
 		output, err := workspaces.Update(r.Context(), datasource.Workspace{}, workspaces.NewUpdateInput(id, r.FormValue("title")))
@@ -76,6 +79,7 @@ func workspaceHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		json.NewEncoder(w).Encode(workspaceResponse{ID: output.Workspace.ID(), Title: output.Workspace.Title()})
+		return
 
 	case http.MethodDelete:
 		err = workspaces.Delete(r.Context(), datasource.Workspace{}, workspaces.NewDeleteInput(id))
@@ -85,6 +89,7 @@ func workspaceHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.WriteHeader(http.StatusNoContent)
+		return
 	}
 
 	handleClientError(w, nil, 404, "Invalid method")
