@@ -1,5 +1,5 @@
 package constants
 
 const (
-	Workspaces = "/workspaces/"
+	Workspaces = "/workspaces"
 )
