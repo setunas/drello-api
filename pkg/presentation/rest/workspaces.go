@@ -45,7 +45,7 @@ func workspacesHandler(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(workspaceResponse{ID: output.Workspace.ID(), Title: output.Workspace.Title()})
 	}
 
-	handleClientError(w, nil, 404, "Invalid path")
+	handleClientError(w, nil, 404, "Invalid method")
 }
 
 func workspaceHandler(w http.ResponseWriter, r *http.Request) {
@@ -87,5 +87,5 @@ func workspaceHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNoContent)
 	}
 
-	handleClientError(w, nil, 404, "Invalid path")
+	handleClientError(w, nil, 404, "Invalid method")
 }
