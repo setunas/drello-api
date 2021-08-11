@@ -2,6 +2,7 @@ package datasource
 
 import (
 	"context"
+	eWorkspace "drello-api/ent/workspace"
 	"drello-api/pkg/domain/workspace"
 	"drello-api/pkg/infrastracture/mysql"
 	"fmt"
@@ -9,7 +10,7 @@ import (
 
 type Workspace struct{}
 
-func (w Workspace) List(ctx context.Context) (*[]*workspace.Workspace, error) {
+func (w Workspace) GetAll(ctx context.Context) (*[]*workspace.Workspace, error) {
 	ws, err := mysql.Client().Workspace.Query().All(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed querying workspace: %w", err)

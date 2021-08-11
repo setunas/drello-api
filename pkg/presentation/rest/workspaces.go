@@ -18,7 +18,7 @@ type workspaceResponse struct {
 func workspacesHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodGet:
-		output, err := workspaces.List(r.Context(), datasource.Workspace{})
+		output, err := workspaces.GetAll(r.Context(), datasource.Workspace{})
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
