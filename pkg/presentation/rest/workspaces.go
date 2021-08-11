@@ -56,6 +56,18 @@ func workspaceHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	switch r.Method {
+	case http.MethodGet:
+		output, err := workspaces.GetOne(r.Context(), datasource.Workspace{}, workspaces.NewGetOneInput(id))
+		if err != nil {
+			handleClientError(w, err, 422, "An error occured during the prosess")
+			return
+		}
+
+		json.NewEncoder(w).Encode(&workspaceResponse{
+			ID:    output.Workspace.ID(),
+			Title: output.Workspace.Title(),
+		})
+
 	case http.MethodPatch:
 		output, err := workspaces.Update(r.Context(), datasource.Workspace{}, workspaces.NewUpdateInput(id, r.FormValue("title")))
 		if err != nil {

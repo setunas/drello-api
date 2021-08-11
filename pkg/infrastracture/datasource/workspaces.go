@@ -23,6 +23,15 @@ func (w Workspace) List(ctx context.Context) (*[]*workspace.Workspace, error) {
 	return &workspaces, nil
 }
 
+func (w Workspace) GetOne(ctx context.Context, id int) (*workspace.Workspace, error) {
+	wNode, err := mysql.Client().Workspace.Query().Where(eWorkspace.ID(id)).First(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("failed querying workspace: %w", err)
+	}
+
+	return workspace.New(wNode.ID, wNode.Title), nil
+}
+
 func (w Workspace) Create(ctx context.Context, title string) (*workspace.Workspace, error) {
 	wNode, err := mysql.Client().Workspace.Create().SetTitle(title).Save(ctx)
 	if err != nil {
