@@ -3,7 +3,7 @@ package cmd
 import (
 	"drello-api/pkg/infrastracture/mysql"
 	"drello-api/pkg/presentation/rest"
-	"fmt"
+	"log"
 
 	"github.com/spf13/cobra"
 )
@@ -16,7 +16,7 @@ var serveCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		_, err := mysql.Open()
 		if err != nil {
-			fmt.Println(err)
+			log.Println(err)
 		}
 
 		rest.HandleRequests()
