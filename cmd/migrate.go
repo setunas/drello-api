@@ -11,7 +11,7 @@ import (
 // migrateCmd represents the migrate command
 var migrateCmd = &cobra.Command{
 	Use:   "migrate",
-	Short: "Database migration",
+	Short: "Run database migration",
 	Long: `migrate command makes the database schema aligned with
 the schema objects defined in 'ent/migrate/schema.go'.`,
 	Run: func(cmd *cobra.Command, args []string) {

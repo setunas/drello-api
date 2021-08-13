@@ -11,8 +11,8 @@ import (
 // serveCmd represents the serve command
 var serveCmd = &cobra.Command{
 	Use:   "serve",
-	Short: "Start the API server",
-	Long:  `Start the API server`,
+	Short: "Start drello-api server",
+	Long:  `Start drello-api server`,
 	Run: func(cmd *cobra.Command, args []string) {
 		_, err := mysql.Open()
 		if err != nil {
