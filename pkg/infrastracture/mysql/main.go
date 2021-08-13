@@ -20,7 +20,7 @@ func Open() (*ent.Client, error) {
 	db.SetMaxIdleConns(10)
 	db.SetMaxOpenConns(100)
 	db.SetConnMaxLifetime(time.Hour)
-	client = ent.NewClient(ent.Driver(drv))
+	client = ent.NewClient(ent.Driver(drv)).Debug()
 	return client, nil
 }
 
