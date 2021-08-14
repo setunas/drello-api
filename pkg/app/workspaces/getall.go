@@ -6,8 +6,8 @@ import (
 	wdomain "drello-api/pkg/domain/workspace"
 )
 
-func List(ctx context.Context, workspaceRepo repository.Workspace) (*ListOutput, error) {
-	wNodes, err := workspaceRepo.List(ctx)
+func GetAll(ctx context.Context, workspaceRepo repository.Workspace) (*GetAllOutput, error) {
+	wNodes, err := workspaceRepo.GetAll(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -18,9 +18,9 @@ func List(ctx context.Context, workspaceRepo repository.Workspace) (*ListOutput,
 		wdomains = append(wdomains, wdomain.New(w.ID(), w.Title()))
 	}
 
-	return &ListOutput{Workspaces: wdomains}, nil
+	return &GetAllOutput{Workspaces: wdomains}, nil
 }
 
-type ListOutput struct {
+type GetAllOutput struct {
 	Workspaces []*wdomain.Workspace
 }
