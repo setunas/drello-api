@@ -77,13 +77,7 @@ func (w Workspace) GetOne(ctx context.Context, id int) (*domainWorkspace.Workspa
 func (w Workspace) Create(ctx context.Context, title string) (*domainWorkspace.Workspace, error) {
 	db := mysql.DBPool()
 
-	stmtInsert, err := db.Prepare("INSERT INTO workspaces(title) VALUES(?)")
-	if err != nil {
-		return nil, fmt.Errorf("failed creating workspace: %w", err)
-	}
-	defer stmtInsert.Close()
-
-	result, err := stmtInsert.Exec(title)
+	result, err := db.Exec("INSERT INTO workspaces (title) VALUES (?)", title)
 	if err != nil {
 		return nil, fmt.Errorf("failed creating workspace: %w", err)
 	}
