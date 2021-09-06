@@ -2,6 +2,7 @@ package datasource
 
 import (
 	"context"
+	"drello-api/pkg/domain/workspace"
 	domainWorkspace "drello-api/pkg/domain/workspace"
 	"drello-api/pkg/infrastracture/mysql"
 	"fmt"
@@ -74,14 +75,25 @@ func (w Workspace) GetOne(ctx context.Context, id int) (*domainWorkspace.Workspa
 }
 
 func (w Workspace) Create(ctx context.Context, title string) (*domainWorkspace.Workspace, error) {
-	// wNode, err := mysql.DBPool().Workspace.Create().SetTitle(title).Save(ctx)
-	// if err != nil {
-	// 	return nil, fmt.Errorf("failed creating workspace: %w", err)
-	// }
+	db := mysql.DBPool()
 
-	// return workspace.New(wNode.ID, wNode.Title), nil
+	stmtInsert, err := db.Prepare("INSERT INTO workspaces(title) VALUES(?)")
+	if err != nil {
+		return nil, fmt.Errorf("failed creating workspace: %w", err)
+	}
+	defer stmtInsert.Close()
 
-	return nil, nil
+	result, err := stmtInsert.Exec(title)
+	if err != nil {
+		return nil, fmt.Errorf("failed creating workspace: %w", err)
+	}
+
+	lastInsertID, err := result.LastInsertId()
+	if err != nil {
+		return nil, fmt.Errorf("failed creating workspace: %w", err)
+	}
+
+	return workspace.New(int(lastInsertID), title), nil
 }
 
 func (w Workspace) Update(ctx context.Context, id int, title string) (*domainWorkspace.Workspace, error) {
