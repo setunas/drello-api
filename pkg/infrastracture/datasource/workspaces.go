@@ -42,13 +42,12 @@ func (w Workspace) GetAll(ctx context.Context) (*[]*domainWorkspace.Workspace, e
 }
 
 func (w Workspace) GetOne(ctx context.Context, id int) (*domainWorkspace.Workspace, error) {
-	db := mysql.DBPool()
-
-	var _id int
 	var title string
 
+	db := mysql.DBPool()
 	row := db.QueryRow("SELECT id, title FROM workspaces WHERE id = ?", id)
-	switch err := row.Scan(&_id, &title); err {
+
+	switch err := row.Scan(&title); err {
 	case sql.ErrNoRows:
 		return nil, fmt.Errorf("not found with id %d", id)
 	case nil:
