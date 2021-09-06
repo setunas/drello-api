@@ -14,7 +14,7 @@ var serveCmd = &cobra.Command{
 	Short: "Start drello-api server",
 	Long:  `Start drello-api server`,
 	Run: func(cmd *cobra.Command, args []string) {
-		_, err := mysql.Open()
+		err := mysql.Open()
 		if err != nil {
 			log.Println(err)
 		}
