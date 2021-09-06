@@ -21,6 +21,7 @@ func Open() error {
 	db.SetMaxIdleConns(10)
 
 	dbPool = db
+	return nil
 }
 
 func DBPool() *sql.DB {
