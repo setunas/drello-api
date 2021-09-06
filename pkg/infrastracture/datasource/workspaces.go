@@ -97,14 +97,13 @@ func (w Workspace) Create(ctx context.Context, title string) (*domainWorkspace.W
 }
 
 func (w Workspace) Update(ctx context.Context, id int, title string) (*domainWorkspace.Workspace, error) {
-	// wNode, err := mysql.DBPool().Workspace.UpdateOneID(id).SetTitle(title).Save(ctx)
-	// if err != nil {
-	// 	return nil, fmt.Errorf("failed updating workspace: %w", err)
-	// }
+	db := mysql.DBPool()
+	_, err := db.Exec("UPDATE workspaces SET title = ? WHERE id = ?", title, id)
+	if err != nil {
+		return nil, fmt.Errorf("failed updating workspace: %w", err)
+	}
 
-	// return workspace.New(wNode.ID, wNode.Title), nil
-
-	return nil, nil
+	return workspace.New(id, title), nil
 }
 
 func (w Workspace) Delete(ctx context.Context, id int) error {
