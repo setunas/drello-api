@@ -3,7 +3,6 @@ package datasource
 import (
 	"context"
 	"database/sql"
-	"drello-api/pkg/domain/workspace"
 	domainWorkspace "drello-api/pkg/domain/workspace"
 	"drello-api/pkg/infrastracture/mysql"
 	"fmt"
@@ -70,7 +69,7 @@ func (w Workspace) Create(ctx context.Context, title string) (*domainWorkspace.W
 		return nil, fmt.Errorf("failed creating workspace: %w", err)
 	}
 
-	return workspace.New(int(lastInsertID), title), nil
+	return domainWorkspace.New(int(lastInsertID), title), nil
 }
 
 func (w Workspace) Update(ctx context.Context, id int, title string) (*domainWorkspace.Workspace, error) {
@@ -80,7 +79,7 @@ func (w Workspace) Update(ctx context.Context, id int, title string) (*domainWor
 		return nil, fmt.Errorf("failed updating workspace: %w", err)
 	}
 
-	return workspace.New(id, title), nil
+	return domainWorkspace.New(id, title), nil
 }
 
 func (w Workspace) Delete(ctx context.Context, id int) error {
