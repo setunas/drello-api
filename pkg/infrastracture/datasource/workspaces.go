@@ -2,6 +2,7 @@ package datasource
 
 import (
 	"context"
+	"database/sql"
 	"drello-api/pkg/domain/workspace"
 	domainWorkspace "drello-api/pkg/domain/workspace"
 	"drello-api/pkg/infrastracture/mysql"
@@ -42,36 +43,19 @@ func (w Workspace) GetAll(ctx context.Context) (*[]*domainWorkspace.Workspace, e
 
 func (w Workspace) GetOne(ctx context.Context, id int) (*domainWorkspace.Workspace, error) {
 	db := mysql.DBPool()
-	rows, err := db.Query("SELECT id, title FROM workspaces WHERE id = ?", id)
-	if err != nil {
-		return nil, fmt.Errorf("failed querying workspaces: %w", err)
+
+	var _id int
+	var title string
+
+	row := db.QueryRow("SELECT id, title FROM workspaces WHERE id = ?", id)
+	switch err := row.Scan(&_id, &title); err {
+	case sql.ErrNoRows:
+		return nil, fmt.Errorf("not found with id %d", id)
+	case nil:
+		return domainWorkspace.New(id, title), nil
+	default:
+		return nil, err
 	}
-	defer rows.Close()
-
-	workspaces := []*domainWorkspace.Workspace{}
-
-	for rows.Next() {
-		var id int
-		var title string
-
-		err := rows.Scan(&id, &title)
-		if err != nil {
-			return nil, fmt.Errorf("failed querying workspaces: %w", err)
-		}
-
-		workspaces = append(workspaces, domainWorkspace.New(id, title))
-	}
-
-	err = rows.Err()
-	if err != nil {
-		return nil, fmt.Errorf("failed querying workspaces: %w", err)
-	}
-
-	if len := len(workspaces); len != 1 {
-		return nil, fmt.Errorf("failed querying workspaces: found invalid number of rows: Expected 1. Got %d", len)
-	}
-
-	return workspaces[0], nil
 }
 
 func (w Workspace) Create(ctx context.Context, title string) (*domainWorkspace.Workspace, error) {
