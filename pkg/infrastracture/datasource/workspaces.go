@@ -101,12 +101,11 @@ func (w Workspace) Update(ctx context.Context, id int, title string) (*domainWor
 }
 
 func (w Workspace) Delete(ctx context.Context, id int) error {
-	// err := mysql.DBPool().Workspace.DeleteOneID(id).Exec(ctx)
-	// if err != nil {
-	// 	return fmt.Errorf("failed deleting workspace: %w", err)
-	// }
-
-	// return nil
+	db := mysql.DBPool()
+	_, err := db.Exec("DELETE FROM workspaces WHERE id = ?", id)
+	if err != nil {
+		return fmt.Errorf("failed deleting workspace: %w", err)
+	}
 
 	return nil
 }
