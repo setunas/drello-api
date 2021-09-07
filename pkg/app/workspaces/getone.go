@@ -2,8 +2,8 @@ package workspaces
 
 import (
 	"context"
-	"drello-api/pkg/app/repository"
 	wdomain "drello-api/pkg/domain/workspace"
+	"drello-api/pkg/infrastructure/repository"
 )
 
 func GetOne(ctx context.Context, workspaceRepo repository.Workspace, input *GetOneInput) (*GetOneOutput, error) {

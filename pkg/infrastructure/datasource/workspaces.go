@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 	domainWorkspace "drello-api/pkg/domain/workspace"
-	"drello-api/pkg/infrastracture/mysql"
+	"drello-api/pkg/infrastructure/mysql"
 	"fmt"
 )
 
