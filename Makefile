@@ -1,11 +1,14 @@
+mysql-dsn = "mysql://root:password@tcp(127.0.0.1:4306)/drello-dev"
+migrate-cmd = migrate -path db/migrations -database $(mysql-dsn)
+
 db-migrate:
-	migrate -path db/migrations -database "mysql://root:password@tcp(127.0.0.1:4306)/drello-dev" up 1
+	$(migrate-cmd) up 1
 
 db-migrate-all:
-	migrate -path db/migrations -database "mysql://root:password@tcp(127.0.0.1:4306)/drello-dev" up
+	$(migrate-cmd) up
 
 db-rollback:
-	migrate -path db/migrations -database "mysql://root:password@tcp(127.0.0.1:4306)/drello-dev" down 1
+	$(migrate-cmd) down 1
 
 db-rollback-all:
-	migrate -path db/migrations -database "mysql://root:password@tcp(127.0.0.1:4306)/drello-dev" down
+	$(migrate-cmd) down 
