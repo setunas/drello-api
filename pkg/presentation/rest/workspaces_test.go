@@ -21,11 +21,7 @@ func TestMain(m *testing.M) {
 
 	router = mux.NewRouter()
 	setHandlers()
-
-	clearWorkspacesTable()
-	code := m.Run()
-	clearWorkspacesTable()
-	os.Exit(code)
+	os.Exit(m.Run())
 }
 
 func clearWorkspacesTable() {
@@ -42,7 +38,6 @@ func TestGetWorkspaces(t *testing.T) {
 
 	req, _ := http.NewRequest("GET", "/workspaces", nil)
 	response := executeRequest(req)
-
 	checkResponseCode(t, 200, response.Code)
 
 	var wr []workspaceResponse
@@ -58,7 +53,32 @@ func TestGetWorkspaces(t *testing.T) {
 	}
 
 	t.Cleanup(func() {
+		clearWorkspacesTable()
+	})
+}
 
+func TestGetWorkspace(t *testing.T) {
+	ctx := context.TODO()
+	datasource.Workspace{}.Create(ctx, "test1")
+
+	req, _ := http.NewRequest("GET", "/workspaces/2", nil)
+	response := executeRequest(req)
+	checkResponseCode(t, 422, response.Code)
+
+	req, _ = http.NewRequest("GET", "/workspaces/1", nil)
+	response = executeRequest(req)
+	checkResponseCode(t, 200, response.Code)
+
+	var wr workspaceResponse
+	json.Unmarshal(response.Body.Bytes(), &wr)
+
+	expectedBody := `{"id":1,"title":"test1"}` + "\n"
+	if body := response.Body.String(); body != expectedBody {
+		t.Errorf("Expected %s. Got %s", expectedBody, body)
+	}
+
+	t.Cleanup(func() {
+		clearWorkspacesTable()
 	})
 }
 
@@ -77,4 +97,8 @@ func TestDeleteWorkspace(t *testing.T) {
 	req, _ = http.NewRequest("GET", "/workspaces/1", nil)
 	response = executeRequest(req)
 	checkResponseCode(t, 422, response.Code)
+
+	t.Cleanup(func() {
+		clearWorkspacesTable()
+	})
 }
