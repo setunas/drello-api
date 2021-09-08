@@ -49,3 +49,10 @@ make db-rollback
 // Apply all down migration files.
 make db-rollback-all
 ```
+
+# Testing
+
+```bash
+//Run all tests
+go test ./...
+```
