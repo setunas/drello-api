@@ -1,7 +1,5 @@
 # Getting Started
 
-## Preparation
-
 Set the following environment variables to connect your local database.
 
 ```
