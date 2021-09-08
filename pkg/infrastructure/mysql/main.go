@@ -11,7 +11,6 @@ import (
 
 var dbPool *sql.DB
 
-// "root:password@tcp(127.0.0.1:4306)/drello-dev"
 func Open(dbUser, dbPwd, dbTCPHost, dbPort, dbName string) error {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", dbUser, dbPwd, dbTCPHost, dbPort, dbName)
 	db, err := sql.Open("mysql", dsn)
