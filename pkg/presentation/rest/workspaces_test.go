@@ -86,7 +86,7 @@ func TestGetWorkspace(t *testing.T) {
 	})
 }
 
-func TestCreateProduct(t *testing.T) {
+func TestCreateWorkspace(t *testing.T) {
 	var body bytes.Buffer
 	writer := multipart.NewWriter(&body)
 	fw, _ := writer.CreateFormField("title")
@@ -113,6 +113,34 @@ func TestCreateProduct(t *testing.T) {
 	t.Cleanup(func() {
 		clearWorkspacesTable()
 	})
+}
+
+func TestUpdateWorkspace(t *testing.T) {
+	ctx := context.TODO()
+	datasource.Workspace{}.Create(ctx, "test1")
+
+	var body bytes.Buffer
+	writer := multipart.NewWriter(&body)
+	fw, _ := writer.CreateFormField("title")
+	io.Copy(fw, strings.NewReader("title2"))
+	writer.Close()
+
+	req, _ := http.NewRequest("PATCH", "/workspaces/1", &body)
+	req.Header.Set("Content-Type", writer.FormDataContentType())
+
+	response := executeRequest(req)
+	checkResponseCode(t, 200, response.Code)
+
+	var m map[string]interface{}
+	json.Unmarshal(response.Body.Bytes(), &m)
+
+	if m["id"] != 1.0 {
+		t.Errorf("Expected workspace ID to be '1'. Got '%v'", m["id"])
+	}
+
+	if m["title"] == "title2\n" {
+		t.Errorf("Expected the title to change from 'title1' to 'title2'. Got '%v'", m["title"])
+	}
 }
 
 func TestDeleteWorkspace(t *testing.T) {
