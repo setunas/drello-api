@@ -15,18 +15,12 @@ DB_NAME
 Run the container of MariaDB
 
 ```bash
-// Move to the project root
-cd drello-api
-
 docker compose up
 ```
 
 ## Run Server
 
 ```bash
-// Move to the project root
-cd drello-api
-
 go run .
 ```
 
