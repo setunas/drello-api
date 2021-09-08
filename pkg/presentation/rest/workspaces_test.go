@@ -1,13 +1,17 @@
 package rest
 
 import (
+	"bytes"
 	"context"
 	"drello-api/pkg/infrastructure/datasource"
 	"drello-api/pkg/infrastructure/mysql"
 	"encoding/json"
+	"io"
 	"log"
+	"mime/multipart"
 	"net/http"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/gorilla/mux"
@@ -75,6 +79,35 @@ func TestGetWorkspace(t *testing.T) {
 	expectedBody := `{"id":1,"title":"test1"}` + "\n"
 	if body := response.Body.String(); body != expectedBody {
 		t.Errorf("Expected %s. Got %s", expectedBody, body)
+	}
+
+	t.Cleanup(func() {
+		clearWorkspacesTable()
+	})
+}
+
+func TestCreateProduct(t *testing.T) {
+	var body bytes.Buffer
+	writer := multipart.NewWriter(&body)
+	fw, _ := writer.CreateFormField("title")
+	io.Copy(fw, strings.NewReader("title1"))
+	writer.Close()
+
+	req, _ := http.NewRequest("POST", "/workspaces", &body)
+	req.Header.Set("Content-Type", writer.FormDataContentType())
+
+	response := executeRequest(req)
+	checkResponseCode(t, 201, response.Code)
+
+	var m map[string]interface{}
+	json.Unmarshal(response.Body.Bytes(), &m)
+
+	if m["title"] != "title1" {
+		t.Errorf("Expected workspace title to be 'title1'. Got '%v'", m["title"])
+	}
+
+	if m["id"] != 1.0 {
+		t.Errorf("Expected workspace ID to be '1'. Got '%v'", m["id"])
 	}
 
 	t.Cleanup(func() {
