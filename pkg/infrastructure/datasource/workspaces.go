@@ -44,7 +44,7 @@ func (w Workspace) GetOne(ctx context.Context, id int) (*domainWorkspace.Workspa
 	var title string
 
 	db := mysql.DBPool()
-	row := db.QueryRow("SELECT id, title FROM workspaces WHERE id = ?", id)
+	row := db.QueryRow("SELECT title FROM workspaces WHERE id = ?", id)
 
 	switch err := row.Scan(&title); err {
 	case sql.ErrNoRows:
