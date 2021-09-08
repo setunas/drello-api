@@ -3,11 +3,11 @@
 Set the following environment variables to connect to your local database.
 
 ```
-DB_USER
-DB_PASS
-DB_TCP_HOST
-DB_PORT
-DB_NAME
+DB_USER         // e.g. 'root'
+DB_PASS         // e.g. 'password'
+DB_TCP_HOST     // e.g. '127.0.0.1'
+DB_PORT         // e.g. '4306'
+DB_NAME         // e.g. 'drello-dev'
 ```
 
 Run the container of MariaDB.
