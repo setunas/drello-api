@@ -1,6 +1,6 @@
 # Getting Started
 
-Set the following environment variables to connect your local database.
+Set the following environment variables to connect to your local database.
 
 ```
 DB_USER
