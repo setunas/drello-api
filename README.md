@@ -12,13 +12,13 @@ DB_PORT
 DB_NAME
 ```
 
-Run the container of MariaDB
+Run the container of MariaDB.
 
 ```bash
 docker compose up
 ```
 
-## Run Server
+Run the server.
 
 ```bash
 go run .
