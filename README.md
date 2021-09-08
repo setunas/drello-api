@@ -45,6 +45,6 @@ make db-rollback-all
 # Testing
 
 ```bash
-//Run all tests
+// Run all tests
 go test ./...
 ```
