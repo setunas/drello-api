@@ -1,7 +1,7 @@
 FROM golang:1.17
 
-RUN mkdir /app
-WORKDIR /app
+RUN mkdir /drello-api
+WORKDIR /drello-api
 
 COPY . .
 RUN go get

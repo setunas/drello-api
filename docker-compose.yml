@@ -14,7 +14,7 @@ services:
     depends_on:
       - mariadb
     volumes:
-      - ".:/app"
+      - ".:/drello-api"
   mariadb:
     image: mariadb:10.6.4
     environment:
