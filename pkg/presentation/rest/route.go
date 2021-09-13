@@ -2,6 +2,7 @@ package rest
 
 import (
 	"drello-api/pkg/constants"
+	"drello-api/pkg/utils"
 	"fmt"
 	"log"
 	"net/http"
@@ -19,11 +20,12 @@ func (fn handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandleRequests() {
-	fmt.Println("Listening on http://127.0.0.1:8080")
+	port := fmt.Sprintf(":%s", utils.MustGetenv("PORT"))
+	fmt.Println("Listening on PORT:", port)
 
 	router = mux.NewRouter()
 	setHandlers()
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Fatal(http.ListenAndServe(port, router))
 }
 
 func setHandlers() {
