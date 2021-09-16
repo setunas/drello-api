@@ -45,5 +45,5 @@ jobs:
           STG_DB_TCP_HOST: ${{ secrets.STG_DB_TCP_HOST }}
           STG_DB_PORT: ${{ secrets.STG_DB_PORT }}
           STG_DB_NAME: ${{ secrets.STG_DB_NAME }}
-      - run: docker push registry.heroku.com/drello-api-dev/hoge
-      - run: heroku container:release hoge
+      - run: docker push registry.heroku.com/drello-api-dev/hoge:latest
+      - run: heroku container:release hoge:latest
