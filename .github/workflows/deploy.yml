@@ -1,13 +1,12 @@
-name: PR Check
-on: push
+name: Deploy to Heroku at Production
+on: pull_request
 
-# on: pull_request
+# on: push
+
 # on:
 #   push:
 #     branches:
 #       - "main"
-
-name: Deploy to Heroku at Production
 
 jobs:
   deploy:
