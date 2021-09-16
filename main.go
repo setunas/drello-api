@@ -8,6 +8,8 @@ import (
 )
 
 func main() {
+	log.Println("Version 1")
+
 	var (
 		dbUser    = utils.MustGetenv("DB_USER")     // e.g. 'my-db-user'
 		dbPwd     = utils.MustGetenv("DB_PASS")     // e.g. 'my-db-password'
