@@ -39,8 +39,7 @@ jobs:
           --build-arg DB_PASS=$STG_DB_PASS \
           --build-arg DB_TCP_HOST=$STG_DB_TCP_HOST \
           --build-arg DB_PORT=$STG_DB_PORT \
-          --build-arg DB_NAME=$STG_DB_NAME \
-          .
+          --build-arg DB_NAME=$STG_DB_NAME .
         env:
           DB_USER: ${{ secrets.STG_DB_USER }}
           DB_PASS: ${{ secrets.STG_DB_PASS }}
