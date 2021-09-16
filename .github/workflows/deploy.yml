@@ -33,7 +33,7 @@ jobs:
       - run: heroku container:login
       - run: docker build
           --no-cache
-          -t registry.heroku.com/drello-api-dev/hoge
+          -t registry.heroku.com/drello-api-dev/web2
           --build-arg DB_USER=$STG_DB_USER
           --build-arg DB_PASS=$STG_DB_PASS
           --build-arg DB_TCP_HOST=$STG_DB_TCP_HOST
@@ -45,5 +45,5 @@ jobs:
           STG_DB_TCP_HOST: ${{ secrets.STG_DB_TCP_HOST }}
           STG_DB_PORT: ${{ secrets.STG_DB_PORT }}
           STG_DB_NAME: ${{ secrets.STG_DB_NAME }}
-      - run: docker push registry.heroku.com/drello-api-dev/hoge:latest
-      - run: heroku container:release hoge:latest
+      - run: docker push registry.heroku.com/drello-api-dev/web2
+      - run: heroku container:release web2
