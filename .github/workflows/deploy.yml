@@ -1,9 +1,9 @@
+name: PR Check
+on: pull_request
 # on:
 #   push:
 #     branches:
 #       - "main"
-name: PR Check
-on: pull_request
 
 name: Deploy to Heroku at Production
 
