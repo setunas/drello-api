@@ -1,30 +1,30 @@
 version: "3.8"
 services:
-  go:
+  app:
     build:
       context: "."
       args:
         DB_USER: root
         DB_PASS: password
-        DB_TCP_HOST: mariadb
+        DB_TCP_HOST: db
         DB_PORT: 3306
         DB_NAME: drello-dev
     ports:
       - "8080:8080"
     depends_on:
-      - mariadb
+      - db
     volumes:
       - ".:/drello-api"
-  mariadb:
+  db:
     image: mariadb:10.6.4
     environment:
-      - MARIADB_ROOT_PASSWORD=password
+      MYSQL_ROOT_PASSWORD: password
     ports:
       - "4306:3306"
     volumes:
-      - mariadb-data:/var/lib/mysql
+      - db-data:/var/lib/mysql
       - ./db/init.sql:/db/init.sql
     command: --init-file /db/init.sql
 
 volumes:
-  mariadb-data: {}
+  db-data: {}
