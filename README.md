@@ -1,10 +1,12 @@
-# Start Server
+# Start the Server
 
 Run this command to start the server and the database.
 
 ```bash
 docker compose up
 ```
+
+# Enter the Container
 
 When you want to enter the running container (e.g. to run database migration or tests), you can use this command.
 
