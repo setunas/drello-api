@@ -29,8 +29,10 @@ jobs:
           HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
       - name: Add Heroku remote
         run: heroku git:remote --app drello-api-dev
-      - run: heroku container:login
-      - run: docker build
+      - name: Log in to Heroku Container Registry
+        run: heroku container:login
+      - name: Build a Docker image
+        run: docker build
           --no-cache
           -t registry.heroku.com/drello-api-dev/web
           --build-arg DB_USER=$STG_DB_USER
@@ -44,5 +46,7 @@ jobs:
           STG_DB_TCP_HOST: ${{ secrets.STG_DB_TCP_HOST }}
           STG_DB_PORT: ${{ secrets.STG_DB_PORT }}
           STG_DB_NAME: ${{ secrets.STG_DB_NAME }}
-      - run: docker push registry.heroku.com/drello-api-dev/web
-      - run: heroku container:release web -a drello-api-dev
+      - name: Push the image to Heroku
+        run: docker push registry.heroku.com/drello-api-dev/web
+      - name: Release the new image
+        run: heroku container:release web -a drello-api-dev
