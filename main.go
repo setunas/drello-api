@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	log.Println("Version 1")
+	log.Println("main.go")
 
 	var (
 		dbUser    = utils.MustGetenv("DB_USER")     // e.g. 'my-db-user'
