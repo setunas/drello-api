@@ -46,4 +46,4 @@ jobs:
           STG_DB_PORT: ${{ secrets.STG_DB_PORT }}
           STG_DB_NAME: ${{ secrets.STG_DB_NAME }}
       - run: docker push registry.heroku.com/drello-api-dev/web2
-      - run: heroku container:release web2
+      - run: heroku container:release paopao
