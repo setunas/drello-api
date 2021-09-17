@@ -1,20 +1,19 @@
-name: Deploy to Heroku at Production
+name: Deploy to Heroku
 on: pull_request
 
 # on:
 #   push:
 #     branches:
 #       - "main"
+#
 
 jobs:
   deploy:
-    name: Deploy to Heroku at Production
+    name: Deploy to Heroku
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-
       - name: Heroku login credentials
         run: |
           cat > ~/.netrc <<EOF
@@ -33,7 +32,7 @@ jobs:
       - run: heroku container:login
       - run: docker build
           --no-cache
-          -t registry.heroku.com/drello-api-dev/hoge
+          -t registry.heroku.com/drello-api-dev/web
           --build-arg DB_USER=$STG_DB_USER
           --build-arg DB_PASS=$STG_DB_PASS
           --build-arg DB_TCP_HOST=$STG_DB_TCP_HOST
@@ -45,5 +44,5 @@ jobs:
           STG_DB_TCP_HOST: ${{ secrets.STG_DB_TCP_HOST }}
           STG_DB_PORT: ${{ secrets.STG_DB_PORT }}
           STG_DB_NAME: ${{ secrets.STG_DB_NAME }}
-      - run: docker push registry.heroku.com/drello-api-dev/hoge
-      - run: heroku container:release hoge
+      - run: docker push registry.heroku.com/drello-api-dev/web
+      - run: heroku container:release web -a drello-api-dev
