@@ -11,7 +11,7 @@ docker compose up
 When you want to enter the running container (e.g. to run database migration or tests), you can use this command.
 
 ```bash
-docker compose exec go bash 
+docker compose exec app bash 
 ```
 
 
