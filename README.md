@@ -1,25 +1,9 @@
 # Getting Started
 
-Set the following environment variables to connect to your local database.
-
-```
-DB_USER         // e.g. 'root'
-DB_PASS         // e.g. 'password'
-DB_TCP_HOST     // e.g. '127.0.0.1'
-DB_PORT         // e.g. '4306'
-DB_NAME         // e.g. 'drello-dev'
-```
-
-Run the container of MariaDB.
+Run all containers you need with this command.
 
 ```bash
 docker compose up
-```
-
-Run the server.
-
-```bash
-go run .
 ```
 
 # Database Migration
