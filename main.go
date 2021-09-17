@@ -1,9 +1,16 @@
 package main
 
 import (
-	"drello-api/cmd"
+	"drello-api/pkg/infrastracture/mysql"
+	"drello-api/pkg/presentation/rest"
+	"log"
 )
 
 func main() {
-	cmd.Execute()
+	err := mysql.Open()
+	if err != nil {
+		log.Println(err)
+	}
+
+	rest.HandleRequests()
 }

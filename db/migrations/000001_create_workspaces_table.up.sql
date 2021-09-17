@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS workspaces(
+    id INT NOT NULL AUTO_INCREMENT KEY,
+    title VARCHAR(255)
+);

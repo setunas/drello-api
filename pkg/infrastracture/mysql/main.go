@@ -1,29 +1,29 @@
 package mysql
 
 import (
-	"drello-api/ent"
 	"time"
 
-	"entgo.io/ent/dialect/sql"
+	"database/sql"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var client *ent.Client
+var dbPool *sql.DB
 
-func Open() (*ent.Client, error) {
-	drv, err := sql.Open("mysql", "root:password@tcp(127.0.0.1:4306)/drello-dev")
+func Open() error {
+	db, err := sql.Open("mysql", "root:password@tcp(127.0.0.1:4306)/drello-dev")
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	db := drv.DB()
+	db.SetConnMaxLifetime(time.Minute * 3)
+	db.SetMaxOpenConns(10)
 	db.SetMaxIdleConns(10)
-	db.SetMaxOpenConns(100)
-	db.SetConnMaxLifetime(time.Hour)
-	client = ent.NewClient(ent.Driver(drv)).Debug()
-	return client, nil
+
+	dbPool = db
+	return nil
 }
 
-func Client() *ent.Client {
-	return client
+func DBPool() *sql.DB {
+	return dbPool
 }
