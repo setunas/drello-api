@@ -13,7 +13,7 @@ import (
 var dbPool *sql.DB
 
 func Open(dbUser, dbPwd, dbTCPHost, dbPort, dbName string) error {
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/heroku_e60cb34a8aa0b6d", dbUser, dbPwd, dbTCPHost, dbPort)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", dbUser, dbPwd, dbTCPHost, dbPort, dbName)
 	log.Println("dsn:", dsn)
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
