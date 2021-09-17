@@ -19,6 +19,11 @@ ENV DB_TCP_HOST $DB_TCP_HOST
 ENV DB_PORT $DB_PORT
 ENV DB_NAME $DB_NAME
 
+# Database Migration
+RUN go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+# RUN go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest && \
+#   migrate -path db/migrations -database "mysql://beba733eff51b5:${DB_PASS}@tcp(${DB_TCP_HOST}:${DB_PORT})/${DB_NAME}" up
+
 # API server's endpoint
 ARG PORT=8080
 ENV PORT $PORT

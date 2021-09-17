@@ -30,17 +30,17 @@ jobs:
       - run: heroku container:login
       - run: heroku container:push web
       - run: heroku container:release web
-      - run: heroku run bash
-      - name: Database Migration
-        run:
-          go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest &&
-          migrate -path db/migrations -database "mysql://beba733eff51b5:$STG_DB_PASS@tcp($STG_DB_TCP_HOST:$STG_DB_PORT)/$STG_DB_NAME" up
-        env:
-          STG_DB_USER: ${{ secrets.STG_DB_USER }}
-          STG_DB_PASS: ${{ secrets.STG_DB_PASS }}
-          STG_DB_TCP_HOST: ${{ secrets.STG_DB_TCP_HOST }}
-          STG_DB_PORT: ${{ secrets.STG_DB_PORT }}
-          STG_DB_NAME: ${{ secrets.STG_DB_NAME }}
+      # - run: heroku run bash
+      # - name: Database Migration
+      #   run:
+      #     go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest &&
+      #     migrate -path db/migrations -database "mysql://beba733eff51b5:$STG_DB_PASS@tcp($STG_DB_TCP_HOST:$STG_DB_PORT)/$STG_DB_NAME" up
+      #   env:
+      #     STG_DB_USER: ${{ secrets.STG_DB_USER }}
+      #     STG_DB_PASS: ${{ secrets.STG_DB_PASS }}
+      #     STG_DB_TCP_HOST: ${{ secrets.STG_DB_TCP_HOST }}
+      #     STG_DB_PORT: ${{ secrets.STG_DB_PORT }}
+      #     STG_DB_NAME: ${{ secrets.STG_DB_NAME }}
 
       #
       # - run: docker build
