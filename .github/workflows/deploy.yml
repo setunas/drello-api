@@ -8,6 +8,8 @@ jobs:
   deploy:
     name: Deploy to Heroku
     runs-on: ubuntu-latest
+    env:
+      APP_NAME: ${{ secrets.STG_HEROKU_APP_NAME }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -25,13 +27,13 @@ jobs:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
           HEROKU_EMAIL: ${{ secrets.HEROKU_EMAIL }}
       - name: Add Heroku remote
-        run: heroku git:remote --app drello-api-dev
+        run: heroku git:remote --app $APP_NAME
       - name: Log in to Heroku Container Registry
         run: heroku container:login
       - name: Build a Docker image
         run: docker build
           --no-cache
-          -t registry.heroku.com/drello-api-dev/web
+          -t registry.heroku.com/$APP_NAME/web
           --build-arg DB_USER=$STG_DB_USER
           --build-arg DB_PASS=$STG_DB_PASS
           --build-arg DB_TCP_HOST=$STG_DB_TCP_HOST
@@ -44,6 +46,6 @@ jobs:
           STG_DB_PORT: ${{ secrets.STG_DB_PORT }}
           STG_DB_NAME: ${{ secrets.STG_DB_NAME }}
       - name: Push the image to Heroku
-        run: docker push registry.heroku.com/drello-api-dev/web
+        run: docker push registry.heroku.com/$APP_NAME/web
       - name: Release the new image
-        run: heroku container:release web -a drello-api-dev
+        run: heroku container:release web -a $APP_NAME
