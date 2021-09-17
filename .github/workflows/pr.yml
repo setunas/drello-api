@@ -13,6 +13,12 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
         ports:
           - 4306:3306
+    env:
+      DB_USER: root
+      DB_PASS: password
+      DB_TCP_HOST: 127.0.0.1
+      DB_PORT: 4306
+      DB_NAME: drello-test
     steps:
       - name: Checkout
         uses: actions/checkout@v2
