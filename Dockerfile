@@ -1,10 +1,12 @@
-FROM golang:1.17 as dev
+FROM golang:1.17
 
 RUN mkdir /drello-api
 WORKDIR /drello-api
 
+RUN go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+
 COPY . .
-RUN go get
+RUN go install
 
 # Connection to DB
 ARG DB_USER
@@ -23,17 +25,5 @@ ENV DB_NAME $DB_NAME
 ARG PORT=8080
 ENV PORT $PORT
 EXPOSE $PORT
-
-
-
-FROM alpine:latest as release
-
-RUN mkdir /drello-api
-WORKDIR /drello-api
-COPY --from=dev /drello-api .
-
-# Database Migration
-RUN go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest \
-  && migrate -path db/migrations -database "mysql://${DB_USER}:${DB_PASS}@tcp(${DB_TCP_HOST}:${DB_PORT})/${DB_NAME}" up
 
 CMD ["go", "run", "."]
