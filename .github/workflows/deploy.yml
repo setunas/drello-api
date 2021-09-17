@@ -1,11 +1,8 @@
-name: Deploy to Heroku
-on: pull_request
-
-# on:
-#   push:
-#     branches:
-#       - "main"
-#
+name: Deploy to Staging
+on:
+  push:
+    branches:
+      - "stg-**"
 
 jobs:
   deploy:
