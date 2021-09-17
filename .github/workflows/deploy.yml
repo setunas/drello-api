@@ -32,7 +32,7 @@ jobs:
       - run: docker build
           --no-cache
           -t registry.heroku.com/drello-api-dev/web
-          --build-arg DB_USER=$STG_DB_NAME
+          --build-arg DB_USER=$STG_DB_USER
           --build-arg DB_PASS=$STG_DB_PASS
           --build-arg DB_TCP_HOST=$STG_DB_TCP_HOST
           --build-arg DB_PORT=$STG_DB_PORT
