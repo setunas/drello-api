@@ -22,5 +22,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Run db migrations
+        run: make db-migrate-all
       - name: Run tests
         run: go test ./...
