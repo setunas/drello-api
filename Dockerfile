@@ -30,7 +30,7 @@ FROM alpine:latest as release
 
 RUN mkdir /drello-api
 WORKDIR /drello-api
-COPY --from=builder /drello-api .
+COPY --from=dev /drello-api .
 
 # Database Migration
 RUN go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest \
