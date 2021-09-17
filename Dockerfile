@@ -19,7 +19,8 @@ ENV DB_TCP_HOST $DB_TCP_HOST
 ENV DB_PORT $DB_PORT
 ENV DB_NAME $DB_NAME
 
-RUN go get -tags 'mysql' -u github.com/golang-migrate/migrate/cmd/migrate
+# RUN go get -tags 'mysql' -u github.com/golang-migrate/migrate/cmd/migrate
+RUN go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
 RUN migrate -path db/migrations -database "mysql://beba733eff51b5:4b1ff93d@tcp(us-cdbr-east-04.cleardb.com:3306)/heroku_e60cb34a8aa0b6d"
 
 # Environment variables for API server's endpoint.
