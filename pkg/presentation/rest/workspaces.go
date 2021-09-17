@@ -2,7 +2,7 @@ package rest
 
 import (
 	"drello-api/pkg/app/workspaces"
-	"drello-api/pkg/infrastracture/datasource"
+	"drello-api/pkg/infrastructure/datasource"
 	"encoding/json"
 	"net/http"
 	"strconv"

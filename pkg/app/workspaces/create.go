@@ -2,8 +2,8 @@ package workspaces
 
 import (
 	"context"
-	"drello-api/pkg/app/repository"
 	"drello-api/pkg/domain/workspace"
+	"drello-api/pkg/infrastructure/repository"
 )
 
 func Create(ctx context.Context, workspaceRepo repository.Workspace, input *CreateInput) (*CreateOutput, error) {
