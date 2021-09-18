@@ -20,6 +20,7 @@ jobs:
       DB_PORT: 4306
       DB_NAME: drello-test
       GOPATH: ${{ RUNNER_WORKSPACE }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
