@@ -9,6 +9,8 @@ import (
 	"github.com/gorilla/mux"
 )
 
+var router *mux.Router
+
 type handler func(http.ResponseWriter, *http.Request)
 
 func (fn handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
@@ -19,8 +21,12 @@ func (fn handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func HandleRequests() {
 	fmt.Println("Listening on http://127.0.0.1:8080")
 
-	r := mux.NewRouter()
-	r.Handle(constants.Workspaces+"/{id:[0-9]+}", handler(workspaceHandler))
-	r.Handle(constants.Workspaces, handler(workspacesHandler))
-	log.Fatal(http.ListenAndServe(":8080", r))
+	router = mux.NewRouter()
+	setHandlers()
+	log.Fatal(http.ListenAndServe(":8080", router))
+}
+
+func setHandlers() {
+	router.Handle(constants.Workspaces+"/{id:[0-9]+}", handler(workspaceHandler))
+	router.Handle(constants.Workspaces, handler(workspacesHandler))
 }
