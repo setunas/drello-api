@@ -1,32 +1,23 @@
-# Getting Started
+# Start the Server
 
-Set the following environment variables to connect to your local database.
-
-```
-DB_USER         // e.g. 'root'
-DB_PASS         // e.g. 'password'
-DB_TCP_HOST     // e.g. '127.0.0.1'
-DB_PORT         // e.g. '4306'
-DB_NAME         // e.g. 'drello-dev'
-```
-
-Run the container of MariaDB.
+Run this command to start the server and the database.
 
 ```bash
 docker compose up
 ```
 
-Run the server.
+# Enter the Container
+
+When you want to enter the running container (e.g. to run database migration or tests), you can use this command.
 
 ```bash
-go run .
+docker compose exec app bash 
 ```
+
 
 # Database Migration
 
-Install [golang-migrate/migrate](https://github.com/golang-migrate/migrate).
-
-Then use the following commands.
+Use the following `make` commands inside the container.
 
 ```bash
 // Apply one up migration file.
@@ -42,9 +33,17 @@ make db-rollback
 make db-rollback-all
 ```
 
+These `make` commands use [golang-migrate/migrate](https://github.com/golang-migrate/migrate).
+
 # Testing
+
+Run this command inside the container.
 
 ```bash
 // Run all tests
 go test ./...
 ```
+
+# Deploy to Staging
+You can deploy to the staging Heroku environment by pushing any branches whose name starts with `stg-`. <br>
+e.g. `stg-new-feature-1`

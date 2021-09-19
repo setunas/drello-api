@@ -1,4 +1,4 @@
-mysql-dsn = "mysql://root:password@tcp(127.0.0.1:4306)/drello-dev"
+mysql-dsn = "mysql://${DB_USER}:${DB_PASS}@tcp(${DB_TCP_HOST}:${DB_PORT})/${DB_NAME}"
 migrate-cmd = migrate -path db/migrations -database $(mysql-dsn)
 
 db-migrate:
