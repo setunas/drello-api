@@ -1,6 +1,6 @@
 # Start the Server
 
-Run this command to start the server and the database with docker containers.
+Run this command at the root directory of this project to start the server and the database with docker containers.
 
 ```bash
 docker compose up
@@ -8,7 +8,7 @@ docker compose up
 
 # Enter a Container
 
-When you want to enter the running container (e.g. to run database migration or tests), you can use this command.
+When you want to enter a running container (e.g. to run database migration or tests), you can use this command.
 
 ```bash
 docker compose exec app bash 
