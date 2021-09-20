@@ -8,7 +8,7 @@ docker compose up
 
 # Enter a Container
 
-When you want to enter a running container (e.g. to run database migration or tests), you can use this command.
+When you want to enter a running container of the server (e.g. to run database migration or tests), you can use this command.
 
 ```bash
 docker compose exec app bash 
