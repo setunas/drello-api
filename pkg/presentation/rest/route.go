@@ -31,4 +31,5 @@ func HandleRequests() {
 func setHandlers() {
 	router.Handle(constants.Workspaces+"/{id:[0-9]+}", handler(workspaceHandler))
 	router.Handle(constants.Workspaces, handler(workspacesHandler))
+	router.Handle(constants.Boards+"/{id:[0-9]+}", handler(boardHandler))
 }
