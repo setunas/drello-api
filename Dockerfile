@@ -1,4 +1,4 @@
-FROM golang:1.17
+FROM golang:1.16
 
 RUN mkdir /drello-api
 WORKDIR /drello-api
