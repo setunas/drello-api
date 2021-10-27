@@ -2,7 +2,7 @@ package boards
 
 import (
 	"context"
-	wdomain "drello-api/pkg/domain/board"
+	boardDomain "drello-api/pkg/domain/board"
 	"drello-api/pkg/infrastructure/repository"
 )
 
@@ -12,7 +12,7 @@ func GetOne(ctx context.Context, boardRepo repository.Board, input *GetOneInput)
 		return nil, err
 	}
 
-	return &GetOneOutput{Board: wdomain.New(board.ID(), board.Title())}, nil
+	return &GetOneOutput{Board: boardDomain.New(board.ID(), board.Title())}, nil
 }
 
 type GetOneInput struct {
@@ -24,5 +24,5 @@ func NewGetOneInput(id int) *GetOneInput {
 }
 
 type GetOneOutput struct {
-	Board *wdomain.Board
+	Board *boardDomain.Board
 }

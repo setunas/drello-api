@@ -7,12 +7,12 @@ import (
 )
 
 func Update(ctx context.Context, boardRepo repository.Board, input *UpdateInput) (*UpdateOutput, error) {
-	wdomain, err := boardRepo.Update(ctx, input.id, input.title)
+	boardDomain, err := boardRepo.Update(ctx, input.id, input.title)
 	if err != nil {
 		return nil, err
 	}
 
-	return &UpdateOutput{Board: *wdomain}, nil
+	return &UpdateOutput{Board: *boardDomain}, nil
 }
 
 type UpdateInput struct {

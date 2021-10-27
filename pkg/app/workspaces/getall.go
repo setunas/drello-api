@@ -2,7 +2,7 @@ package workspaces
 
 import (
 	"context"
-	wdomain "drello-api/pkg/domain/workspace"
+	workspaceDomain "drello-api/pkg/domain/workspace"
 	"drello-api/pkg/infrastructure/repository"
 )
 
@@ -12,15 +12,15 @@ func GetAll(ctx context.Context, workspaceRepo repository.Workspace) (*GetAllOut
 		return nil, err
 	}
 
-	var wdomains []*wdomain.Workspace
+	var workspaceDomains []*workspaceDomain.Workspace
 
 	for _, w := range *workspaces {
-		wdomains = append(wdomains, wdomain.New(w.ID(), w.Title()))
+		workspaceDomains = append(workspaceDomains, workspaceDomain.New(w.ID(), w.Title()))
 	}
 
-	return &GetAllOutput{Workspaces: wdomains}, nil
+	return &GetAllOutput{Workspaces: workspaceDomains}, nil
 }
 
 type GetAllOutput struct {
-	Workspaces []*wdomain.Workspace
+	Workspaces []*workspaceDomain.Workspace
 }
