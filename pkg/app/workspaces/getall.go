@@ -7,14 +7,14 @@ import (
 )
 
 func GetAll(ctx context.Context, workspaceRepo repository.Workspace) (*GetAllOutput, error) {
-	wNodes, err := workspaceRepo.GetAll(ctx)
+	workspaces, err := workspaceRepo.GetAll(ctx)
 	if err != nil {
 		return nil, err
 	}
 
 	var wdomains []*wdomain.Workspace
 
-	for _, w := range *wNodes {
+	for _, w := range *workspaces {
 		wdomains = append(wdomains, wdomain.New(w.ID(), w.Title()))
 	}
 

@@ -7,12 +7,12 @@ import (
 )
 
 func GetOne(ctx context.Context, boardRepo repository.Board, input *GetOneInput) (*GetOneOutput, error) {
-	wNode, err := boardRepo.GetOne(ctx, input.id)
+	board, err := boardRepo.GetOne(ctx, input.id)
 	if err != nil {
 		return nil, err
 	}
 
-	return &GetOneOutput{Board: wdomain.New(wNode.ID(), wNode.Title())}, nil
+	return &GetOneOutput{Board: wdomain.New(board.ID(), board.Title())}, nil
 }
 
 type GetOneInput struct {
