@@ -80,17 +80,9 @@ func TestDeleteCard(t *testing.T) {
 	ctx := context.TODO()
 	datasource.Card{}.Create(ctx, "test1", "description1")
 
-	req, _ := http.NewRequest("GET", "/cards/1", nil)
+	req, _ := http.NewRequest("DELETE", "/columns/1", nil)
 	response := executeRequest(req)
-	checkResponseCode(t, 200, response.Code)
-
-	req, _ = http.NewRequest("DELETE", "/cards/1", nil)
-	response = executeRequest(req)
 	checkResponseCode(t, 204, response.Code)
-
-	req, _ = http.NewRequest("GET", "/cards/1", nil)
-	response = executeRequest(req)
-	checkResponseCode(t, 422, response.Code)
 
 	t.Cleanup(func() {
 		clearCardsTable()

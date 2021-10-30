@@ -80,17 +80,9 @@ func TestDeleteColumn(t *testing.T) {
 	ctx := context.TODO()
 	datasource.Column{}.Create(ctx, "test1")
 
-	req, _ := http.NewRequest("GET", "/columns/1", nil)
+	req, _ := http.NewRequest("DELETE", "/columns/1", nil)
 	response := executeRequest(req)
-	checkResponseCode(t, 200, response.Code)
-
-	req, _ = http.NewRequest("DELETE", "/columns/1", nil)
-	response = executeRequest(req)
 	checkResponseCode(t, 204, response.Code)
-
-	req, _ = http.NewRequest("GET", "/columns/1", nil)
-	response = executeRequest(req)
-	checkResponseCode(t, 422, response.Code)
 
 	t.Cleanup(func() {
 		clearColumnsTable()
