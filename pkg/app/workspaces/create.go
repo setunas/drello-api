@@ -7,12 +7,12 @@ import (
 )
 
 func Create(ctx context.Context, workspaceRepo repository.Workspace, input *CreateInput) (*CreateOutput, error) {
-	wdomain, err := workspaceRepo.Create(ctx, input.title)
+	workspaceDomain, err := workspaceRepo.Create(ctx, input.title)
 	if err != nil {
 		return nil, err
 	}
 
-	return &CreateOutput{Workspace: *wdomain}, nil
+	return &CreateOutput{Workspace: *workspaceDomain}, nil
 }
 
 type CreateInput struct {

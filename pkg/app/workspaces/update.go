@@ -7,12 +7,12 @@ import (
 )
 
 func Update(ctx context.Context, workspaceRepo repository.Workspace, input *UpdateInput) (*UpdateOutput, error) {
-	wdomain, err := workspaceRepo.Update(ctx, input.id, input.title)
+	workspaceDomain, err := workspaceRepo.Update(ctx, input.id, input.title)
 	if err != nil {
 		return nil, err
 	}
 
-	return &UpdateOutput{Workspace: *wdomain}, nil
+	return &UpdateOutput{Workspace: *workspaceDomain}, nil
 }
 
 type UpdateInput struct {

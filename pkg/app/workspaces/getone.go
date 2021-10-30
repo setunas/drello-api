@@ -2,17 +2,17 @@ package workspaces
 
 import (
 	"context"
-	wdomain "drello-api/pkg/domain/workspace"
+	workspaceDomain "drello-api/pkg/domain/workspace"
 	"drello-api/pkg/infrastructure/repository"
 )
 
 func GetOne(ctx context.Context, workspaceRepo repository.Workspace, input *GetOneInput) (*GetOneOutput, error) {
-	wNode, err := workspaceRepo.GetOne(ctx, input.id)
+	workspaces, err := workspaceRepo.GetOne(ctx, input.id)
 	if err != nil {
 		return nil, err
 	}
 
-	return &GetOneOutput{Workspace: wdomain.New(wNode.ID(), wNode.Title())}, nil
+	return &GetOneOutput{Workspace: workspaceDomain.New(workspaces.ID(), workspaces.Title())}, nil
 }
 
 type GetOneInput struct {
@@ -24,5 +24,5 @@ func NewGetOneInput(id int) *GetOneInput {
 }
 
 type GetOneOutput struct {
-	Workspace *wdomain.Workspace
+	Workspace *workspaceDomain.Workspace
 }
