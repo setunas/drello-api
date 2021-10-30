@@ -11,8 +11,9 @@ import (
 )
 
 type cardResponse struct {
-	ID    int    `json:"id"`
-	Title string `json:"title"`
+	ID          int    `json:"id"`
+	Title       string `json:"title"`
+	Description string `json:"description"`
 }
 
 func cardsHandler(w http.ResponseWriter, r *http.Request) {
@@ -25,7 +26,7 @@ func cardsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.WriteHeader(http.StatusCreated)
-		json.NewEncoder(w).Encode(cardResponse{ID: output.Card.ID(), Title: output.Card.Title()})
+		json.NewEncoder(w).Encode(cardResponse{ID: output.Card.ID(), Title: output.Card.Title(), Description: output.Card.Description()})
 		return
 	}
 
