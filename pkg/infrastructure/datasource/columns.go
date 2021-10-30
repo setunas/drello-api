@@ -9,7 +9,7 @@ import (
 
 type Column struct{}
 
-func (c Column) Create(ctx context.Context, title string, description string) (*domainColumn.Column, error) {
+func (c Column) Create(ctx context.Context, title string) (*domainColumn.Column, error) {
 	db := mysql.DBPool()
 
 	result, err := db.Exec("INSERT INTO columns (title) VALUES (?)", title)
