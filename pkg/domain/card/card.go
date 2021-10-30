@@ -6,8 +6,8 @@ type Card struct {
 	description string
 }
 
-func New(id int, title string) *Card {
-	return &Card{id: id, title: title}
+func New(id int, title string, description string) *Card {
+	return &Card{id: id, title: title, description: description}
 }
 
 func (c *Card) ID() int {
