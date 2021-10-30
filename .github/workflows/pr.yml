@@ -1,31 +1,30 @@
 name: PR Check
 on: pull_request
-
-jobs:
-  tests:
-    name: Run Tests
-    runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_DATABASE: drello-test
-          MYSQL_ROOT_PASSWORD: password
-        ports:
-          - 4306:3306
-    env:
-      DB_USER: root
-      DB_PASS: password
-      DB_TCP_HOST: 127.0.0.1
-      DB_PORT: 4306
-      DB_NAME: drello-test
-      GOPATH: /home/runner/work/drello-api
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Install golang-migrate/migrate
-        run: go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
-      - name: Run db migrations
-        run: make db-migrate-all
-      - name: Run tests
-        run: go test ./...
+# jobs:
+#   tests:
+#     name: Run Tests
+#     runs-on: ubuntu-latest
+#     services:
+#       mysql:
+#         image: mysql:5.7
+#         env:
+#           MYSQL_DATABASE: drello-test
+#           MYSQL_ROOT_PASSWORD: password
+#         ports:
+#           - 4306:3306
+#     env:
+#       DB_USER: root
+#       DB_PASS: password
+#       DB_TCP_HOST: 127.0.0.1
+#       DB_PORT: 4306
+#       DB_NAME: drello-test
+#       GOPATH: /home/runner/work/drello-api
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v2
+#       - name: Install golang-migrate/migrate
+#         run: go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+#       - name: Run db migrations
+#         run: make db-migrate-all
+#       - name: Run tests
+#         run: go test ./...
