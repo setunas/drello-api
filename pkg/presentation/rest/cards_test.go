@@ -45,7 +45,7 @@ func TestCreateCard(t *testing.T) {
 	}
 
 	if m["description"] != "desc1" {
-		t.Errorf("Expected card title to be 'desc1'. Got '%v'", m["description"])
+		t.Errorf("Expected card description to be 'desc1'. Got '%v'", m["description"])
 	}
 
 	if m["id"] != 1.0 {
@@ -59,12 +59,17 @@ func TestCreateCard(t *testing.T) {
 
 func TestUpdateCard(t *testing.T) {
 	ctx := context.TODO()
-	datasource.Card{}.Create(ctx, "test1", "description1")
+	datasource.Card{}.Create(ctx, "test1", "desc1")
 
 	var body bytes.Buffer
 	writer := multipart.NewWriter(&body)
+
 	fw, _ := writer.CreateFormField("title")
 	io.Copy(fw, strings.NewReader("title2"))
+
+	fw, _ = writer.CreateFormField("description")
+	io.Copy(fw, strings.NewReader("desc2"))
+
 	writer.Close()
 
 	req, _ := http.NewRequest("PATCH", "/cards/1", &body)
@@ -82,6 +87,10 @@ func TestUpdateCard(t *testing.T) {
 
 	if m["title"] == "title2\n" {
 		t.Errorf("Expected the title to change from 'title1' to 'title2'. Got '%v'", m["title"])
+	}
+
+	if m["description"] == "desc2\n" {
+		t.Errorf("Expected the description to change from 'desc1' to 'desc2'. Got '%v'", m["description"])
 	}
 
 	t.Cleanup(func() {
