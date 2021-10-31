@@ -22,8 +22,13 @@ func clearCardsTable() {
 func TestCreateCard(t *testing.T) {
 	var body bytes.Buffer
 	writer := multipart.NewWriter(&body)
+
 	fw, _ := writer.CreateFormField("title")
 	io.Copy(fw, strings.NewReader("title1"))
+
+	fw, _ = writer.CreateFormField("description")
+	io.Copy(fw, strings.NewReader("desc1"))
+
 	writer.Close()
 
 	req, _ := http.NewRequest("POST", "/cards", &body)
@@ -37,6 +42,10 @@ func TestCreateCard(t *testing.T) {
 
 	if m["title"] != "title1" {
 		t.Errorf("Expected card title to be 'title1'. Got '%v'", m["title"])
+	}
+
+	if m["description"] != "desc1" {
+		t.Errorf("Expected card title to be 'desc1'. Got '%v'", m["description"])
 	}
 
 	if m["id"] != 1.0 {
@@ -74,6 +83,10 @@ func TestUpdateCard(t *testing.T) {
 	if m["title"] == "title2\n" {
 		t.Errorf("Expected the title to change from 'title1' to 'title2'. Got '%v'", m["title"])
 	}
+
+	t.Cleanup(func() {
+		clearCardsTable()
+	})
 }
 
 func TestDeleteCard(t *testing.T) {
