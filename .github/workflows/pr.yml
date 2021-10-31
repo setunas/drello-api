@@ -4,6 +4,7 @@ jobs:
   tests:
     name: Run Tests
     runs-on: ubuntu-latest
+    container: golang:1.16
     services:
       mysql:
         image: mysql:5.7
