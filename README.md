@@ -19,7 +19,7 @@ docker compose exec app bash
 
 Use the following `make` commands inside the container.
 
-```bash
+```
 // Apply one up migration file.
 make db-migrate
 
