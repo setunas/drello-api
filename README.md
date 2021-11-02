@@ -2,7 +2,7 @@
 
 Run this command at the root directory of this project to start the server and the database with docker containers.
 
-```bash
+```
 docker compose up
 ```
 
@@ -10,7 +10,7 @@ docker compose up
 
 When you want to enter a running container of the server (e.g. to run database migration or tests), you can use this command.
 
-```bash
+```
 docker compose exec app bash 
 ```
 
@@ -42,7 +42,7 @@ These `make` commands use [golang-migrate/migrate](https://github.com/golang-mig
 
 Run this command inside the container.
 
-```bash
+```
 // Run all tests
 go test ./...
 ```
