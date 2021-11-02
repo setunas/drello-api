@@ -141,6 +141,10 @@ func TestUpdateWorkspace(t *testing.T) {
 	if m["title"] == "title2\n" {
 		t.Errorf("Expected the title to change from 'title1' to 'title2'. Got '%v'", m["title"])
 	}
+
+	t.Cleanup(func() {
+		clearWorkspacesTable()
+	})
 }
 
 func TestDeleteWorkspace(t *testing.T) {

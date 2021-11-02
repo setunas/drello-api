@@ -9,10 +9,10 @@ func New(id int, title string) *Board {
 	return &Board{id: id, title: title}
 }
 
-func (w *Board) ID() int {
-	return w.id
+func (b *Board) ID() int {
+	return b.id
 }
 
-func (w *Board) Title() string {
-	return w.title
+func (b *Board) Title() string {
+	return b.title
 }

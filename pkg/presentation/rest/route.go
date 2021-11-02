@@ -32,4 +32,8 @@ func setHandlers() {
 	router.Handle(constants.Workspaces+"/{id:[0-9]+}", handler(workspaceHandler))
 	router.Handle(constants.Workspaces, handler(workspacesHandler))
 	router.Handle(constants.Boards+"/{id:[0-9]+}", handler(boardHandler))
+	router.Handle(constants.Columns+"/{id:[0-9]+}", handler(columnHandler))
+	router.Handle(constants.Columns, handler(columnsHandler))
+	router.Handle(constants.Cards+"/{id:[0-9]+}", handler(cardHandler))
+	router.Handle(constants.Cards, handler(cardsHandler))
 }
