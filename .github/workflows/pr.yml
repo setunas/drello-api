@@ -19,7 +19,12 @@ jobs:
       DB_PASS: password
       DB_TCP_HOST: 172.17.0.1
       DB_PORT: 4306
-      DB_NAME: drello-test
+      DB_NAME: drello-dev
+      TEST_DB_USER: root
+      TEST_DB_PASS: password
+      TEST_DB_TCP_HOST: 172.17.0.1
+      TEST_DB_PORT: 4306
+      TEST_DB_NAME: drello-test
       GOPATH: /home/runner/work/drello-api
     steps:
       - name: Checkout
@@ -34,6 +39,6 @@ jobs:
       - name: Install golang-migrate/migrate
         run: go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
       - name: Run db migrations
-        run: make db-migrate-all
+        run: make db-migrate-all-test
       - name: Run tests
         run: go test ./...
