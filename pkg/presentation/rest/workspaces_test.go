@@ -7,26 +7,11 @@ import (
 	"drello-api/pkg/infrastructure/mysql"
 	"encoding/json"
 	"io"
-	"log"
 	"mime/multipart"
 	"net/http"
-	"os"
 	"strings"
 	"testing"
-
-	"github.com/gorilla/mux"
 )
-
-func TestMain(m *testing.M) {
-	err := mysql.Open("root", "password", "127.0.0.1", "4306", "drello-test")
-	if err != nil {
-		log.Println(err)
-	}
-
-	router = mux.NewRouter()
-	setHandlers()
-	os.Exit(m.Run())
-}
 
 func clearWorkspacesTable() {
 	db := mysql.DBPool()
