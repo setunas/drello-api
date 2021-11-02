@@ -17,20 +17,20 @@ jobs:
     env:
       DB_USER: root
       DB_PASS: password
-      DB_TCP_HOST: 127.0.0.1
+      DB_TCP_HOST: 0.0.0.0
       DB_PORT: 4306
       DB_NAME: drello-test
       GOPATH: /home/runner/work/drello-api
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Verify MySQL connection
-        env:
-          PORT: ${{ job.services.mysql.ports[3306] }}
-        run: |
-          while ! mysqladmin ping -h"127.0.0.1" -P"$PORT" --silent; do
-            sleep 1
-          done
+      # - name: Verify MySQL connection
+      #   env:
+      #     PORT: ${{ job.services.mysql.ports[3306] }}
+      #   run: |
+      #     while ! mysqladmin ping -h"127.0.0.1" -P"$PORT" --silent; do
+      #       sleep 1
+      #     done
       - name: Install golang-migrate/migrate
         run: go install -tags 'mysql' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
       - name: Run db migrations
