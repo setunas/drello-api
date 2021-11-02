@@ -31,6 +31,9 @@ make db-rollback
 
 // Apply all down migration files.
 make db-rollback-all
+
+// Apply all up migration files for the DB in test environment.
+make db-migrate-all
 ```
 
 These `make` commands use [golang-migrate/migrate](https://github.com/golang-migrate/migrate).
