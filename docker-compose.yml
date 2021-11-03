@@ -9,6 +9,11 @@ services:
         DB_TCP_HOST: db
         DB_PORT: 3306
         DB_NAME: drello-dev
+        TEST_DB_USER: root
+        TEST_DB_PASS: password
+        TEST_DB_TCP_HOST: db
+        TEST_DB_PORT: 3306
+        TEST_DB_NAME: drello-test
     ports:
       - "8080:8080"
     depends_on:
