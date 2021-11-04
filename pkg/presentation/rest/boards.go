@@ -24,7 +24,7 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case http.MethodGet:
-		output, err := boards.GetOne(r.Context(), datasource.Board{}, boards.NewGetOneInput(id))
+		output, err := boards.GetOneWithColumnsAndCards(r.Context(), datasource.Board{}, boards.NewGetOneInput(id))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return

@@ -6,7 +6,7 @@ import (
 	"drello-api/pkg/infrastructure/repository"
 )
 
-func GetOne(ctx context.Context, boardRepo repository.Board, input *GetOneInput) (*GetOneOutput, error) {
+func GetOneWithColumnsAndCards(ctx context.Context, boardRepo repository.Board, input *GetOneInput) (*GetOneOutput, error) {
 	board, err := boardRepo.GetOne(ctx, input.id)
 	if err != nil {
 		return nil, err
