@@ -1,7 +1,6 @@
 package rest
 
 import (
-	"drello-api/pkg/constants"
 	"drello-api/pkg/utils"
 	"fmt"
 	"log"
@@ -29,11 +28,11 @@ func HandleRequests() {
 }
 
 func setHandlers() {
-	router.Handle(constants.Workspaces+"/{id:[0-9]+}", handler(workspaceHandler))
-	router.Handle(constants.Workspaces, handler(workspacesHandler))
-	router.Handle(constants.Boards+"/{id:[0-9]+}", handler(boardHandler))
-	router.Handle(constants.Columns+"/{id:[0-9]+}", handler(columnHandler))
-	router.Handle(constants.Columns, handler(columnsHandler))
-	router.Handle(constants.Cards+"/{id:[0-9]+}", handler(cardHandler))
-	router.Handle(constants.Cards, handler(cardsHandler))
+	router.Handle("/workspaces"+"/{id:[0-9]+}", handler(workspaceHandler))
+	router.Handle("/workspaces", handler(workspacesHandler))
+	router.Handle("/boards"+"/{id:[0-9]+}", handler(boardHandler))
+	router.Handle("/columns"+"/{id:[0-9]+}", handler(columnHandler))
+	router.Handle("/columns", handler(columnsHandler))
+	router.Handle("/cards"+"/{id:[0-9]+}", handler(cardHandler))
+	router.Handle("/cards", handler(cardsHandler))
 }
