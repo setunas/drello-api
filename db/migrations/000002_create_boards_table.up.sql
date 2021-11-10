@@ -1,5 +1,4 @@
 CREATE TABLE IF NOT EXISTS boards(
     id INT NOT NULL AUTO_INCREMENT KEY,
-    title VARCHAR(255),
-    PRIMARY KEY (id)
+    title VARCHAR(255)
 );
