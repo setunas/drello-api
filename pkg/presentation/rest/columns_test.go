@@ -20,10 +20,18 @@ func clearColumnsTable() {
 }
 
 func TestCreateColumn(t *testing.T) {
+	ctx := context.TODO()
+	datasource.Board{}.Create(ctx, "test1")
+
 	var body bytes.Buffer
 	writer := multipart.NewWriter(&body)
+
 	fw, _ := writer.CreateFormField("title")
 	io.Copy(fw, strings.NewReader("title1"))
+
+	fw, _ = writer.CreateFormField("boardId")
+	io.Copy(fw, strings.NewReader("1"))
+
 	writer.Close()
 
 	req, _ := http.NewRequest("POST", "/columns", &body)
@@ -44,18 +52,25 @@ func TestCreateColumn(t *testing.T) {
 	}
 
 	t.Cleanup(func() {
+		clearBoardsTable()
 		clearColumnsTable()
 	})
 }
 
 func TestUpdateColumn(t *testing.T) {
 	ctx := context.TODO()
+	datasource.Board{}.Create(ctx, "test1")
 	datasource.Column{}.Create(ctx, "test1", 1)
 
 	var body bytes.Buffer
 	writer := multipart.NewWriter(&body)
+
 	fw, _ := writer.CreateFormField("title")
 	io.Copy(fw, strings.NewReader("title2"))
+
+	fw, _ = writer.CreateFormField("boardId")
+	io.Copy(fw, strings.NewReader("2"))
+
 	writer.Close()
 
 	req, _ := http.NewRequest("PATCH", "/columns/1", &body)
@@ -75,13 +90,19 @@ func TestUpdateColumn(t *testing.T) {
 		t.Errorf("Expected the title to change from 'title1' to 'title2'. Got '%v'", m["title"])
 	}
 
+	if m["boardId"] != 2.0 {
+		t.Errorf("Expected boardId to be '2'. Got '%v'", m["boardId"])
+	}
+
 	t.Cleanup(func() {
+		clearBoardsTable()
 		clearColumnsTable()
 	})
 }
 
 func TestDeleteColumn(t *testing.T) {
 	ctx := context.TODO()
+	datasource.Board{}.Create(ctx, "test1")
 	datasource.Column{}.Create(ctx, "test1", 1)
 
 	req, _ := http.NewRequest("DELETE", "/columns/1", nil)
@@ -89,6 +110,7 @@ func TestDeleteColumn(t *testing.T) {
 	checkResponseCode(t, 204, response.Code)
 
 	t.Cleanup(func() {
+		clearBoardsTable()
 		clearColumnsTable()
 	})
 }

@@ -42,7 +42,7 @@ func (c Column) GetListByBoardId(ctx context.Context, boardId int) (*[]*domainCo
 func (c Column) Create(ctx context.Context, title string, boardId int) (*domainColumn.Column, error) {
 	db := mysql.DBPool()
 
-	result, err := db.Exec("INSERT INTO columns (title) VALUES (?)", title)
+	result, err := db.Exec("INSERT INTO columns (title, board_id) VALUES (?, ?)", title, boardId)
 	if err != nil {
 		return nil, fmt.Errorf("failed creating column: %w", err)
 	}

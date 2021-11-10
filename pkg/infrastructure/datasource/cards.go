@@ -43,7 +43,7 @@ func (c Card) GetListByColumnId(ctx context.Context, columnId int) (*[]*domainCa
 func (c Card) Create(ctx context.Context, title string, description string, columnId int) (*domainCard.Card, error) {
 	db := mysql.DBPool()
 
-	result, err := db.Exec("INSERT INTO cards (title, description) VALUES (?, ?)", title, description)
+	result, err := db.Exec("INSERT INTO cards (title, description, column_id) VALUES (?, ?, ?)", title, description, columnId)
 	if err != nil {
 		return nil, fmt.Errorf("failed creating card: %w", err)
 	}

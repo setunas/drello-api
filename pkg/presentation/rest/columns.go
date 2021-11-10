@@ -32,7 +32,7 @@ func columnsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.WriteHeader(http.StatusCreated)
-		json.NewEncoder(w).Encode(columnResponse{ID: output.Column.ID(), Title: output.Column.Title()})
+		json.NewEncoder(w).Encode(columnResponse{ID: output.Column.ID(), Title: output.Column.Title(), BoardId: output.Column.BoardId()})
 		return
 	}
 
@@ -60,7 +60,7 @@ func columnHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		json.NewEncoder(w).Encode(columnResponse{ID: output.Column.ID(), Title: output.Column.Title()})
+		json.NewEncoder(w).Encode(columnResponse{ID: output.Column.ID(), Title: output.Column.Title(), BoardId: output.Column.BoardId()})
 		return
 
 	case http.MethodDelete:

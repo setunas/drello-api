@@ -34,7 +34,7 @@ func TestGetBoard(t *testing.T) {
 	var wr boardResponse
 	json.Unmarshal(response.Body.Bytes(), &wr)
 
-	expectedBody := `{"id":1,"title":"test1"}` + "\n"
+	expectedBody := `{"id":1,"title":"test1","columns":[],"cards":[]}` + "\n"
 	if body := response.Body.String(); body != expectedBody {
 		t.Errorf("Expected %s. Got %s", expectedBody, body)
 	}
