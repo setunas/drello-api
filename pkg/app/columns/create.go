@@ -7,7 +7,7 @@ import (
 )
 
 func Create(ctx context.Context, columnRepo repository.Column, input *CreateInput) (*CreateOutput, error) {
-	columnDomain, err := columnRepo.Create(ctx, input.title)
+	columnDomain, err := columnRepo.Create(ctx, input.title, input.boardId)
 	if err != nil {
 		return nil, err
 	}
@@ -16,11 +16,12 @@ func Create(ctx context.Context, columnRepo repository.Column, input *CreateInpu
 }
 
 type CreateInput struct {
-	title string
+	title   string
+	boardId int
 }
 
-func NewCreateInput(title string) *CreateInput {
-	return &CreateInput{title: title}
+func NewCreateInput(title string, boardId int) *CreateInput {
+	return &CreateInput{title: title, boardId: boardId}
 }
 
 type CreateOutput struct {

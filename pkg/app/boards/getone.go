@@ -3,16 +3,32 @@ package boards
 import (
 	"context"
 	boardDomain "drello-api/pkg/domain/board"
+	cardDomain "drello-api/pkg/domain/card"
+	columnDomain "drello-api/pkg/domain/column"
 	"drello-api/pkg/infrastructure/repository"
 )
 
-func GetOneWithColumnsAndCards(ctx context.Context, boardRepo repository.Board, input *GetOneInput) (*GetOneOutput, error) {
+func GetOne(ctx context.Context, boardRepo repository.Board, columnRepo repository.Column, cardRepo repository.Card, input *GetOneInput) (*GetOneOutput, error) {
 	board, err := boardRepo.GetOne(ctx, input.id)
 	if err != nil {
 		return nil, err
 	}
 
-	return &GetOneOutput{Board: boardDomain.New(board.ID(), board.Title())}, nil
+	columns, err := columnRepo.GetListByBoardId(ctx, board.ID())
+	if err != nil {
+		return nil, err
+	}
+
+	cards := []*cardDomain.Card{}
+	for _, column := range *columns {
+		cs, err := cardRepo.GetListByColumnId(ctx, column.ID())
+		if err != nil {
+			return nil, err
+		}
+		cards = append(cards, *cs...)
+	}
+
+	return &GetOneOutput{Board: boardDomain.New(board.ID(), board.Title()), Columns: *columns, Cards: cards}, nil
 }
 
 type GetOneInput struct {
@@ -24,5 +40,7 @@ func NewGetOneInput(id int) *GetOneInput {
 }
 
 type GetOneOutput struct {
-	Board *boardDomain.Board
+	Board   *boardDomain.Board
+	Columns []*columnDomain.Column
+	Cards   []*cardDomain.Card
 }

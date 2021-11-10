@@ -7,7 +7,7 @@ import (
 )
 
 func Update(ctx context.Context, columnRepo repository.Column, input *UpdateInput) (*UpdateOutput, error) {
-	columnDomain, err := columnRepo.Update(ctx, input.id, input.title)
+	columnDomain, err := columnRepo.Update(ctx, input.id, input.title, input.boardId)
 	if err != nil {
 		return nil, err
 	}
@@ -16,12 +16,13 @@ func Update(ctx context.Context, columnRepo repository.Column, input *UpdateInpu
 }
 
 type UpdateInput struct {
-	id    int
-	title string
+	id      int
+	title   string
+	boardId int
 }
 
-func NewUpdateInput(id int, title string) *UpdateInput {
-	return &UpdateInput{id: id, title: title}
+func NewUpdateInput(id int, title string, boardId int) *UpdateInput {
+	return &UpdateInput{id: id, title: title, boardId: boardId}
 }
 
 type UpdateOutput struct {

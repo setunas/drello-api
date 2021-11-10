@@ -11,14 +11,20 @@ import (
 )
 
 type columnResponse struct {
-	ID    int    `json:"id"`
-	Title string `json:"title"`
+	ID      int    `json:"id"`
+	Title   string `json:"title"`
+	BoardId int    `json:"boardId"`
 }
 
 func columnsHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodPost:
-		output, err := columns.Create(r.Context(), datasource.Column{}, columns.NewCreateInput(r.FormValue("title")))
+		boardId, err := strconv.Atoi(r.FormValue("boardId"))
+		if err != nil {
+			handleClientError(w, err, 400, "Invalid boardId.")
+		}
+
+		output, err := columns.Create(r.Context(), datasource.Column{}, columns.NewCreateInput(r.FormValue("title"), boardId))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
@@ -41,7 +47,12 @@ func columnHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case http.MethodPatch:
-		output, err := columns.Update(r.Context(), datasource.Column{}, columns.NewUpdateInput(id, r.FormValue("title")))
+		boardId, err := strconv.Atoi(r.FormValue("boardId"))
+		if err != nil {
+			handleClientError(w, err, 400, "Invalid boardId.")
+		}
+
+		output, err := columns.Update(r.Context(), datasource.Column{}, columns.NewUpdateInput(id, r.FormValue("title"), boardId))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return

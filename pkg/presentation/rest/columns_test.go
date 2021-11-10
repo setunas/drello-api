@@ -50,7 +50,7 @@ func TestCreateColumn(t *testing.T) {
 
 func TestUpdateColumn(t *testing.T) {
 	ctx := context.TODO()
-	datasource.Column{}.Create(ctx, "test1")
+	datasource.Column{}.Create(ctx, "test1", 1)
 
 	var body bytes.Buffer
 	writer := multipart.NewWriter(&body)
@@ -82,7 +82,7 @@ func TestUpdateColumn(t *testing.T) {
 
 func TestDeleteColumn(t *testing.T) {
 	ctx := context.TODO()
-	datasource.Column{}.Create(ctx, "test1")
+	datasource.Column{}.Create(ctx, "test1", 1)
 
 	req, _ := http.NewRequest("DELETE", "/columns/1", nil)
 	response := executeRequest(req)
