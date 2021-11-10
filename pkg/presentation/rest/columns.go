@@ -22,6 +22,7 @@ func columnsHandler(w http.ResponseWriter, r *http.Request) {
 		boardId, err := strconv.Atoi(r.FormValue("boardId"))
 		if err != nil {
 			handleClientError(w, err, 400, "Invalid boardId.")
+			return
 		}
 
 		output, err := columns.Create(r.Context(), datasource.Column{}, columns.NewCreateInput(r.FormValue("title"), boardId))
@@ -50,6 +51,7 @@ func columnHandler(w http.ResponseWriter, r *http.Request) {
 		boardId, err := strconv.Atoi(r.FormValue("boardId"))
 		if err != nil {
 			handleClientError(w, err, 400, "Invalid boardId.")
+			return
 		}
 
 		output, err := columns.Update(r.Context(), datasource.Column{}, columns.NewUpdateInput(id, r.FormValue("title"), boardId))

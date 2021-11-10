@@ -23,6 +23,7 @@ func cardsHandler(w http.ResponseWriter, r *http.Request) {
 		columnId, err := strconv.Atoi(r.FormValue("columnId"))
 		if err != nil {
 			handleClientError(w, err, 400, "Invalid columnId.")
+			return
 		}
 
 		output, err := cards.Create(r.Context(), datasource.Card{}, cards.NewCreateInput(r.FormValue("title"), r.FormValue("description"), columnId))
@@ -44,6 +45,7 @@ func cardHandler(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
 		handleClientError(w, err, 400, "Invalid ID.")
+		return
 	}
 
 	switch r.Method {

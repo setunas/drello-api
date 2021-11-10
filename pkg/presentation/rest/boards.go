@@ -22,6 +22,7 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
 		handleClientError(w, err, 400, "Invalid ID.")
+		return
 	}
 
 	switch r.Method {
