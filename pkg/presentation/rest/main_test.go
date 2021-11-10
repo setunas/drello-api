@@ -4,6 +4,8 @@ import (
 	"drello-api/pkg/infrastructure/mysql"
 	"drello-api/pkg/utils"
 	"log"
+	"net/http"
+	"net/http/httptest"
 	"os"
 	"testing"
 
@@ -27,4 +29,16 @@ func TestMain(m *testing.M) {
 	router = mux.NewRouter()
 	setHandlers()
 	os.Exit(m.Run())
+}
+
+func executeRequest(req *http.Request) *httptest.ResponseRecorder {
+	rw := httptest.NewRecorder()
+	router.ServeHTTP(rw, req)
+	return rw
+}
+
+func checkResponseCode(t *testing.T, expected, actual int) {
+	if expected != actual {
+		t.Errorf("Expected response code %d. Got %d\n", expected, actual)
+	}
 }
