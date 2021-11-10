@@ -28,11 +28,11 @@ func HandleRequests() {
 }
 
 func setHandlers() {
-	router.Handle("/workspaces"+"/{id:[0-9]+}", handler(workspaceHandler))
+	router.Handle("/workspaces/{id:[0-9]+}", handler(workspaceHandler))
 	router.Handle("/workspaces", handler(workspacesHandler))
-	router.Handle("/boards"+"/{id:[0-9]+}", handler(boardHandler))
-	router.Handle("/columns"+"/{id:[0-9]+}", handler(columnHandler))
+	router.Handle("/boards/{id:[0-9]+}", handler(boardHandler))
+	router.Handle("/columns/{id:[0-9]+}", handler(columnHandler))
 	router.Handle("/columns", handler(columnsHandler))
-	router.Handle("/cards"+"/{id:[0-9]+}", handler(cardHandler))
+	router.Handle("/cards/{id:[0-9]+}", handler(cardHandler))
 	router.Handle("/cards", handler(cardsHandler))
 }
