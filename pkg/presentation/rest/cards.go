@@ -14,19 +14,26 @@ type cardResponse struct {
 	ID          int    `json:"id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
+	ColumnId    int    `json:"columnId"`
 }
 
 func cardsHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodPost:
-		output, err := cards.Create(r.Context(), datasource.Card{}, cards.NewCreateInput(r.FormValue("title"), r.FormValue("description")))
+		columnId, err := strconv.Atoi(r.FormValue("columnId"))
+		if err != nil {
+			handleClientError(w, err, 400, "Invalid columnId.")
+			return
+		}
+
+		output, err := cards.Create(r.Context(), datasource.Card{}, cards.NewCreateInput(r.FormValue("title"), r.FormValue("description"), columnId))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
 		}
 
 		w.WriteHeader(http.StatusCreated)
-		json.NewEncoder(w).Encode(cardResponse{ID: output.Card.ID(), Title: output.Card.Title(), Description: output.Card.Description()})
+		json.NewEncoder(w).Encode(cardResponse{ID: output.Card.ID(), Title: output.Card.Title(), Description: output.Card.Description(), ColumnId: output.Card.ColumnId()})
 		return
 	}
 
@@ -38,17 +45,23 @@ func cardHandler(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
 		handleClientError(w, err, 400, "Invalid ID.")
+		return
 	}
 
 	switch r.Method {
 	case http.MethodPatch:
-		output, err := cards.Update(r.Context(), datasource.Card{}, cards.NewUpdateInput(id, r.FormValue("title"), r.FormValue("description")))
+		columnId, err := strconv.Atoi(r.FormValue("columnId"))
+		if err != nil {
+			handleClientError(w, err, 400, "Invalid columnId.")
+		}
+
+		output, err := cards.Update(r.Context(), datasource.Card{}, cards.NewUpdateInput(id, r.FormValue("title"), r.FormValue("description"), columnId))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
 		}
 
-		json.NewEncoder(w).Encode(cardResponse{ID: output.Card.ID(), Title: output.Card.Title()})
+		json.NewEncoder(w).Encode(cardResponse{ID: output.Card.ID(), Title: output.Card.Title(), Description: output.Card.Description(), ColumnId: output.Card.ColumnId()})
 		return
 
 	case http.MethodDelete:

@@ -20,6 +20,10 @@ func clearCardsTable() {
 }
 
 func TestCreateCard(t *testing.T) {
+	ctx := context.TODO()
+	datasource.Board{}.Create(ctx, "test1")
+	datasource.Column{}.Create(ctx, "test1", 1)
+
 	var body bytes.Buffer
 	writer := multipart.NewWriter(&body)
 
@@ -28,6 +32,9 @@ func TestCreateCard(t *testing.T) {
 
 	fw, _ = writer.CreateFormField("description")
 	io.Copy(fw, strings.NewReader("desc1"))
+
+	fw, _ = writer.CreateFormField("columnId")
+	io.Copy(fw, strings.NewReader("1"))
 
 	writer.Close()
 
@@ -52,14 +59,22 @@ func TestCreateCard(t *testing.T) {
 		t.Errorf("Expected card ID to be '1'. Got '%v'", m["id"])
 	}
 
+	if m["columnId"] != 1.0 {
+		t.Errorf("Expected columnId to be '1'. Got '%v'", m["columnId"])
+	}
+
 	t.Cleanup(func() {
+		clearBoardsTable()
+		clearColumnsTable()
 		clearCardsTable()
 	})
 }
 
 func TestUpdateCard(t *testing.T) {
 	ctx := context.TODO()
-	datasource.Card{}.Create(ctx, "test1", "desc1")
+	datasource.Board{}.Create(ctx, "test1")
+	datasource.Column{}.Create(ctx, "test1", 1)
+	datasource.Card{}.Create(ctx, "test1", "desc1", 1)
 
 	var body bytes.Buffer
 	writer := multipart.NewWriter(&body)
@@ -69,6 +84,9 @@ func TestUpdateCard(t *testing.T) {
 
 	fw, _ = writer.CreateFormField("description")
 	io.Copy(fw, strings.NewReader("desc2"))
+
+	fw, _ = writer.CreateFormField("columnId")
+	io.Copy(fw, strings.NewReader("2"))
 
 	writer.Close()
 
@@ -93,20 +111,30 @@ func TestUpdateCard(t *testing.T) {
 		t.Errorf("Expected the description to change from 'desc1' to 'desc2'. Got '%v'", m["description"])
 	}
 
+	if m["columnId"] != 2.0 {
+		t.Errorf("Expected columnId to be '2'. Got '%v'", m["columnId"])
+	}
+
 	t.Cleanup(func() {
+		clearBoardsTable()
+		clearColumnsTable()
 		clearCardsTable()
 	})
 }
 
 func TestDeleteCard(t *testing.T) {
 	ctx := context.TODO()
-	datasource.Card{}.Create(ctx, "test1", "description1")
+	datasource.Board{}.Create(ctx, "test1")
+	datasource.Column{}.Create(ctx, "test1", 1)
+	datasource.Card{}.Create(ctx, "test1", "description1", 1)
 
-	req, _ := http.NewRequest("DELETE", "/columns/1", nil)
+	req, _ := http.NewRequest("DELETE", "/cards/1", nil)
 	response := executeRequest(req)
 	checkResponseCode(t, 204, response.Code)
 
 	t.Cleanup(func() {
+		clearBoardsTable()
+		clearColumnsTable()
 		clearCardsTable()
 	})
 }

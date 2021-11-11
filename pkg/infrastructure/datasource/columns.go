@@ -9,10 +9,40 @@ import (
 
 type Column struct{}
 
-func (c Column) Create(ctx context.Context, title string) (*domainColumn.Column, error) {
+func (c Column) GetListByBoardId(ctx context.Context, boardId int) (*[]*domainColumn.Column, error) {
+	db := mysql.DBPool()
+	rows, err := db.Query("SELECT id, title FROM columns WHERE board_id = ?", boardId)
+	if err != nil {
+		return nil, fmt.Errorf("failed querying columns: %w", err)
+	}
+	defer rows.Close()
+
+	columns := []*domainColumn.Column{}
+
+	for rows.Next() {
+		var id int
+		var title string
+
+		err := rows.Scan(&id, &title)
+		if err != nil {
+			return nil, fmt.Errorf("failed querying columns: %w", err)
+		}
+
+		columns = append(columns, domainColumn.New(id, title, boardId))
+	}
+
+	err = rows.Err()
+	if err != nil {
+		return nil, fmt.Errorf("failed querying columns: %w", err)
+	}
+
+	return &columns, nil
+}
+
+func (c Column) Create(ctx context.Context, title string, boardId int) (*domainColumn.Column, error) {
 	db := mysql.DBPool()
 
-	result, err := db.Exec("INSERT INTO columns (title) VALUES (?)", title)
+	result, err := db.Exec("INSERT INTO columns (title, board_id) VALUES (?, ?)", title, boardId)
 	if err != nil {
 		return nil, fmt.Errorf("failed creating column: %w", err)
 	}
@@ -22,17 +52,17 @@ func (c Column) Create(ctx context.Context, title string) (*domainColumn.Column,
 		return nil, fmt.Errorf("failed creating column: %w", err)
 	}
 
-	return domainColumn.New(int(lastInsertID), title), nil
+	return domainColumn.New(int(lastInsertID), title, boardId), nil
 }
 
-func (c Column) Update(ctx context.Context, id int, title string) (*domainColumn.Column, error) {
+func (c Column) Update(ctx context.Context, id int, title string, boardId int) (*domainColumn.Column, error) {
 	db := mysql.DBPool()
 	_, err := db.Exec("UPDATE columns SET title = ? WHERE id = ?", title, id)
 	if err != nil {
 		return nil, fmt.Errorf("failed updating column: %w", err)
 	}
 
-	return domainColumn.New(id, title), nil
+	return domainColumn.New(id, title, boardId), nil
 }
 
 func (c Column) Delete(ctx context.Context, id int) error {

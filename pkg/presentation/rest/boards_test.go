@@ -22,8 +22,13 @@ func clearBoardsTable() {
 func TestGetBoard(t *testing.T) {
 	ctx := context.TODO()
 	datasource.Board{}.Create(ctx, "test1")
+	datasource.Board{}.Create(ctx, "test2")
+	datasource.Column{}.Create(ctx, "test1", 1)
+	datasource.Column{}.Create(ctx, "test2", 2)
+	datasource.Card{}.Create(ctx, "test1", "desc1", 1)
+	datasource.Card{}.Create(ctx, "test2", "desc2", 2)
 
-	req, _ := http.NewRequest("GET", "/boards/2", nil)
+	req, _ := http.NewRequest("GET", "/boards/3", nil)
 	response := executeRequest(req)
 	checkResponseCode(t, 422, response.Code)
 
@@ -34,13 +39,15 @@ func TestGetBoard(t *testing.T) {
 	var wr boardResponse
 	json.Unmarshal(response.Body.Bytes(), &wr)
 
-	expectedBody := `{"id":1,"title":"test1"}` + "\n"
+	expectedBody := `{"id":1,"title":"test1","columns":[{"id":1,"title":"test1","boardId":1}],"cards":[{"id":1,"title":"test1","description":"desc1","columnId":1}]}` + "\n"
 	if body := response.Body.String(); body != expectedBody {
 		t.Errorf("Expected %s. Got %s", expectedBody, body)
 	}
 
 	t.Cleanup(func() {
 		clearBoardsTable()
+		clearColumnsTable()
+		clearCardsTable()
 	})
 }
 
@@ -68,7 +75,7 @@ func TestUpdateBoard(t *testing.T) {
 	}
 
 	if m["title"] == "title2\n" {
-		t.Errorf("Expected the title to change from 'title1' to 'title2'. Got '%v'", m["title"])
+		t.Errorf("Expected board title to change from 'title1' to 'title2'. Got '%v'", m["title"])
 	}
 
 	t.Cleanup(func() {

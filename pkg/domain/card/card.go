@@ -4,10 +4,11 @@ type Card struct {
 	id          int
 	title       string
 	description string
+	columnId    int
 }
 
-func New(id int, title string, description string) *Card {
-	return &Card{id: id, title: title, description: description}
+func New(id int, title string, description string, columnId int) *Card {
+	return &Card{id: id, title: title, description: description, columnId: columnId}
 }
 
 func (c *Card) ID() int {
@@ -20,4 +21,8 @@ func (c *Card) Title() string {
 
 func (c *Card) Description() string {
 	return c.description
+}
+
+func (c *Card) ColumnId() int {
+	return c.columnId
 }
