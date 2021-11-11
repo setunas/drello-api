@@ -59,6 +59,10 @@ func TestCreateCard(t *testing.T) {
 		t.Errorf("Expected card ID to be '1'. Got '%v'", m["id"])
 	}
 
+	if m["columnId"] != 1.0 {
+		t.Errorf("Expected columnId to be '1'. Got '%v'", m["columnId"])
+	}
+
 	t.Cleanup(func() {
 		clearBoardsTable()
 		clearColumnsTable()
@@ -82,7 +86,7 @@ func TestUpdateCard(t *testing.T) {
 	io.Copy(fw, strings.NewReader("desc2"))
 
 	fw, _ = writer.CreateFormField("columnId")
-	io.Copy(fw, strings.NewReader("1"))
+	io.Copy(fw, strings.NewReader("2"))
 
 	writer.Close()
 
@@ -105,6 +109,10 @@ func TestUpdateCard(t *testing.T) {
 
 	if m["description"] == "desc2\n" {
 		t.Errorf("Expected the description to change from 'desc1' to 'desc2'. Got '%v'", m["description"])
+	}
+
+	if m["columnId"] != 2.0 {
+		t.Errorf("Expected columnId to be '2'. Got '%v'", m["columnId"])
 	}
 
 	t.Cleanup(func() {

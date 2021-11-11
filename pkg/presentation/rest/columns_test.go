@@ -44,11 +44,15 @@ func TestCreateColumn(t *testing.T) {
 	json.Unmarshal(response.Body.Bytes(), &m)
 
 	if m["title"] != "title1" {
-		t.Errorf("Expected column title to be 'title1'. Got '%v'", m["title"])
+		t.Errorf("Expected the title to be 'title1'. Got '%v'", m["title"])
 	}
 
 	if m["id"] != 1.0 {
 		t.Errorf("Expected column ID to be '1'. Got '%v'", m["id"])
+	}
+
+	if m["boardId"] != 1.0 {
+		t.Errorf("Expected boardId to be '1'. Got '%v'", m["boardId"])
 	}
 
 	t.Cleanup(func() {
