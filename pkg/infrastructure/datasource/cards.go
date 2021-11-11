@@ -13,9 +13,9 @@ type Card struct{}
 func (c Card) GetListByColumnIds(ctx context.Context, columnIds []int) (*[]*domainCard.Card, error) {
 	db := mysql.DBPool()
 
-	var args []interface{}
-	for _, v := range columnIds {
-		args = append(args, v)
+	args := make([]interface{}, len(columnIds))
+	for i := range columnIds {
+		args[i] = columnIds[i]
 	}
 
 	sql := "SELECT id, title, description, column_id FROM cards WHERE column_id IN (?" + strings.Repeat(",?", len(columnIds)-1) + ")"
