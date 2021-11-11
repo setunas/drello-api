@@ -19,16 +19,16 @@ func GetOne(ctx context.Context, boardRepo repository.Board, columnRepo reposito
 		return nil, err
 	}
 
-	cards := []*cardDomain.Card{}
+	columnIds := []int{}
 	for _, column := range *columns {
-		cs, err := cardRepo.GetListByColumnId(ctx, column.ID())
-		if err != nil {
-			return nil, err
-		}
-		cards = append(cards, *cs...)
+		columnIds = append(columnIds, column.ID())
+	}
+	cards, err := cardRepo.GetListByColumnIds(ctx, columnIds)
+	if err != nil {
+		return nil, err
 	}
 
-	return &GetOneOutput{Board: boardDomain.New(board.ID(), board.Title()), Columns: *columns, Cards: cards}, nil
+	return &GetOneOutput{Board: boardDomain.New(board.ID(), board.Title()), Columns: *columns, Cards: *cards}, nil
 }
 
 type GetOneInput struct {

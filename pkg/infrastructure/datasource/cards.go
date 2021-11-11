@@ -5,28 +5,37 @@ import (
 	domainCard "drello-api/pkg/domain/card"
 	"drello-api/pkg/infrastructure/mysql"
 	"fmt"
+	"strings"
 )
 
 type Card struct{}
 
-func (c Card) GetListByColumnId(ctx context.Context, columnId int) (*[]*domainCard.Card, error) {
+func (c Card) GetListByColumnIds(ctx context.Context, columnIds []int) (*[]*domainCard.Card, error) {
 	db := mysql.DBPool()
-	rows, err := db.Query("SELECT id, title, description FROM cards WHERE column_id = ?", columnId)
+
+	var args []interface{}
+	for _, v := range columnIds {
+		args = append(args, v)
+	}
+
+	sql := "SELECT id, title, description, column_id FROM cards WHERE column_id IN (?" + strings.Repeat(",?", len(columnIds)-1) + ")"
+
+	rows, err := db.Query(sql, args...)
 	if err != nil {
 		return nil, fmt.Errorf("failed querying cards: %w", err)
 	}
 	defer rows.Close()
 
 	cards := []*domainCard.Card{}
-
 	for rows.Next() {
 		var id int
 		var title string
 		var description string
+		var columnId int
 
-		err := rows.Scan(&id, &title, &description)
+		err := rows.Scan(&id, &title, &description, &columnId)
 		if err != nil {
-			return nil, fmt.Errorf("failed querying cards: %w", err)
+			return nil, fmt.Errorf("failed scanning card rows: %w", err)
 		}
 
 		cards = append(cards, domainCard.New(id, title, description, columnId))
