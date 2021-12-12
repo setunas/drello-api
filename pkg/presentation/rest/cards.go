@@ -19,6 +19,9 @@ type cardResponse struct {
 
 func cardsHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
+	case http.MethodOptions:
+		return
+
 	case http.MethodPost:
 		columnId, err := strconv.Atoi(r.FormValue("columnId"))
 		if err != nil {
@@ -49,6 +52,9 @@ func cardHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	switch r.Method {
+	case http.MethodOptions:
+		return
+
 	case http.MethodPatch:
 		columnId, err := strconv.Atoi(r.FormValue("columnId"))
 		if err != nil {

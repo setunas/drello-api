@@ -26,6 +26,9 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	switch r.Method {
+	case http.MethodOptions:
+		return
+
 	case http.MethodGet:
 		output, err := boards.GetOne(r.Context(), datasource.Board{}, datasource.Column{}, datasource.Card{}, boards.NewGetOneInput(id))
 		if err != nil {

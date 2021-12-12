@@ -17,6 +17,9 @@ type workspaceResponse struct {
 
 func workspacesHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
+	case http.MethodOptions:
+		return
+
 	case http.MethodGet:
 		output, err := workspaces.GetAll(r.Context(), datasource.Workspace{})
 		if err != nil {
@@ -58,6 +61,9 @@ func workspaceHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	switch r.Method {
+	case http.MethodOptions:
+		return
+
 	case http.MethodGet:
 		output, err := workspaces.GetOne(r.Context(), datasource.Workspace{}, workspaces.NewGetOneInput(id))
 		if err != nil {
