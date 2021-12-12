@@ -18,6 +18,9 @@ type columnResponse struct {
 
 func columnsHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
+	case http.MethodOptions:
+		return
+
 	case http.MethodPost:
 		boardId, err := strconv.Atoi(r.FormValue("boardId"))
 		if err != nil {
@@ -47,6 +50,9 @@ func columnHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	switch r.Method {
+	case http.MethodOptions:
+		return
+
 	case http.MethodPatch:
 		boardId, err := strconv.Atoi(r.FormValue("boardId"))
 		if err != nil {

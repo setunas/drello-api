@@ -15,6 +15,11 @@ type handler func(http.ResponseWriter, *http.Request)
 
 func (fn handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	logHTTPRequest(r)
+
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+
 	fn(w, r)
 }
 
@@ -24,13 +29,14 @@ func HandleRequests() {
 
 	router = mux.NewRouter()
 	setHandlers()
+	router.Use(mux.CORSMethodMiddleware(router))
 	log.Fatal(http.ListenAndServe(port, router))
 }
 
 func setHandlers() {
 	router.Handle("/workspaces/{id:[0-9]+}", handler(workspaceHandler))
 	router.Handle("/workspaces", handler(workspacesHandler))
-	router.Handle("/boards/{id:[0-9]+}", handler(boardHandler))
+	router.Handle("/boards/{id:[0-9]+}", handler(boardHandler)).Methods("GET", "OPTIONS")
 	router.Handle("/columns/{id:[0-9]+}", handler(columnHandler))
 	router.Handle("/columns", handler(columnsHandler))
 	router.Handle("/cards/{id:[0-9]+}", handler(cardHandler))
