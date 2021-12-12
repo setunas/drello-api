@@ -13,6 +13,12 @@ type Card struct{}
 func (c Card) GetListByColumnIds(ctx context.Context, columnIds []int) (*[]*domainCard.Card, error) {
 	db := mysql.DBPool()
 
+	cards := []*domainCard.Card{}
+
+	if len(columnIds) == 0 {
+		return &cards, nil
+	}
+
 	args := make([]interface{}, len(columnIds))
 	for i := range columnIds {
 		args[i] = columnIds[i]
@@ -26,7 +32,6 @@ func (c Card) GetListByColumnIds(ctx context.Context, columnIds []int) (*[]*doma
 	}
 	defer rows.Close()
 
-	cards := []*domainCard.Card{}
 	for rows.Next() {
 		var id int
 		var title string
