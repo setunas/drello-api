@@ -29,14 +29,13 @@ func HandleRequests() {
 
 	router = mux.NewRouter()
 	setHandlers()
-	router.Use(mux.CORSMethodMiddleware(router))
 	log.Fatal(http.ListenAndServe(port, router))
 }
 
 func setHandlers() {
 	router.Handle("/workspaces/{id:[0-9]+}", handler(workspaceHandler))
 	router.Handle("/workspaces", handler(workspacesHandler))
-	router.Handle("/boards/{id:[0-9]+}", handler(boardHandler)).Methods("GET", "OPTIONS")
+	router.Handle("/boards/{id:[0-9]+}", handler(boardHandler))
 	router.Handle("/columns/{id:[0-9]+}", handler(columnHandler))
 	router.Handle("/columns", handler(columnsHandler))
 	router.Handle("/cards/{id:[0-9]+}", handler(cardHandler))
