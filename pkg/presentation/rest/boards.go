@@ -18,6 +18,7 @@ type boardResponse struct {
 }
 
 func boardHandler(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
@@ -30,7 +31,8 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodGet:
-		output, err := boards.GetOne(r.Context(), datasource.Board{}, datasource.Column{}, datasource.Card{}, boards.NewGetOneInput(id))
+		verifyIDToken(ctx, r)
+		output, err := boards.GetOne(ctx, datasource.Board{}, datasource.Column{}, datasource.Card{}, boards.NewGetOneInput(id))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
@@ -64,7 +66,7 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodPatch:
-		output, err := boards.Update(r.Context(), datasource.Board{}, boards.NewUpdateInput(id, r.FormValue("title")))
+		output, err := boards.Update(ctx, datasource.Board{}, boards.NewUpdateInput(id, r.FormValue("title")))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
