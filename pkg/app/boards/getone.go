@@ -6,9 +6,18 @@ import (
 	cardDomain "drello-api/pkg/domain/card"
 	columnDomain "drello-api/pkg/domain/column"
 	"drello-api/pkg/infrastructure/repository"
+	"fmt"
 )
 
-func GetOne(ctx context.Context, boardRepo repository.Board, columnRepo repository.Column, cardRepo repository.Card, input *GetOneInput) (*GetOneOutput, error) {
+func GetOne(ctx context.Context, boardRepo repository.Board, columnRepo repository.Column, cardRepo repository.Card, userRepo repository.User, input *GetOneInput) (*GetOneOutput, error) {
+	user, err := userRepo.GetOneByFirebaseUID(ctx, input.firebaseUID)
+	if err != nil {
+		return nil, err
+	}
+	if user.BoardID() != input.id {
+		return nil, fmt.Errorf("not a valid request with firebase UID: %s, and board id: %d", input.firebaseUID, input.id)
+	}
+
 	board, err := boardRepo.GetOne(ctx, input.id)
 	if err != nil {
 		return nil, err
@@ -32,11 +41,12 @@ func GetOne(ctx context.Context, boardRepo repository.Board, columnRepo reposito
 }
 
 type GetOneInput struct {
-	id int
+	id          int
+	firebaseUID string
 }
 
-func NewGetOneInput(id int) *GetOneInput {
-	return &GetOneInput{id: id}
+func NewGetOneInput(id int, firebaseUID string) *GetOneInput {
+	return &GetOneInput{id: id, firebaseUID: firebaseUID}
 }
 
 type GetOneOutput struct {

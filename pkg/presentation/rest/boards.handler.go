@@ -31,8 +31,8 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodGet:
-		// verifyIDToken(ctx, r)
-		output, err := boards.GetOne(ctx, datasource.Board{}, datasource.Column{}, datasource.Card{}, boards.NewGetOneInput(id))
+		token := verifyIDToken(ctx, r)
+		output, err := boards.GetOne(ctx, datasource.Board{}, datasource.Column{}, datasource.Card{}, datasource.User{}, boards.NewGetOneInput(id, token.UID))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
