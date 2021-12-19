@@ -4,6 +4,7 @@ import (
 	"drello-api/pkg/infrastructure/mysql"
 	"drello-api/pkg/presentation/rest"
 	"drello-api/pkg/utils"
+	"drello-api/pkg/utils/firebase"
 	"log"
 )
 
@@ -21,5 +22,6 @@ func main() {
 		log.Println(err)
 	}
 
+	firebase.InitApp()
 	rest.HandleRequests()
 }
