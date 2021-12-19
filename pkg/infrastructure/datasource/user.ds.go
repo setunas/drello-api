@@ -32,7 +32,7 @@ func (u User) GetOneByFirebaseUID(ctx context.Context, firebaseUID string) (*use
 func (u User) Create(ctx context.Context, username string, boardID int, firebaseUID string) (*userDM.User, error) {
 	db := mysql.DBPool()
 
-	result, err := db.Exec("INSERT INTO columns (username, board_id, firebase_uid) VALUES (?, ?, ?)", username, boardID, firebaseUID)
+	result, err := db.Exec("INSERT INTO users (username, board_id, firebase_uid) VALUES (?, ?, ?)", username, boardID, firebaseUID)
 	if err != nil {
 		return nil, fmt.Errorf("failed creating user: %w", err)
 	}

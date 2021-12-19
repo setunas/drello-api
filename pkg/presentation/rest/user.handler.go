@@ -6,8 +6,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
-
-	"github.com/gorilla/mux"
 )
 
 type usreResponse struct {
@@ -18,12 +16,6 @@ type usreResponse struct {
 
 func usersHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	vars := mux.Vars(r)
-	id, err := strconv.Atoi(vars["id"])
-	if err != nil {
-		handleClientError(w, err, 400, "Invalid ID.")
-		return
-	}
 
 	switch r.Method {
 	case http.MethodOptions:
