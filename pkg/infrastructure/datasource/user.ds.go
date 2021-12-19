@@ -3,14 +3,15 @@ package datasource
 import (
 	"context"
 	"database/sql"
-	"drello-api/pkg/domain/user"
+
+	userDM "drello-api/pkg/domain/user"
 	"drello-api/pkg/infrastructure/mysql"
 	"fmt"
 )
 
 type User struct{}
 
-func (w User) GetOneByFirebaseUID(ctx context.Context, firebaseUID string) (*user.User, error) {
+func (u User) GetOneByFirebaseUID(ctx context.Context, firebaseUID string) (*userDM.User, error) {
 	var id int
 	var username string
 	var boardID int
@@ -22,8 +23,24 @@ func (w User) GetOneByFirebaseUID(ctx context.Context, firebaseUID string) (*use
 	case sql.ErrNoRows:
 		return nil, fmt.Errorf("not found with firebase UID %s", firebaseUID)
 	case nil:
-		return user.New(id, username, boardID), nil
+		return userDM.New(id, username, boardID, firebaseUID), nil
 	default:
 		return nil, err
 	}
+}
+
+func (u User) Create(ctx context.Context, username string, boardID int, firebaseUID string) (*userDM.User, error) {
+	db := mysql.DBPool()
+
+	result, err := db.Exec("INSERT INTO columns (username, board_id, firebase_uid) VALUES (?, ?, ?)", username, boardID, firebaseUID)
+	if err != nil {
+		return nil, fmt.Errorf("failed creating user: %w", err)
+	}
+
+	lastInsertID, err := result.LastInsertId()
+	if err != nil {
+		return nil, fmt.Errorf("failed creating user: %w", err)
+	}
+
+	return userDM.New(int(lastInsertID), username, boardID, firebaseUID), nil
 }

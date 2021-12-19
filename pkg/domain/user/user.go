@@ -1,23 +1,28 @@
 package user
 
 type User struct {
-	id       int
-	username string
-	boardID  int
+	id          int
+	username    string
+	boardID     int
+	firebaseUID string
 }
 
-func New(id int, username string, boardID int) *User {
-	return &User{id: id, username: username, boardID: boardID}
+func New(id int, username string, boardID int, firebaseUID string) *User {
+	return &User{id: id, username: username, boardID: boardID, firebaseUID: firebaseUID}
 }
 
-func (c *User) ID() int {
-	return c.id
+func (u *User) ID() int {
+	return u.id
 }
 
-func (c *User) Username() string {
-	return c.username
+func (u *User) Username() string {
+	return u.username
 }
 
-func (c *User) BoardID() int {
-	return c.boardID
+func (u *User) BoardID() int {
+	return u.boardID
+}
+
+func (u *User) FirebaseUID() string {
+	return u.firebaseUID
 }
