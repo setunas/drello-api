@@ -2,8 +2,8 @@ package columns
 
 import (
 	"context"
+	"drello-api/pkg/app/repository"
 	"drello-api/pkg/domain/column"
-	"drello-api/pkg/infrastructure/repository"
 )
 
 func Update(ctx context.Context, columnRepo repository.Column, input *UpdateInput) (*UpdateOutput, error) {

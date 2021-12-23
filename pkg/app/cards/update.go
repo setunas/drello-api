@@ -2,8 +2,8 @@ package cards
 
 import (
 	"context"
+	"drello-api/pkg/app/repository"
 	"drello-api/pkg/domain/card"
-	"drello-api/pkg/infrastructure/repository"
 )
 
 func Update(ctx context.Context, cardRepo repository.Card, input *UpdateInput) (*UpdateOutput, error) {

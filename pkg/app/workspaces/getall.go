@@ -2,8 +2,8 @@ package workspaces
 
 import (
 	"context"
+	"drello-api/pkg/app/repository"
 	workspaceDomain "drello-api/pkg/domain/workspace"
-	"drello-api/pkg/infrastructure/repository"
 )
 
 func GetAll(ctx context.Context, workspaceRepo repository.Workspace) (*GetAllOutput, error) {

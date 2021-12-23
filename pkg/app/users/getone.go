@@ -2,8 +2,8 @@ package users
 
 import (
 	"context"
+	"drello-api/pkg/app/repository"
 	userDM "drello-api/pkg/domain/user"
-	"drello-api/pkg/infrastructure/repository"
 )
 
 func GetOne(ctx context.Context, userRepo repository.User, input *GetOneInput) (*GetOneOutput, error) {

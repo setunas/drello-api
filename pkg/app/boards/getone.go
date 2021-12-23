@@ -2,10 +2,10 @@ package boards
 
 import (
 	"context"
+	"drello-api/pkg/app/repository"
 	boardDomain "drello-api/pkg/domain/board"
 	cardDomain "drello-api/pkg/domain/card"
 	columnDomain "drello-api/pkg/domain/column"
-	"drello-api/pkg/infrastructure/repository"
 	"fmt"
 )
 

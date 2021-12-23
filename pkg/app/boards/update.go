@@ -2,8 +2,8 @@ package boards
 
 import (
 	"context"
+	"drello-api/pkg/app/repository"
 	"drello-api/pkg/domain/board"
-	"drello-api/pkg/infrastructure/repository"
 )
 
 func Update(ctx context.Context, boardRepo repository.Board, input *UpdateInput) (*UpdateOutput, error) {

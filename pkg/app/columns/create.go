@@ -2,8 +2,8 @@ package columns
 
 import (
 	"context"
+	"drello-api/pkg/app/repository"
 	"drello-api/pkg/domain/column"
-	"drello-api/pkg/infrastructure/repository"
 )
 
 func Create(ctx context.Context, columnRepo repository.Column, input *CreateInput) (*CreateOutput, error) {
