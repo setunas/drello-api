@@ -16,7 +16,7 @@ func logHTTPRequest(r *http.Request) {
 		"URI":       r.URL.String(),
 		"Referer":   r.Header.Get("Referer"),
 		"UserAgent": r.Header.Get("User-Agent"),
-		"Body":      fmt.Sprintln(body),
+		"Body":      fmt.Sprint(body),
 	}
 
 	message := "HTTP Request:"
