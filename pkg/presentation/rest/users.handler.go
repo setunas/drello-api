@@ -48,18 +48,18 @@ func usersHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		var postBody struct {
+		var body struct {
 			Username string
 		}
-		json.NewDecoder(r.Body).Decode(&postBody)
+		json.NewDecoder(r.Body).Decode(&body)
 
-		boardOutput, err := boards.Create(r.Context(), datasource.Board{}, boards.NewCreateInput(postBody.Username))
+		boardOutput, err := boards.Create(r.Context(), datasource.Board{}, boards.NewCreateInput(body.Username))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured while creating a board for the user")
 			return
 		}
 
-		userOutput, err := users.Create(r.Context(), datasource.User{}, users.NewCreateInput(postBody.Username, boardOutput.Board.ID(), token.UID))
+		userOutput, err := users.Create(r.Context(), datasource.User{}, users.NewCreateInput(body.Username, boardOutput.Board.ID(), token.UID))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured while creating a user")
 			return
