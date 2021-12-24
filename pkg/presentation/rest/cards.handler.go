@@ -23,13 +23,14 @@ func cardsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodPost:
-		columnId, err := strconv.Atoi(r.FormValue("columnId"))
-		if err != nil {
-			handleClientError(w, err, 400, "Invalid columnId.")
-			return
+		var body struct {
+			Title       string
+			Description string
+			ColumnID    int
 		}
+		json.NewDecoder(r.Body).Decode(&body)
 
-		output, err := cards.Create(r.Context(), datasource.Card{}, cards.NewCreateInput(r.FormValue("title"), r.FormValue("description"), columnId))
+		output, err := cards.Create(r.Context(), datasource.Card{}, cards.NewCreateInput(body.Title, body.Description, body.ColumnID))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
@@ -56,12 +57,14 @@ func cardHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodPatch:
-		columnId, err := strconv.Atoi(r.FormValue("columnId"))
-		if err != nil {
-			handleClientError(w, err, 400, "Invalid columnId.")
+		var body struct {
+			Title       string
+			Description string
+			ColumnID    int
 		}
+		json.NewDecoder(r.Body).Decode(&body)
 
-		output, err := cards.Update(r.Context(), datasource.Card{}, cards.NewUpdateInput(id, r.FormValue("title"), r.FormValue("description"), columnId))
+		output, err := cards.Update(r.Context(), datasource.Card{}, cards.NewUpdateInput(id, body.Title, body.Description, body.ColumnID))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return

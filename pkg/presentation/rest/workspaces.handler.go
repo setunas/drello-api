@@ -39,7 +39,12 @@ func workspacesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodPost:
-		output, err := workspaces.Create(r.Context(), datasource.Workspace{}, workspaces.NewCreateInput(r.FormValue("title")))
+		var body struct {
+			Title string
+		}
+		json.NewDecoder(r.Body).Decode(&body)
+
+		output, err := workspaces.Create(r.Context(), datasource.Workspace{}, workspaces.NewCreateInput(body.Title))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
@@ -78,7 +83,12 @@ func workspaceHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodPatch:
-		output, err := workspaces.Update(r.Context(), datasource.Workspace{}, workspaces.NewUpdateInput(id, r.FormValue("title")))
+		var body struct {
+			Title string
+		}
+		json.NewDecoder(r.Body).Decode(&body)
+
+		output, err := workspaces.Update(r.Context(), datasource.Workspace{}, workspaces.NewUpdateInput(id, body.Title))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
