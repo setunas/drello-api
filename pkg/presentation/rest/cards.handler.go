@@ -23,6 +23,12 @@ func cardsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodPost:
+		token, err := verifyIDToken(r.Context(), r)
+		if err != nil {
+			handleClientError(w, err, 401, "Invalid token")
+			return
+		}
+
 		var body struct {
 			Title       string
 			Description string
@@ -30,7 +36,7 @@ func cardsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		json.NewDecoder(r.Body).Decode(&body)
 
-		output, err := cards.Create(r.Context(), datasource.Card{}, cards.NewCreateInput(body.Title, body.Description, body.ColumnID))
+		output, err := cards.Create(r.Context(), datasource.Column{}, datasource.Card{}, datasource.User{}, cards.NewCreateInput(body.Title, body.Description, body.ColumnID, token.UID))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return

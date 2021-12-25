@@ -10,7 +10,7 @@ import (
 
 type Column struct{}
 
-func (c Column) GetOne(ctx context.Context, id int) (*domainColumn.Column, error) {
+func (c Column) GetOneByID(ctx context.Context, id int) (*domainColumn.Column, error) {
 	var title string
 	var boardID int
 

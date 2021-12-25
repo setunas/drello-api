@@ -12,7 +12,7 @@ func Create(ctx context.Context, columnRepo repository.Column, cardRepo reposito
 	if err != nil {
 		return nil, err
 	}
-	column, err := columnRepo.GetOneById(ctx, input.columnId)
+	column, err := columnRepo.GetOneByID(ctx, input.columnId)
 	if err != nil {
 		return nil, err
 	}
