@@ -2,6 +2,7 @@ package datasource
 
 import (
 	"context"
+	"database/sql"
 	domainCard "drello-api/pkg/domain/card"
 	"drello-api/pkg/infrastructure/mysql"
 	"fmt"
@@ -9,6 +10,24 @@ import (
 )
 
 type Card struct{}
+
+func (c Card) GetOneByID(ctx context.Context, id int) (*domainCard.Card, error) {
+	var title string
+	var description string
+	var columnID int
+
+	db := mysql.DBPool()
+	row := db.QueryRow("SELECT title, description, column_id FROM cards WHERE id = ?", id)
+
+	switch err := row.Scan(&title, &description, &columnID); err {
+	case sql.ErrNoRows:
+		return nil, fmt.Errorf("not found with id %d", id)
+	case nil:
+		return domainCard.New(id, title, description, columnID), nil
+	default:
+		return nil, err
+	}
+}
 
 func (c Card) GetListByColumnIds(ctx context.Context, columnIds []int) (*[]*domainCard.Card, error) {
 	db := mysql.DBPool()

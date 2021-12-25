@@ -63,6 +63,12 @@ func cardHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodPatch:
+		token, err := verifyIDToken(r.Context(), r)
+		if err != nil {
+			handleClientError(w, err, 401, "Invalid token")
+			return
+		}
+
 		var body struct {
 			Title       string
 			Description string
@@ -70,7 +76,7 @@ func cardHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		json.NewDecoder(r.Body).Decode(&body)
 
-		output, err := cards.Update(r.Context(), datasource.Card{}, cards.NewUpdateInput(id, body.Title, body.Description, body.ColumnID))
+		output, err := cards.Update(r.Context(), datasource.Column{}, datasource.Card{}, datasource.User{}, cards.NewUpdateInput(id, body.Title, body.Description, body.ColumnID, token.UID))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
@@ -80,7 +86,13 @@ func cardHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodDelete:
-		err = cards.Delete(r.Context(), datasource.Card{}, cards.NewDeleteInput(id))
+		token, err := verifyIDToken(r.Context(), r)
+		if err != nil {
+			handleClientError(w, err, 401, "Invalid token")
+			return
+		}
+
+		err = cards.Delete(r.Context(), datasource.Column{}, datasource.Card{}, datasource.User{}, cards.NewDeleteInput(id, token.UID))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return

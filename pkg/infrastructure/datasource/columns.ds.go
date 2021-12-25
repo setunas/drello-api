@@ -15,7 +15,7 @@ func (c Column) GetOneByID(ctx context.Context, id int) (*domainColumn.Column, e
 	var boardID int
 
 	db := mysql.DBPool()
-	row := db.QueryRow("SELECT title, board_id FROM column WHERE id = ?", id)
+	row := db.QueryRow("SELECT title, board_id FROM columns WHERE id = ?", id)
 
 	switch err := row.Scan(&title, &boardID); err {
 	case sql.ErrNoRows:
