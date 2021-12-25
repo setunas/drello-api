@@ -2,12 +2,30 @@ package datasource
 
 import (
 	"context"
+	"database/sql"
 	domainColumn "drello-api/pkg/domain/column"
 	"drello-api/pkg/infrastructure/mysql"
 	"fmt"
 )
 
 type Column struct{}
+
+func (c Column) GetOne(ctx context.Context, id int) (*domainColumn.Column, error) {
+	var title string
+	var boardID int
+
+	db := mysql.DBPool()
+	row := db.QueryRow("SELECT title, board_id FROM column WHERE id = ?", id)
+
+	switch err := row.Scan(&title, &boardID); err {
+	case sql.ErrNoRows:
+		return nil, fmt.Errorf("not found with id %d", id)
+	case nil:
+		return domainColumn.New(id, title, boardID), nil
+	default:
+		return nil, err
+	}
+}
 
 func (c Column) GetListByBoardId(ctx context.Context, boardId int) (*[]*domainColumn.Column, error) {
 	db := mysql.DBPool()
