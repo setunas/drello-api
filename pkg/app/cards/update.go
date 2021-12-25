@@ -12,12 +12,23 @@ func Update(ctx context.Context, columnRepo repository.Column, cardRepo reposito
 	if err != nil {
 		return nil, err
 	}
-	column, err := columnRepo.GetOneByID(ctx, input.columnId)
+	card, err := cardRepo.GetOneByID(ctx, input.id)
 	if err != nil {
 		return nil, err
 	}
-	if user.BoardID() != column.BoardId() {
-		return nil, fmt.Errorf("invalid board ID: %d, user's borad ID is: %d", column.BoardId(), user.BoardID())
+	oldTargetColumn, err := columnRepo.GetOneByID(ctx, card.ColumnId())
+	if err != nil {
+		return nil, err
+	}
+	if user.BoardID() != oldTargetColumn.BoardId() {
+		return nil, fmt.Errorf("invalid old target column's board ID: %d, user's borad ID is: %d", oldTargetColumn.BoardId(), user.BoardID())
+	}
+	newTargetColumn, err := columnRepo.GetOneByID(ctx, input.columnId)
+	if err != nil {
+		return nil, err
+	}
+	if user.BoardID() != newTargetColumn.BoardId() {
+		return nil, fmt.Errorf("invalid new target column's board ID: %d, user's borad ID is: %d", newTargetColumn.BoardId(), user.BoardID())
 	}
 
 	cardDomain, err := cardRepo.Update(ctx, input.id, input.title, input.description, input.columnId)
