@@ -13,7 +13,14 @@ func Update(ctx context.Context, columnRepo repository.Column, userRepo reposito
 		return nil, err
 	}
 	if user.BoardID() != input.boardId {
-		return nil, fmt.Errorf("invalid board ID: %d, user's borad ID is: %d", input.boardId, user.BoardID())
+		return nil, fmt.Errorf("invalid board ID that you are changing to: %d, user's borad ID is: %d", input.boardId, user.BoardID())
+	}
+	column, err := columnRepo.GetOneByID(ctx, input.id)
+	if err != nil {
+		return nil, err
+	}
+	if user.BoardID() != column.BoardId() {
+		return nil, fmt.Errorf("invalid board ID that you are changing from: %d, user's borad ID is: %d", column.BoardId(), user.BoardID())
 	}
 
 	columnDomain, err := columnRepo.Update(ctx, input.id, input.title, input.boardId)

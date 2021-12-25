@@ -12,8 +12,11 @@ func Delete(ctx context.Context, boardRepo repository.Board, columnRepo reposito
 	if err != nil {
 		return err
 	}
-
-	board, err := boardRepo.GetOne(ctx, input.id)
+	column, err := columnRepo.GetOneByID(ctx, input.id)
+	if err != nil {
+		return err
+	}
+	board, err := boardRepo.GetOne(ctx, column.BoardId())
 	if err != nil {
 		return err
 	}
