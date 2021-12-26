@@ -47,6 +47,13 @@ Run this command inside the container.
 go test ./...
 ```
 
-# Deploy to Staging
-You can deploy to the staging Heroku environment by pushing any branches whose name starts with `stg-`. <br>
+# Release to Staging
+
+### 1. Deploy to Heroku
+
+You can deploy to the staging Heroku environment by just pushing any branches whose name starts with `stg-`. <br>
 e.g. `stg-new-feature-1`
+
+### 2. Database Migration (if needed)
+
+You can ask a developer who has admin permission to migrate database.
