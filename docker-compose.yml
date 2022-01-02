@@ -14,6 +14,7 @@ services:
         TEST_DB_TCP_HOST: db
         TEST_DB_PORT: 3306
         TEST_DB_NAME: drello-test
+        GOOGLE_APPLICATION_CREDENTIALS: $GOOGLE_APPLICATION_CREDENTIALS
     ports:
       - "8080:8080"
     depends_on:
