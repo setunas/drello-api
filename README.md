@@ -5,6 +5,15 @@
 We use `.envrc` file to set environment variables with [direnv](https://direnv.net/).<br>
 Install `direnv` and ask other developers to share `.envrc` file, to make it easy to set environment variables for this app.
 
+## Place GOOGLE_APPLICATION_CREDENTIALS file
+
+Ask other developers to share GOOGLE_APPLICATION_CREDENTIALS file. <br>
+Without this file being placed properly, some function with google cloud platform wouldn't work.
+
+## Create Database and Tables
+See [this section](#database-migration) to get to know how to do database migration.
+
+
 ## Start the Server
 
 Run this command at the root directory of this project to start the server and the database with docker containers.
@@ -24,7 +33,13 @@ docker compose exec app bash
 
 # Database Migration
 
-Use the following `make` commands inside the container.
+Build and run only the docker component of the database.
+
+```
+docker compose up db
+```
+
+Run the following `make` commands in the rood directory of the project.
 
 ```
 // Apply one up migration file.
