@@ -2,7 +2,7 @@
 
 ## Set Environment Variables
 
-We use `.envrc` file to set environment variables with [direnv](https://direnv.net/).<br>
+We use `.envrc` file to set environment variables with [`direnv`](https://direnv.net/).<br>
 Install `direnv` and ask other developers to share `.envrc` file, to make it easy to set environment variables for this app.
 
 
