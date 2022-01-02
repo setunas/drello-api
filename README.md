@@ -1,4 +1,11 @@
-# Start the Server
+# Get Started
+
+## Set Environment Variables
+
+We use `.envrc` file to set environment variables with [direnv](https://direnv.net/).<br>
+Install `direnv` and ask other developers to share `.envrc` file, to make it easy to set environment variables for this app.
+
+## Start the Server
 
 Run this command at the root directory of this project to start the server and the database with docker containers.
 
