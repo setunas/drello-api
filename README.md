@@ -5,13 +5,16 @@
 We use `.envrc` file to set environment variables with [direnv](https://direnv.net/).<br>
 Install `direnv` and ask other developers to share `.envrc` file, to make it easy to set environment variables for this app.
 
+
 ## Place GOOGLE_APPLICATION_CREDENTIALS file
 
-Ask other developers to share GOOGLE_APPLICATION_CREDENTIALS file. <br>
-Without this file being placed properly, some function with google cloud platform wouldn't work.
+Ask another developer to share GOOGLE_APPLICATION_CREDENTIALS file. <br>
+You need to place this file in the right place specified by `GOOGLE_APPLICATION_CREDENTIALS` environment variable.<br><br>
+Without this file being placed properly, some functions with google cloud platform wouldn't work.
+
 
 ## Create Database and Tables
-See [this section](#database-migration) to get to know how to do database migration.
+See [this section](#database-migration) to get to know how to run commands for database migration.
 
 
 ## Start the Server
