@@ -36,7 +36,7 @@ docker compose exec app bash
 
 # Database Migration
 
-Run the following `make` commands in the `app` container.<br>
+Run the following `make` commands in the running `app` container.<br>
 You can see how to enter the app container [here](#enter-a-container).
 
 ```
