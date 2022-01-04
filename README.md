@@ -36,13 +36,8 @@ docker compose exec app bash
 
 # Database Migration
 
-Build and run only the docker component of the database.
-
-```
-docker compose up db
-```
-
-Run the following `make` commands in the rood directory of the project.
+Run the following `make` commands in the `app` container.<br>
+You can see how to enter the app container [here](#enter-a-container).
 
 ```
 // Apply one up migration file.
