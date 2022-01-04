@@ -25,7 +25,7 @@ Run this command at the root directory of this project to start the server and t
 docker compose up
 ```
 
-# Enter a Container
+# Enter a Running Container
 
 When you want to enter a running container of the server (e.g. to run database migration or tests), you can use this command.
 
