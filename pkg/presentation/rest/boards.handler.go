@@ -57,6 +57,7 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 				ID:          card.ID(),
 				Title:       card.Title(),
 				Description: card.Description(),
+				Position:    card.Position(),
 				ColumnId:    card.ColumnId(),
 			})
 		}

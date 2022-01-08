@@ -4,6 +4,7 @@ import (
 	"drello-api/pkg/app/cards"
 	"drello-api/pkg/infrastructure/datasource"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -11,10 +12,11 @@ import (
 )
 
 type cardResponse struct {
-	ID          int    `json:"id"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	ColumnId    int    `json:"columnId"`
+	ID          int     `json:"id"`
+	Title       string  `json:"title"`
+	Description string  `json:"description"`
+	Position    float64 `json:"position"`
+	ColumnId    int     `json:"columnId"`
 }
 
 func cardsHandler(w http.ResponseWriter, r *http.Request) {
@@ -32,18 +34,20 @@ func cardsHandler(w http.ResponseWriter, r *http.Request) {
 		var body struct {
 			Title       string
 			Description string
+			Position    float64
 			ColumnID    int
 		}
 		json.NewDecoder(r.Body).Decode(&body)
+		fmt.Println("body", body)
 
-		output, err := cards.Create(r.Context(), datasource.Column{}, datasource.Card{}, datasource.User{}, cards.NewCreateInput(body.Title, body.Description, body.ColumnID, token.UID))
+		output, err := cards.Create(r.Context(), datasource.Column{}, datasource.Card{}, datasource.User{}, cards.NewCreateInput(body.Title, body.Description, body.Position, body.ColumnID, token.UID))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
 		}
 
 		w.WriteHeader(http.StatusCreated)
-		json.NewEncoder(w).Encode(cardResponse{ID: output.Card.ID(), Title: output.Card.Title(), Description: output.Card.Description(), ColumnId: output.Card.ColumnId()})
+		json.NewEncoder(w).Encode(cardResponse{ID: output.Card.ID(), Title: output.Card.Title(), Description: output.Card.Description(), Position: output.Card.Position(), ColumnId: output.Card.ColumnId()})
 		return
 	}
 
@@ -72,17 +76,18 @@ func cardHandler(w http.ResponseWriter, r *http.Request) {
 		var body struct {
 			Title       string
 			Description string
+			Position    float64
 			ColumnID    int
 		}
 		json.NewDecoder(r.Body).Decode(&body)
 
-		output, err := cards.Update(r.Context(), datasource.Column{}, datasource.Card{}, datasource.User{}, cards.NewUpdateInput(id, body.Title, body.Description, body.ColumnID, token.UID))
+		output, err := cards.Update(r.Context(), datasource.Column{}, datasource.Card{}, datasource.User{}, cards.NewUpdateInput(id, body.Title, body.Description, body.Position, body.ColumnID, token.UID))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
 		}
 
-		json.NewEncoder(w).Encode(cardResponse{ID: output.Card.ID(), Title: output.Card.Title(), Description: output.Card.Description(), ColumnId: output.Card.ColumnId()})
+		json.NewEncoder(w).Encode(cardResponse{ID: output.Card.ID(), Title: output.Card.Title(), Description: output.Card.Description(), Position: output.Card.Position(), ColumnId: output.Card.ColumnId()})
 		return
 
 	case http.MethodDelete:
