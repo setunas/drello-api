@@ -14,16 +14,17 @@ type Card struct{}
 func (c Card) GetOneByID(ctx context.Context, id int) (*domainCard.Card, error) {
 	var title string
 	var description string
+	var position float64
 	var columnID int
 
 	db := mysql.DBPool()
-	row := db.QueryRow("SELECT title, description, column_id FROM cards WHERE id = ?", id)
+	row := db.QueryRow("SELECT title, description, position, column_id FROM cards WHERE id = ?", id)
 
-	switch err := row.Scan(&title, &description, &columnID); err {
+	switch err := row.Scan(&title, &description, &position, &columnID); err {
 	case sql.ErrNoRows:
 		return nil, fmt.Errorf("not found with id %d", id)
 	case nil:
-		return domainCard.New(id, title, description, columnID), nil
+		return domainCard.New(id, title, description, position, columnID), nil
 	default:
 		return nil, err
 	}
@@ -43,7 +44,7 @@ func (c Card) GetListByColumnIds(ctx context.Context, columnIds []int) (*[]*doma
 		args[i] = columnIds[i]
 	}
 
-	sql := "SELECT id, title, description, column_id FROM cards WHERE column_id IN (?" + strings.Repeat(",?", len(columnIds)-1) + ")"
+	sql := "SELECT id, title, description, position, column_id FROM cards WHERE column_id IN (?" + strings.Repeat(",?", len(columnIds)-1) + ")"
 
 	rows, err := db.Query(sql, args...)
 	if err != nil {
@@ -55,14 +56,15 @@ func (c Card) GetListByColumnIds(ctx context.Context, columnIds []int) (*[]*doma
 		var id int
 		var title string
 		var description string
+		var position float64
 		var columnId int
 
-		err := rows.Scan(&id, &title, &description, &columnId)
+		err := rows.Scan(&id, &title, &description, &position, &columnId)
 		if err != nil {
 			return nil, fmt.Errorf("failed scanning card rows: %w", err)
 		}
 
-		cards = append(cards, domainCard.New(id, title, description, columnId))
+		cards = append(cards, domainCard.New(id, title, description, position, columnId))
 	}
 
 	err = rows.Err()
@@ -73,10 +75,10 @@ func (c Card) GetListByColumnIds(ctx context.Context, columnIds []int) (*[]*doma
 	return &cards, nil
 }
 
-func (c Card) Create(ctx context.Context, title string, description string, columnId int) (*domainCard.Card, error) {
+func (c Card) Create(ctx context.Context, title string, description string, position float64, columnId int) (*domainCard.Card, error) {
 	db := mysql.DBPool()
 
-	result, err := db.Exec("INSERT INTO cards (title, description, column_id) VALUES (?, ?, ?)", title, description, columnId)
+	result, err := db.Exec("INSERT INTO cards (title, description, position, column_id) VALUES (?, ?, ?, ?)", title, description, position, columnId)
 	if err != nil {
 		return nil, fmt.Errorf("failed creating card: %w", err)
 	}
@@ -86,17 +88,17 @@ func (c Card) Create(ctx context.Context, title string, description string, colu
 		return nil, fmt.Errorf("failed creating card: %w", err)
 	}
 
-	return domainCard.New(int(lastInsertID), title, description, columnId), nil
+	return domainCard.New(int(lastInsertID), title, description, position, columnId), nil
 }
 
-func (c Card) Update(ctx context.Context, id int, title string, description string, columnId int) (*domainCard.Card, error) {
+func (c Card) Update(ctx context.Context, id int, title string, description string, position float64, columnId int) (*domainCard.Card, error) {
 	db := mysql.DBPool()
-	_, err := db.Exec("UPDATE cards SET title = ?, description = ? WHERE id = ?", title, description, id)
+	_, err := db.Exec("UPDATE cards SET title = ?, description = ?, position = ? WHERE id = ?", title, description, position, id)
 	if err != nil {
 		return nil, fmt.Errorf("failed updating card: %w", err)
 	}
 
-	return domainCard.New(id, title, description, columnId), nil
+	return domainCard.New(id, title, description, position, columnId), nil
 }
 
 func (c Card) Delete(ctx context.Context, id int) error {
