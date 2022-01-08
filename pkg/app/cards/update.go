@@ -31,7 +31,7 @@ func Update(ctx context.Context, columnRepo repository.Column, cardRepo reposito
 		return nil, fmt.Errorf("invalid new target column's board ID: %d, user's borad ID is: %d", newTargetColumn.BoardId(), user.BoardID())
 	}
 
-	cardDomain, err := cardRepo.Update(ctx, input.id, input.title, input.description, input.columnId)
+	cardDomain, err := cardRepo.Update(ctx, input.id, input.title, input.description, input.position, input.columnId)
 	if err != nil {
 		return nil, err
 	}
@@ -43,12 +43,13 @@ type UpdateInput struct {
 	id          int
 	title       string
 	description string
+	position    float64
 	columnId    int
 	firebaseUID string
 }
 
-func NewUpdateInput(id int, title string, description string, columnId int, firebaseUID string) *UpdateInput {
-	return &UpdateInput{id: id, title: title, description: description, columnId: columnId, firebaseUID: firebaseUID}
+func NewUpdateInput(id int, title string, description string, position float64, columnId int, firebaseUID string) *UpdateInput {
+	return &UpdateInput{id: id, title: title, description: description, position: position, columnId: columnId, firebaseUID: firebaseUID}
 }
 
 type UpdateOutput struct {

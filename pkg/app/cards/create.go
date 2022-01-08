@@ -19,8 +19,8 @@ func Create(ctx context.Context, columnRepo repository.Column, cardRepo reposito
 	if user.BoardID() != column.BoardId() {
 		return nil, fmt.Errorf("invalid board ID: %d, user's borad ID is: %d", column.BoardId(), user.BoardID())
 	}
-
-	cardDomain, err := cardRepo.Create(ctx, input.title, input.description, input.columnId)
+	fmt.Println("position", input.position)
+	cardDomain, err := cardRepo.Create(ctx, input.title, input.description, input.position, input.columnId)
 	if err != nil {
 		return nil, err
 	}
@@ -31,12 +31,13 @@ func Create(ctx context.Context, columnRepo repository.Column, cardRepo reposito
 type CreateInput struct {
 	title       string
 	description string
+	position    float64
 	columnId    int
 	firebaseUID string
 }
 
-func NewCreateInput(title string, description string, columnId int, firebaseUID string) *CreateInput {
-	return &CreateInput{title: title, description: description, columnId: columnId, firebaseUID: firebaseUID}
+func NewCreateInput(title string, description string, position float64, columnId int, firebaseUID string) *CreateInput {
+	return &CreateInput{title: title, description: description, position: position, columnId: columnId, firebaseUID: firebaseUID}
 }
 
 type CreateOutput struct {
