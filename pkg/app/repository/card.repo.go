@@ -8,7 +8,7 @@ import (
 type Card interface {
 	GetOneByID(ctx context.Context, id int) (*card.Card, error)
 	GetListByColumnIds(ctx context.Context, columnIds []int) (*[]*card.Card, error)
-	Create(ctx context.Context, title string, description string, columnId int) (*card.Card, error)
-	Update(ctx context.Context, id int, title string, description string, columnId int) (*card.Card, error)
+	Create(ctx context.Context, title string, description string, position float64, columnId int) (*card.Card, error)
+	Update(ctx context.Context, id int, title string, description string, position float64, columnId int) (*card.Card, error)
 	Delete(ctx context.Context, id int) error
 }
