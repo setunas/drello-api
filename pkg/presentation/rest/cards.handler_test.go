@@ -74,7 +74,7 @@ func TestUpdateCard(t *testing.T) {
 	ctx := context.TODO()
 	datasource.Board{}.Create(ctx, "test1")
 	datasource.Column{}.Create(ctx, "test1", 1)
-	datasource.Card{}.Create(ctx, "test1", "desc1", 1)
+	datasource.Card{}.Create(ctx, "test1", "desc1", 1.0, 1)
 
 	var body bytes.Buffer
 	writer := multipart.NewWriter(&body)
@@ -126,7 +126,7 @@ func TestDeleteCard(t *testing.T) {
 	ctx := context.TODO()
 	datasource.Board{}.Create(ctx, "test1")
 	datasource.Column{}.Create(ctx, "test1", 1)
-	datasource.Card{}.Create(ctx, "test1", "description1", 1)
+	datasource.Card{}.Create(ctx, "test1", "description1", 1.0, 1)
 
 	req, _ := http.NewRequest("DELETE", "/cards/1", nil)
 	response := executeRequest(req)
