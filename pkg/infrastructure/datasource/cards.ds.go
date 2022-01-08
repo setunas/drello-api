@@ -93,7 +93,7 @@ func (c Card) Create(ctx context.Context, title string, description string, posi
 
 func (c Card) Update(ctx context.Context, id int, title string, description string, position float64, columnId int) (*domainCard.Card, error) {
 	db := mysql.DBPool()
-	_, err := db.Exec("UPDATE cards SET title = ?, description = ?, position = ? WHERE id = ?", title, description, position, id)
+	_, err := db.Exec("UPDATE cards SET title = ?, description = ?, position = ?, column_id = ? WHERE id = ?", title, description, position, columnId, id)
 	if err != nil {
 		return nil, fmt.Errorf("failed updating card: %w", err)
 	}

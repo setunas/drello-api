@@ -80,6 +80,7 @@ func cardHandler(w http.ResponseWriter, r *http.Request) {
 			ColumnID    int
 		}
 		json.NewDecoder(r.Body).Decode(&body)
+		fmt.Println("body", body)
 
 		output, err := cards.Update(r.Context(), datasource.Column{}, datasource.Card{}, datasource.User{}, cards.NewUpdateInput(id, body.Title, body.Description, body.Position, body.ColumnID, token.UID))
 		if err != nil {
