@@ -12,16 +12,17 @@ type Column struct{}
 
 func (c Column) GetOneByID(ctx context.Context, id int) (*domainColumn.Column, error) {
 	var title string
+	var position float64
 	var boardID int
 
 	db := mysql.DBPool()
-	row := db.QueryRow("SELECT title, board_id FROM columns WHERE id = ?", id)
+	row := db.QueryRow("SELECT title, position, board_id FROM columns WHERE id = ?", id)
 
-	switch err := row.Scan(&title, &boardID); err {
+	switch err := row.Scan(&title, &position, &boardID); err {
 	case sql.ErrNoRows:
 		return nil, fmt.Errorf("not found with id %d", id)
 	case nil:
-		return domainColumn.New(id, title, boardID), nil
+		return domainColumn.New(id, title, position, boardID), nil
 	default:
 		return nil, err
 	}
@@ -29,7 +30,7 @@ func (c Column) GetOneByID(ctx context.Context, id int) (*domainColumn.Column, e
 
 func (c Column) GetListByBoardId(ctx context.Context, boardId int) (*[]*domainColumn.Column, error) {
 	db := mysql.DBPool()
-	rows, err := db.Query("SELECT id, title FROM columns WHERE board_id = ?", boardId)
+	rows, err := db.Query("SELECT id, title, position FROM columns WHERE board_id = ?", boardId)
 	if err != nil {
 		return nil, fmt.Errorf("failed querying columns: %w", err)
 	}
@@ -40,13 +41,14 @@ func (c Column) GetListByBoardId(ctx context.Context, boardId int) (*[]*domainCo
 	for rows.Next() {
 		var id int
 		var title string
+		var position float64
 
-		err := rows.Scan(&id, &title)
+		err := rows.Scan(&id, &title, &position)
 		if err != nil {
 			return nil, fmt.Errorf("failed querying columns: %w", err)
 		}
 
-		columns = append(columns, domainColumn.New(id, title, boardId))
+		columns = append(columns, domainColumn.New(id, title, position, boardId))
 	}
 
 	err = rows.Err()
@@ -57,10 +59,10 @@ func (c Column) GetListByBoardId(ctx context.Context, boardId int) (*[]*domainCo
 	return &columns, nil
 }
 
-func (c Column) Create(ctx context.Context, title string, boardId int) (*domainColumn.Column, error) {
+func (c Column) Create(ctx context.Context, title string, position float64, boardId int) (*domainColumn.Column, error) {
 	db := mysql.DBPool()
 
-	result, err := db.Exec("INSERT INTO columns (title, board_id) VALUES (?, ?)", title, boardId)
+	result, err := db.Exec("INSERT INTO columns (title, position, board_id) VALUES (?, ?, ?)", title, position, boardId)
 	if err != nil {
 		return nil, fmt.Errorf("failed creating column: %w", err)
 	}
@@ -70,17 +72,17 @@ func (c Column) Create(ctx context.Context, title string, boardId int) (*domainC
 		return nil, fmt.Errorf("failed creating column: %w", err)
 	}
 
-	return domainColumn.New(int(lastInsertID), title, boardId), nil
+	return domainColumn.New(int(lastInsertID), title, position, boardId), nil
 }
 
-func (c Column) Update(ctx context.Context, id int, title string, boardId int) (*domainColumn.Column, error) {
+func (c Column) Update(ctx context.Context, id int, title string, position float64, boardId int) (*domainColumn.Column, error) {
 	db := mysql.DBPool()
-	_, err := db.Exec("UPDATE columns SET title = ? WHERE id = ?", title, id)
+	_, err := db.Exec("UPDATE columns SET title = ?, position = ? WHERE id = ?", title, position, id)
 	if err != nil {
 		return nil, fmt.Errorf("failed updating column: %w", err)
 	}
 
-	return domainColumn.New(id, title, boardId), nil
+	return domainColumn.New(id, title, position, boardId), nil
 }
 
 func (c Column) Delete(ctx context.Context, id int) error {
