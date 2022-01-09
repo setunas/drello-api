@@ -34,12 +34,13 @@ func Update(ctx context.Context, columnRepo repository.Column, userRepo reposito
 type UpdateInput struct {
 	id          int
 	title       string
+	position    float64
 	boardId     int
 	firebaseUID string
 }
 
-func NewUpdateInput(id int, title string, boardId int, firebaseUID string) *UpdateInput {
-	return &UpdateInput{id: id, title: title, boardId: boardId, firebaseUID: firebaseUID}
+func NewUpdateInput(id int, title string, position float64, boardId int, firebaseUID string) *UpdateInput {
+	return &UpdateInput{id: id, title: title, position: position, boardId: boardId, firebaseUID: firebaseUID}
 }
 
 type UpdateOutput struct {

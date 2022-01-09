@@ -26,12 +26,13 @@ func Create(ctx context.Context, columnRepo repository.Column, userRepo reposito
 
 type CreateInput struct {
 	title       string
+	position    float64
 	boardId     int
 	firebaseUID string
 }
 
-func NewCreateInput(title string, boardId int, firebaseUID string) *CreateInput {
-	return &CreateInput{title: title, boardId: boardId, firebaseUID: firebaseUID}
+func NewCreateInput(title string, position float64, boardId int, firebaseUID string) *CreateInput {
+	return &CreateInput{title: title, position: position, boardId: boardId, firebaseUID: firebaseUID}
 }
 
 type CreateOutput struct {
