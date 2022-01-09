@@ -11,9 +11,10 @@ import (
 )
 
 type columnResponse struct {
-	ID      int    `json:"id"`
-	Title   string `json:"title"`
-	BoardId int    `json:"boardId"`
+	ID       int     `json:"id"`
+	Title    string  `json:"title"`
+	Position float64 `json:"position"`
+	BoardId  int     `json:"boardId"`
 }
 
 func columnsHandler(w http.ResponseWriter, r *http.Request) {
@@ -43,7 +44,7 @@ func columnsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.WriteHeader(http.StatusCreated)
-		json.NewEncoder(w).Encode(columnResponse{ID: output.Column.ID(), Title: output.Column.Title(), BoardId: output.Column.BoardId()})
+		json.NewEncoder(w).Encode(columnResponse{ID: output.Column.ID(), Title: output.Column.Title(), Position: output.Column.Positon(), BoardId: output.Column.BoardId()})
 		return
 	}
 
@@ -82,7 +83,7 @@ func columnHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		json.NewEncoder(w).Encode(columnResponse{ID: output.Column.ID(), Title: output.Column.Title(), BoardId: output.Column.BoardId()})
+		json.NewEncoder(w).Encode(columnResponse{ID: output.Column.ID(), Title: output.Column.Title(), Position: output.Column.Positon(), BoardId: output.Column.BoardId()})
 		return
 
 	case http.MethodDelete:

@@ -47,9 +47,10 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 
 		for _, column := range output.Columns {
 			columns = append(columns, columnResponse{
-				ID:      column.ID(),
-				Title:   column.Title(),
-				BoardId: column.BoardId(),
+				ID:       column.ID(),
+				Title:    column.Title(),
+				Position: column.Positon(),
+				BoardId:  column.BoardId(),
 			})
 		}
 		for _, card := range output.Cards {
