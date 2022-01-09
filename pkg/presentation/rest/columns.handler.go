@@ -30,12 +30,13 @@ func columnsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		var body struct {
-			Title   string
-			BoardId int
+			Title    string
+			Position float64
+			BoardId  int
 		}
 		json.NewDecoder(r.Body).Decode(&body)
 
-		output, err := columns.Create(ctx, datasource.Column{}, datasource.User{}, columns.NewCreateInput(body.Title, body.BoardId, token.UID))
+		output, err := columns.Create(ctx, datasource.Column{}, datasource.User{}, columns.NewCreateInput(body.Title, body.Position, body.BoardId, token.UID))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
@@ -69,12 +70,13 @@ func columnHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		var body struct {
-			Title   string
-			BoardId int
+			Title    string
+			Position float64
+			BoardId  int
 		}
 		json.NewDecoder(r.Body).Decode(&body)
 
-		output, err := columns.Update(ctx, datasource.Column{}, datasource.User{}, columns.NewUpdateInput(id, body.Title, body.BoardId, token.UID))
+		output, err := columns.Update(ctx, datasource.Column{}, datasource.User{}, columns.NewUpdateInput(id, body.Title, body.Position, body.BoardId, token.UID))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
