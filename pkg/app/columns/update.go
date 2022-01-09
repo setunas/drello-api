@@ -23,7 +23,7 @@ func Update(ctx context.Context, columnRepo repository.Column, userRepo reposito
 		return nil, fmt.Errorf("invalid board ID that you are changing from: %d, user's borad ID is: %d", column.BoardId(), user.BoardID())
 	}
 
-	columnDomain, err := columnRepo.Update(ctx, input.id, input.title, input.boardId)
+	columnDomain, err := columnRepo.Update(ctx, input.id, input.title, input.position, input.boardId)
 	if err != nil {
 		return nil, err
 	}
