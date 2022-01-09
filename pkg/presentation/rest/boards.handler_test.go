@@ -23,8 +23,8 @@ func TestGetBoard(t *testing.T) {
 	ctx := context.TODO()
 	datasource.Board{}.Create(ctx, "test1")
 	datasource.Board{}.Create(ctx, "test2")
-	datasource.Column{}.Create(ctx, "test1", 1)
-	datasource.Column{}.Create(ctx, "test2", 2)
+	datasource.Column{}.Create(ctx, "test1", 1.0, 1)
+	datasource.Column{}.Create(ctx, "test2", 2.0, 2)
 	datasource.Card{}.Create(ctx, "test1", "desc1", 1.0, 1)
 	datasource.Card{}.Create(ctx, "test2", "desc2", 2.0, 2)
 
