@@ -1,7 +1,6 @@
 package rest
 
 import (
-	"drello-api/pkg/app/boards"
 	"drello-api/pkg/app/users"
 	"drello-api/pkg/infrastructure/datasource"
 	"encoding/json"
@@ -39,34 +38,6 @@ func usersHandler(w http.ResponseWriter, r *http.Request) {
 			Username: output.User.Username(),
 			BoardID:  output.User.BoardID(),
 		})
-		return
-
-	case http.MethodPost:
-		token, err := verifyIDToken(ctx, r)
-		if err != nil {
-			handleClientError(w, err, 401, "Invalid token")
-			return
-		}
-
-		var body struct {
-			Username string
-		}
-		json.NewDecoder(r.Body).Decode(&body)
-
-		boardOutput, err := boards.Create(r.Context(), datasource.Board{}, boards.NewCreateInput(body.Username))
-		if err != nil {
-			handleClientError(w, err, 422, "An error occured while creating a board for the user")
-			return
-		}
-
-		userOutput, err := users.Create(r.Context(), datasource.User{}, users.NewCreateInput(body.Username, boardOutput.Board.ID(), token.UID))
-		if err != nil {
-			handleClientError(w, err, 422, "An error occured while creating a user")
-			return
-		}
-
-		w.WriteHeader(http.StatusCreated)
-		json.NewEncoder(w).Encode(usreResponse{ID: userOutput.User.ID(), Username: userOutput.User.Username(), BoardID: userOutput.User.BoardID()})
 		return
 	}
 
