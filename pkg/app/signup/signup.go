@@ -18,15 +18,15 @@ func Signup(ctx context.Context, userRepo repository.User, boardRepo repository.
 		return nil, err
 	}
 
-	_, err = columnRepo.Create(ctx, "Todo", columnDM.InitialPositionGap(), board.ID())
+	_, err = columnRepo.Create(ctx, "Todo", columnDM.InitialPositionGap()*1, board.ID())
 	if err != nil {
 		return nil, err
 	}
-	_, err = columnRepo.Create(ctx, "Doing", columnDM.InitialPositionGap(), board.ID())
+	_, err = columnRepo.Create(ctx, "Doing", columnDM.InitialPositionGap()*2, board.ID())
 	if err != nil {
 		return nil, err
 	}
-	_, err = columnRepo.Create(ctx, "Done", columnDM.InitialPositionGap(), board.ID())
+	_, err = columnRepo.Create(ctx, "Done", columnDM.InitialPositionGap()*3, board.ID())
 	if err != nil {
 		return nil, err
 	}
