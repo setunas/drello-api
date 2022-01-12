@@ -7,6 +7,8 @@ type Column struct {
 	boardId  int
 }
 
+const initialPositionGap float64 = 16384
+
 func New(id int, title string, position float64, boardId int) *Column {
 	return &Column{id: id, title: title, position: position, boardId: boardId}
 }
@@ -25,4 +27,8 @@ func (c *Column) Positon() float64 {
 
 func (c *Column) BoardId() int {
 	return c.boardId
+}
+
+func InitialPositionGap() float64 {
+	return initialPositionGap
 }
