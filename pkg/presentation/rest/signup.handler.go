@@ -17,6 +17,9 @@ func signupHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	switch r.Method {
+	case http.MethodOptions:
+		return
+
 	case http.MethodPost:
 		token, err := verifyIDToken(ctx, r)
 		if err != nil {
