@@ -1,7 +1,7 @@
 package rest
 
 import (
-	"drello-api/pkg/app/columns"
+	"drello-api/pkg/app/usecases/columns"
 	"drello-api/pkg/infrastructure/datasource"
 	"encoding/json"
 	"net/http"

@@ -1,7 +1,7 @@
 package rest
 
 import (
-	"drello-api/pkg/app/users"
+	"drello-api/pkg/app/usecases/users"
 	"drello-api/pkg/infrastructure/datasource"
 	"encoding/json"
 	"net/http"
