@@ -13,29 +13,29 @@ func UpdatePositions(ctx context.Context, columnRepo repository.Column, cardRepo
 		return nil, err
 	}
 
-	///////////////////
-	// Authorization //
-	///////////////////
-	// TODO: Get all column records of the board
-	columnRepo.GetListByBoardId()
-	// TODO: Set all column IDs to a map
-	// TODO: Create a new repo and a datasource that return all card records of given card IDs
-	// TODO: Get all card records of the provided card ID
-	// TODO: Check if all card's column IDs match column IDs in the map for authorization
+	columns, err := columnRepo.GetListByBoardId(ctx, user.BoardID())
+	if err != nil {
+		return nil, err
+	}
 
-	oldTargetColumn, err := columnRepo.GetOneByID(ctx, input.columnID)
+	columnMap := make(map[int]bool)
+	for _, column := range *columns {
+		columnMap[column.ID()] = true
+	}
+
+	cardIDs := make([]int, len(input.cards))
+	for _, card := range input.cards {
+		cardIDs = append(cardIDs, card.id)
+	}
+	cards, err := cardRepo.GetListByIDs(ctx, cardIDs)
 	if err != nil {
 		return nil, err
 	}
-	if user.BoardID() != oldTargetColumn.BoardId() {
-		return nil, fmt.Errorf("invalid old target column's board ID: %d, user's borad ID is: %d", oldTargetColumn.BoardId(), user.BoardID())
-	}
-	newTargetColumn, err := columnRepo.GetOneByID(ctx, input.columnId)
-	if err != nil {
-		return nil, err
-	}
-	if user.BoardID() != newTargetColumn.BoardId() {
-		return nil, fmt.Errorf("invalid new target column's board ID: %d, user's borad ID is: %d", newTargetColumn.BoardId(), user.BoardID())
+
+	for _, card := range *cards {
+		if columnMap[card.ColumnId()] != true {
+			return nil, fmt.Errorf("Invalid columnID: %d", card.ColumnId())
+		}
 	}
 
 	cardDomain, err := cardRepo.Update(ctx, input.id, input.title, input.description, input.position, input.columnId)
