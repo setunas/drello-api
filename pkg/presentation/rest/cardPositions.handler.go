@@ -10,7 +10,7 @@ type positionResponse struct {
 	Cards []cardResponse `json:"cards"`
 }
 
-func positionsHandler(w http.ResponseWriter, r *http.Request) {
+func cardPositionsHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodOptions:
 		return
