@@ -1,8 +1,6 @@
 package rest
 
 import (
-	"drello-api/pkg/app/cards"
-	"drello-api/pkg/infrastructure/datasource"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -18,7 +16,7 @@ func positionsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodPatch:
-		token, err := verifyIDToken(r.Context(), r)
+		_, err := verifyIDToken(r.Context(), r)
 		if err != nil {
 			handleClientError(w, err, 401, "Invalid token")
 			return
@@ -35,13 +33,13 @@ func positionsHandler(w http.ResponseWriter, r *http.Request) {
 		json.NewDecoder(r.Body).Decode(&body)
 		fmt.Println("body", body)
 
-		output, err := cards.Update(r.Context(), datasource.Column{}, datasource.Card{}, datasource.User{}, cards.NewUpdateInput(id, body.Title, body.Description, body.Position, body.ColumnID, token.UID))
-		if err != nil {
-			handleClientError(w, err, 422, "An error occured during the prosess")
-			return
-		}
+		// output, err := cards.Update(r.Context(), datasource.Column{}, datasource.Card{}, datasource.User{}, cards.NewUpdateInput(id, body.Title, body.Description, body.Position, body.ColumnID, token.UID))
+		// if err != nil {
+		// 	handleClientError(w, err, 422, "An error occured during the prosess")
+		// 	return
+		// }
 
-		json.NewEncoder(w).Encode(cardResponse{ID: output.Card.ID(), Title: output.Card.Title(), Description: output.Card.Description(), Position: output.Card.Position(), ColumnId: output.Card.ColumnId()})
+		// json.NewEncoder(w).Encode(cardResponse{ID: output.Card.ID(), Title: output.Card.Title(), Description: output.Card.Description(), Position: output.Card.Position(), ColumnId: output.Card.ColumnId()})
 		return
 	}
 
