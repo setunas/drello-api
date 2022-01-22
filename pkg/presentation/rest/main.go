@@ -37,6 +37,7 @@ func HandleRequests() {
 }
 
 func setHandlers() {
+	router.Handle("/columns/{id:[0-9]+}/cards/positions", handler(positionsHandler))
 	router.Handle("/users", handler(usersHandler))
 	router.Handle("/signup", handler(signupHandler))
 	router.Handle("/workspaces/{id:[0-9]+}", handler(workspaceHandler))
