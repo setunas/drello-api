@@ -13,12 +13,15 @@ func UpdatePositions(ctx context.Context, columnRepo repository.Column, cardRepo
 		return nil, err
 	}
 
+	///////////////////
+	// Authorization //
+	///////////////////
 	// TODO: Get all column records of the board
 	columnRepo.GetListByBoardId()
 	// TODO: Set all column IDs to a map
 	// TODO: Create a new repo and a datasource that return all card records of given card IDs
 	// TODO: Get all card records of the provided card ID
-	// TODO: Check if all card's column IDs match column IDs in the map
+	// TODO: Check if all card's column IDs match column IDs in the map for authorization
 
 	oldTargetColumn, err := columnRepo.GetOneByID(ctx, input.columnID)
 	if err != nil {
