@@ -14,7 +14,7 @@ Take a look 😁 https://drello.netlify.app/
 ![drello-architecture](https://user-images.githubusercontent.com/12164726/150669120-874976a2-d8e2-43c3-aae4-0236bf900187.png)
 
 # Authentication & Authorization
-We authenticate users by Firebase Authentication. Firebase Authentication provide an ID token. We use this ID token to authorize a user to use proper API request by passing the ID token together. Our API server (`drello-api`) verifies the provided ID token.
+We authenticate users by Firebase Authentication. Firebase Authentication provides an ID token. We use this ID token to authorize a user to use proper API requests by passing the ID token together. Our API server (`drello-api`) verifies the provided ID token.
 
 
 # File Structure
