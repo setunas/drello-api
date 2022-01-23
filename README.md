@@ -1,3 +1,7 @@
+![drello-brand-icon-192x192](https://user-images.githubusercontent.com/12164726/150669986-66933d5f-a6bc-4420-b9d7-dd48f8ad17f2.png)
+
+
+
 # What is Drello?
 Drello is a symple kanban web service for your todos. <br>
 We create Drello as our portfolio.
