@@ -24,7 +24,13 @@ We authenticate users by Firebase Authentication. Firebase Authentication provid
 # `drello-api`
 From here, we are going to explain `drello-api` specificly. If you want to see about `drello-web`, see [here](https://github.com/setunas/drello-web).
 
-## File Structure
+## Software Architecture 
+### Onion Architecture
+![onion-architecture](https://user-images.githubusercontent.com/12164726/150693911-15137f0e-a54e-4d93-88e4-48d4b8a5d323.png)<br>
+*Image by [Daniel Rusnok](https://dev.to/danielrusnok)*
+
+We adopted Onion Architecture for our software architecture. Onion Architecture is an architectual pattern
+
 
 ## CI
 
