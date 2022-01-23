@@ -1,10 +1,15 @@
-# drelo-api [WIP]
+# What is Drello?
+Drello is a symple kanban web service for your todos. <br>
+We create Drello as our portfolio.
 
-# Drello Overview
-[`drello-web`](https://github.com/setunas/drello-web)
+# Repositories for Drello
+- [`drello-api`](https://github.com/setunas/drello-api): The backend app exposes RESTful APIs connecting MySQL using Go.
+- [`drello-web`](https://github.com/setunas/drello-web): The frontend app for web mainly using React, Next.js and TypeScript.
 
 # System Architecture
 ![drello-architecture](https://user-images.githubusercontent.com/12164726/150669120-874976a2-d8e2-43c3-aae4-0236bf900187.png)
+
+
 
 
 
