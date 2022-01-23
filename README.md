@@ -35,15 +35,15 @@ From here, we are going to explain `drello-api` specificly. If you want to see a
 ![onion-architecture](https://user-images.githubusercontent.com/12164726/150693911-15137f0e-a54e-4d93-88e4-48d4b8a5d323.png)<br>
 *Image by [Daniel Rusnok](https://dev.to/danielrusnok)*
 
-We adopted Onion Architecture for our software architecture. Onion Architecture is an architectural pattern that keeps maintainability with good separation of concern by splitting application codes into layers.<br>
+We adopted Onion Architecture for our software architecture.<br>
 <br>
-To get to know more details about Onion Architecture, see [here](https://marcoatschaefer.medium.com/onion-architecture-explained-building-maintainable-software-54996ff8e464).<br>
+Onion Architecture is an architectural pattern that keeps maintainability with good separation of concern by splitting application codes into layers. To get to know more details about Onion Architecture, see [here](https://marcoatschaefer.medium.com/onion-architecture-explained-building-maintainable-software-54996ff8e464).<br>
 <br>
 To be honest, Onion Architecture is not fit for our application since our codebase size is small and we don't have business rules so much. But our app is made as a portfolio, so we adopted Onion Architecture so we can show how we code usually.
 
 
 ## CI/CD
-We use [Github Actions](https://github.com/features/actions) for CI/CD. It automatically tests, build, and deploy.
+We use [Github Actions](https://github.com/features/actions) for CI/CD. It automatically tests, builds, or deploys when you push to a pull request or merge to a certain branch.
 
 # Contribution
 
