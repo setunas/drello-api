@@ -33,7 +33,7 @@ Let us break it down. Let's say the default number of `position` is 1024. When t
 
 We adopted this way to make it easier to keep the consistency of positions among other cards and avoid the calculation getting expensive.<br>
 <br>
-You can see the position related code mainly [here](https://github.com/setunas/drello-web/blob/develop/src/features/position/position.ts)
+You can see the position-related code mainly [here](https://github.com/setunas/drello-web/blob/develop/src/features/position/position.ts).
 
 
 
