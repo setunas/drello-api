@@ -21,7 +21,7 @@ Take a look 😁 https://drello.netlify.app/
 We authenticate users by Firebase Authentication. Firebase Authentication provides an ID token. We use this ID token also to authorize a user to use proper API requests by passing the ID token together. Our API server (`drello-api`) verifies the provided ID token with Firebase Admin SDK.
 
 
-# `drello-api`
+# About `drello-api`
 From here, we are going to explain `drello-api` specificly. If you want to see about `drello-web`, see [here](https://github.com/setunas/drello-web).
 
 ## Tech Stacks
