@@ -24,6 +24,12 @@ We authenticate users by Firebase Authentication. Firebase Authentication provid
 # `drello-api`
 From here, we are going to explain `drello-api` specificly. If you want to see about `drello-web`, see [here](https://github.com/setunas/drello-web).
 
+## Tech Stacks
+- Go
+- MariaDB / MySQL
+- Github Actions
+- Docker
+
 ## Software Architecture 
 ### Onion Architecture
 ![onion-architecture](https://user-images.githubusercontent.com/12164726/150693911-15137f0e-a54e-4d93-88e4-48d4b8a5d323.png)<br>
@@ -36,8 +42,8 @@ To get to know more details about Onion Architecture, see [here](https://marcoat
 To be honest, Onion Architecture is not fit for our application since our codebase size is small and we don't have business rules so much. But our app is made as a portfolio, so we adopted Onion Architecture so we can show how we code usually.
 
 
-## CI
-
+## CI/CD
+We use [Github Actions](https://github.com/features/actions) for CI/CD. It automatically tests, build, and deploy.
 
 # Contribution
 
