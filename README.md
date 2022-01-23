@@ -21,7 +21,8 @@ Take a look 😁 https://drello.netlify.app/
 We authenticate users by Firebase Authentication. Firebase Authentication provides an ID token. We use this ID token also to authorize a user to use proper API requests by passing the ID token together. Our API server (`drello-api`) verifies the provided ID token with Firebase Admin SDK.
 
 
-## How to Manage the Order of Cards and Columns
+## Logics
+### How to Manage the Order of Cards and Columns
 To manage the order of cards and columns, we set a number for each card and column. We named that number `position`. The bigger number of `position` is the more backward in the order. <br>
 <br>
 Let us break it down. Let's say the default number of `position` is 1024. When the first card in a column is created, it is given a `position` of 1024. Let's see the other examples.
@@ -30,7 +31,10 @@ Let us break it down. Let's say the default number of `position` is 1024. When t
 - When a card is added between two cards, it is the average of the two neighbors.
 - When the `position` of a card can't be calculated anymore (such as two cards' values get too close or the value gets too big), we re-number the positions of all cards in the column.
 
-We adopted this way to make it easier to keep the consistency of positions among other cards and avoid the calculation getting expensive.
+We adopted this way to make it easier to keep the consistency of positions among other cards and avoid the calculation getting expensive.<br>
+<br>
+You can see the position related code mainly [here](https://github.com/setunas/drello-web/blob/develop/src/features/position/position.ts)
+
 
 
 
