@@ -22,7 +22,7 @@ We authenticate users by Firebase Authentication. Firebase Authentication provid
 
 
 # About `drello-api`
-From here, we are going to explain `drello-api` specificly. If you want to see about `drello-web`, see [here](https://github.com/setunas/drello-web).
+In this section, we are going to explain `drello-api`. If you want to see about `drello-web`, see [here](https://github.com/setunas/drello-web/blob/develop/README.md#about-drello-web).
 
 ## Tech Stacks
 - Go
