@@ -8,10 +8,6 @@ import (
 	"net/http"
 )
 
-type positionResponse struct {
-	Cards []cardResponse `json:"cards"`
-}
-
 func cardPositionsHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodOptions:
