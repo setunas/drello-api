@@ -146,6 +146,43 @@ func (c Card) Update(ctx context.Context, id int, title string, description stri
 	return domainCard.New(id, title, description, position, columnId), nil
 }
 
+func (c Card) UpdatePositions(ctx context.Context, data []struct {
+	ID       int
+	Position float64
+}) error {
+	db := mysql.DBPool()
+
+	if len(data) == 0 {
+		return nil
+	}
+
+	ids := make([]interface{}, len(data))
+	placeholders := make([]interface{}, len(data)*2)
+	for i := range data {
+		ids[i] = data[i].ID
+		placeholders[i*2] = data[i].ID
+		placeholders[i*2+1] = data[i].Position
+	}
+	placeholders = append(placeholders, ids...)
+
+	sql := `
+	UPDATE cards
+	SET position = 
+	CASE id 
+	` +
+		strings.Repeat("WHEN ? THEN ? ", len(data)) +
+		`ELSE position END
+	WHERE id IN (?` + strings.Repeat(",?", len(ids)-1) + ")"
+	fmt.Println(sql)
+
+	_, err := db.Exec(sql, placeholders...)
+	if err != nil {
+		return fmt.Errorf("failed updating card positions: %w", err)
+	}
+
+	return nil
+}
+
 func (c Card) Delete(ctx context.Context, id int) error {
 	db := mysql.DBPool()
 	_, err := db.Exec("DELETE FROM cards WHERE id = ?", id)

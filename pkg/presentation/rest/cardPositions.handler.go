@@ -1,6 +1,8 @@
 package rest
 
 import (
+	"drello-api/pkg/app/usecases/cards"
+	"drello-api/pkg/infrastructure/datasource"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -16,7 +18,7 @@ func cardPositionsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodPatch:
-		_, err := verifyIDToken(r.Context(), r)
+		token, err := verifyIDToken(r.Context(), r)
 		if err != nil {
 			handleClientError(w, err, 401, "Invalid token")
 			return
@@ -33,13 +35,18 @@ func cardPositionsHandler(w http.ResponseWriter, r *http.Request) {
 		json.NewDecoder(r.Body).Decode(&body)
 		fmt.Println("body", body)
 
-		// output, err := cards.Update(r.Context(), datasource.Column{}, datasource.Card{}, datasource.User{}, cards.NewUpdateInput(id, body.Title, body.Description, body.Position, body.ColumnID, token.UID))
-		// if err != nil {
-		// 	handleClientError(w, err, 422, "An error occured during the prosess")
-		// 	return
-		// }
+		cds := []cards.CardInput{}
+		for _, card := range body.Cards {
+			cds = append(cds, *cards.NewCardInput(card.ID, card.Position))
+		}
 
-		// json.NewEncoder(w).Encode(cardResponse{ID: output.Card.ID(), Title: output.Card.Title(), Description: output.Card.Description(), Position: output.Card.Position(), ColumnId: output.Card.ColumnId()})
+		err = cards.UpdatePositions(r.Context(), datasource.Column{}, datasource.Card{}, datasource.User{}, cards.NewUpdatePositionsInput(cds, token.UID))
+		if err != nil {
+			handleClientError(w, err, 422, "An error occured during the prosess")
+			return
+		}
+
+		w.WriteHeader(200)
 		return
 	}
 

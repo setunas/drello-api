@@ -3,19 +3,18 @@ package cards
 import (
 	"context"
 	"drello-api/pkg/app/repository"
-	"drello-api/pkg/domain/card"
 	"fmt"
 )
 
-func UpdatePositions(ctx context.Context, columnRepo repository.Column, cardRepo repository.Card, userRepo repository.User, input *UpdatePositionsInput) (*UpdateOutput, error) {
+func UpdatePositions(ctx context.Context, columnRepo repository.Column, cardRepo repository.Card, userRepo repository.User, input *UpdatePositionsInput) error {
 	user, err := userRepo.GetOneByFirebaseUID(ctx, input.firebaseUID)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	columns, err := columnRepo.GetListByBoardId(ctx, user.BoardID())
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	columnMap := make(map[int]bool)
@@ -29,21 +28,30 @@ func UpdatePositions(ctx context.Context, columnRepo repository.Column, cardRepo
 	}
 	cards, err := cardRepo.GetListByIDs(ctx, cardIDs)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	for _, card := range *cards {
 		if columnMap[card.ColumnId()] != true {
-			return nil, fmt.Errorf("Invalid columnID: %d", card.ColumnId())
+			return fmt.Errorf("invalid columnID: %d", card.ColumnId())
 		}
 	}
 
-	cardDomain, err := cardRepo.Update(ctx, input.id, input.title, input.description, input.position, input.columnId)
-	if err != nil {
-		return nil, err
+	data := make([]struct {
+		ID       int
+		Position float64
+	}, len(input.cards))
+	for i, c := range input.cards {
+		data[i].ID = c.id
+		data[i].Position = c.position
 	}
 
-	return &UpdateOutput{Card: *cardDomain}, nil
+	err = cardRepo.UpdatePositions(ctx, data)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 type CardInput struct {
@@ -62,8 +70,4 @@ type UpdatePositionsInput struct {
 
 func NewUpdatePositionsInput(cards []CardInput, firebaseUID string) *UpdatePositionsInput {
 	return &UpdatePositionsInput{cards: cards, firebaseUID: firebaseUID}
-}
-
-type UpdatePositionsOutput struct {
-	Card card.Card
 }
