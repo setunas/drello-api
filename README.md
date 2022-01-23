@@ -9,8 +9,7 @@ We create Drello as our portfolio.
 # System Architecture
 ![drello-architecture](https://user-images.githubusercontent.com/12164726/150669120-874976a2-d8e2-43c3-aae4-0236bf900187.png)
 
-
-
+# Authentication & Authorization
 
 
 # File Structure
