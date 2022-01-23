@@ -3,8 +3,8 @@
 
 
 # What is Drello?
-Drello is a symple kanban web service for your todos. <br>
-We create Drello as our portfolio.
+Drello is a symple kanban web service for your todos. We created Drello as our portfolio. <br>
+Take a look 😁 https://drello.netlify.app/
 
 # Repositories for Drello
 - [`drello-api`](https://github.com/setunas/drello-api): The backend app exposes RESTful APIs connecting MySQL using Go.
