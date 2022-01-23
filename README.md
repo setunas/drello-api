@@ -23,6 +23,7 @@ We authenticate users by Firebase Authentication. Firebase Authentication provid
 
 ## Logics
 ### How to Manage the Order of Cards and Columns
+![moving-card](https://user-images.githubusercontent.com/12164726/150700002-6826c4b7-e909-4286-9538-06781c1f200a.gif)<br>
 To manage the order of cards and columns, we set a number for each card and column. We named that number `position`. The bigger number of `position` is the more backward in the order. <br>
 <br>
 Let us break it down. Let's say the default number of `position` is 1024. When the first card in a column is created, it is given a `position` of 1024. Let's see the other examples.
