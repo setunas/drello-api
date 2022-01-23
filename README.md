@@ -46,6 +46,7 @@ To be honest, Onion Architecture is not fit for our application since our codeba
 We use [Github Actions](https://github.com/features/actions) for CI/CD. It automatically tests, builds, or deploys when you push to a pull request or merge to a certain branch.
 
 # Contribution
+This section is for developers who joined us to work on developing `drello-api` together ✌️
 
 ## Get Started
 
