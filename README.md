@@ -25,10 +25,10 @@ We authenticate users by Firebase Authentication. Firebase Authentication provid
 In this section, we are going to explain `drello-api`. If you want to see about `drello-web`, see [here](https://github.com/setunas/drello-web/blob/develop/README.md#about-drello-web).
 
 ## Tech Stacks
-- Go
-- MariaDB / MySQL
-- Github Actions
-- Docker
+- [Go](https://go.dev/)
+- [MariaDB](https://mariadb.org/) / [MySQL](https://www.mysql.com/)
+- [Github Actions](https://github.com/features/actions)
+- [Docker](https://www.docker.com/)
 
 ## Software Architecture 
 ### Onion Architecture
