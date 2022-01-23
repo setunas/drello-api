@@ -1,23 +1,29 @@
 ![drello-brand-icon-192x192](https://user-images.githubusercontent.com/12164726/150669986-66933d5f-a6bc-4420-b9d7-dd48f8ad17f2.png)
 
 
-
 # What is Drello?
 Drello is a symple kanban web service for your todos. We created Drello as our portfolio. <br>
 Take a look 😁 https://drello.netlify.app/
+
 
 # Repositories for Drello
 - [`drello-api`](https://github.com/setunas/drello-api): The backend app exposes RESTful APIs connecting MySQL using Go.
 - [`drello-web`](https://github.com/setunas/drello-web): The frontend app for web mainly using React, Next.js and TypeScript.
 
+
 # System Architecture
 ![drello-architecture](https://user-images.githubusercontent.com/12164726/150669120-874976a2-d8e2-43c3-aae4-0236bf900187.png)
+
 
 # Authentication & Authorization
 We authenticate users by Firebase Authentication. Firebase Authentication provides an ID token. We use this ID token also to authorize a user to use proper API requests by passing the ID token together. Our API server (`drello-api`) verifies the provided ID token with Firebase Admin SDK.
 
 
+# `drello-api`
+From here, we are going to explain `drello-api` specificly. If you want to see about `drello-api`, see [here](https://github.com/setunas/drello-web).
+
 # File Structure
+
 
 # Contribution
 
