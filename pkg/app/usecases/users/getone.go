@@ -6,23 +6,11 @@ import (
 	userDM "drello-api/pkg/domain/user"
 )
 
-func GetOne(ctx context.Context, input *GetOneInput) (*GetOneOutput, error) {
-	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, input.firebaseUID)
+func GetOne(ctx context.Context, firebaseUID string) (*userDM.User, error) {
+	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
 	if err != nil {
 		return nil, err
 	}
 
-	return &GetOneOutput{User: userDM.New(user.ID(), user.Username(), user.BoardID(), user.FirebaseUID())}, nil
-}
-
-type GetOneInput struct {
-	firebaseUID string
-}
-
-func NewGetOneInput(firebaseUID string) *GetOneInput {
-	return &GetOneInput{firebaseUID: firebaseUID}
-}
-
-type GetOneOutput struct {
-	User *userDM.User
+	return userDM.New(user.ID(), user.Username(), user.BoardID(), user.FirebaseUID()), nil
 }

@@ -30,14 +30,14 @@ func signupHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		json.NewDecoder(r.Body).Decode(&body)
 
-		signupOutput, err := signup.Signup(r.Context(), signup.NewSignupInput(body.Username, token.UID, body.Title))
+		user, err := signup.Signup(r.Context(), body.Username, token.UID, body.Title)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured while creating a user")
 			return
 		}
 
 		w.WriteHeader(http.StatusCreated)
-		json.NewEncoder(w).Encode(signupResponse{ID: signupOutput.User.ID(), Username: signupOutput.User.Username(), BoardID: signupOutput.User.BoardID()})
+		json.NewEncoder(w).Encode(signupResponse{ID: user.ID(), Username: user.Username(), BoardID: user.BoardID()})
 		return
 	}
 

@@ -24,16 +24,16 @@ func meHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		output, err := users.GetOne(r.Context(), users.NewGetOneInput(token.UID))
+		user, err := users.GetOne(r.Context(), token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
 		}
 
 		json.NewEncoder(w).Encode(meResponse{
-			ID:       output.User.ID(),
-			Username: output.User.Username(),
-			BoardID:  output.User.BoardID(),
+			ID:       user.ID(),
+			Username: user.Username(),
+			BoardID:  user.BoardID(),
 		})
 		return
 	}

@@ -7,13 +7,13 @@ import (
 	userDM "drello-api/pkg/domain/user"
 )
 
-func Signup(ctx context.Context, input *SignupInput) (*SignupOutput, error) {
-	board, err := (*repository.BoardDS()).Create(ctx, input.title)
+func Signup(ctx context.Context, username string, firebaseUID string, title string) (*userDM.User, error) {
+	board, err := (*repository.BoardDS()).Create(ctx, title)
 	if err != nil {
 		return nil, err
 	}
 
-	user, err := (*repository.UserDS()).Create(ctx, input.username, board.ID(), input.firebaseUID)
+	user, err := (*repository.UserDS()).Create(ctx, username, board.ID(), firebaseUID)
 	if err != nil {
 		return nil, err
 	}
@@ -31,19 +31,5 @@ func Signup(ctx context.Context, input *SignupInput) (*SignupOutput, error) {
 		return nil, err
 	}
 
-	return &SignupOutput{User: *user}, nil
-}
-
-type SignupInput struct {
-	title       string
-	username    string
-	firebaseUID string
-}
-
-func NewSignupInput(username string, firebaseUID string, title string) *SignupInput {
-	return &SignupInput{username: username, firebaseUID: firebaseUID, title: title}
-}
-
-type SignupOutput struct {
-	User userDM.User
+	return user, nil
 }
