@@ -57,7 +57,7 @@ In this section, we are going to explain `drello-api`. If you want to see about 
 
 We adopted Onion Architecture for our software architecture.<br>
 <br>
-Onion Architecture is an architectural pattern that keeps maintainability with good separation of concern by splitting application codes into layers. To get to know more details about Onion Architecture, see [here](https://marcoatschaefer.medium.com/onion-architecture-explained-building-maintainable-software-54996ff8e464).<br>
+Onion Architecture is an architectural pattern that keeps maintainability with good separation of concern by splitting application codes into the layers in the image above. To get to know more details about Onion Architecture, see [here](https://marcoatschaefer.medium.com/onion-architecture-explained-building-maintainable-software-54996ff8e464).<br>
 <br>
 To be honest, Onion Architecture is not fit for our application since our codebase size is small and we don't have business rules so much. But our app is made as a portfolio, so we adopted Onion Architecture so we can show how we code usually.
 
