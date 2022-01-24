@@ -2,7 +2,6 @@ package rest
 
 import (
 	"drello-api/pkg/app/usecases/columns"
-	"drello-api/pkg/infrastructure/datasource"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -36,7 +35,7 @@ func columnsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		json.NewDecoder(r.Body).Decode(&body)
 
-		output, err := columns.Create(r.Context(), datasource.Column{}, datasource.User{}, columns.NewCreateInput(body.Title, body.Position, body.BoardId, token.UID))
+		output, err := columns.Create(r.Context(), columns.NewCreateInput(body.Title, body.Position, body.BoardId, token.UID))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
@@ -75,7 +74,7 @@ func columnHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		json.NewDecoder(r.Body).Decode(&body)
 
-		output, err := columns.Update(r.Context(), datasource.Column{}, datasource.User{}, columns.NewUpdateInput(id, body.Title, body.Position, body.BoardId, token.UID))
+		output, err := columns.Update(r.Context(), columns.NewUpdateInput(id, body.Title, body.Position, body.BoardId, token.UID))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
@@ -91,7 +90,7 @@ func columnHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = columns.Delete(r.Context(), datasource.Board{}, datasource.Column{}, datasource.User{}, columns.NewDeleteInput(id, token.UID))
+		err = columns.Delete(r.Context(), columns.NewDeleteInput(id, token.UID))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return

@@ -7,8 +7,8 @@ import (
 	"fmt"
 )
 
-func Create(ctx context.Context, columnRepo repository.Column, userRepo repository.User, input *CreateInput) (*CreateOutput, error) {
-	user, err := userRepo.GetOneByFirebaseUID(ctx, input.firebaseUID)
+func Create(ctx context.Context, input *CreateInput) (*CreateOutput, error) {
+	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, input.firebaseUID)
 	if err != nil {
 		return nil, err
 	}
@@ -16,7 +16,7 @@ func Create(ctx context.Context, columnRepo repository.Column, userRepo reposito
 		return nil, fmt.Errorf("invalid board ID: %d, user's borad ID is: %d", input.boardId, user.BoardID())
 	}
 
-	columnDomain, err := columnRepo.Create(ctx, input.title, input.position, input.boardId)
+	columnDomain, err := (*repository.ColumnDS()).Create(ctx, input.title, input.position, input.boardId)
 	if err != nil {
 		return nil, err
 	}

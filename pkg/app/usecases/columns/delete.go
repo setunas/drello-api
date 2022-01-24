@@ -7,16 +7,16 @@ import (
 	"fmt"
 )
 
-func Delete(ctx context.Context, boardRepo repository.Board, columnRepo repository.Column, userRepo repository.User, input *DeleteInput) error {
-	user, err := userRepo.GetOneByFirebaseUID(ctx, input.firebaseUID)
+func Delete(ctx context.Context, input *DeleteInput) error {
+	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, input.firebaseUID)
 	if err != nil {
 		return err
 	}
-	column, err := columnRepo.GetOneByID(ctx, input.id)
+	column, err := (*repository.ColumnDS()).GetOneByID(ctx, input.id)
 	if err != nil {
 		return err
 	}
-	board, err := boardRepo.GetOne(ctx, column.BoardId())
+	board, err := (*repository.BoardDS()).GetOne(ctx, column.BoardId())
 	if err != nil {
 		return err
 	}
@@ -24,7 +24,7 @@ func Delete(ctx context.Context, boardRepo repository.Board, columnRepo reposito
 		return fmt.Errorf("invalid board ID: %d, user's borad ID is: %d", board.ID(), user.BoardID())
 	}
 
-	err = columnRepo.Delete(ctx, input.id)
+	err = (*repository.ColumnDS()).Delete(ctx, input.id)
 	if err != nil {
 		return err
 	}

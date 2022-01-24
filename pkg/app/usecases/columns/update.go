@@ -7,15 +7,15 @@ import (
 	"fmt"
 )
 
-func Update(ctx context.Context, columnRepo repository.Column, userRepo repository.User, input *UpdateInput) (*UpdateOutput, error) {
-	user, err := userRepo.GetOneByFirebaseUID(ctx, input.firebaseUID)
+func Update(ctx context.Context, input *UpdateInput) (*UpdateOutput, error) {
+	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, input.firebaseUID)
 	if err != nil {
 		return nil, err
 	}
 	if user.BoardID() != input.boardId {
 		return nil, fmt.Errorf("invalid board ID that you are changing to: %d, user's borad ID is: %d", input.boardId, user.BoardID())
 	}
-	column, err := columnRepo.GetOneByID(ctx, input.id)
+	column, err := (*repository.ColumnDS()).GetOneByID(ctx, input.id)
 	if err != nil {
 		return nil, err
 	}
@@ -23,7 +23,7 @@ func Update(ctx context.Context, columnRepo repository.Column, userRepo reposito
 		return nil, fmt.Errorf("invalid board ID that you are changing from: %d, user's borad ID is: %d", column.BoardId(), user.BoardID())
 	}
 
-	columnDomain, err := columnRepo.Update(ctx, input.id, input.title, input.position, input.boardId)
+	columnDomain, err := (*repository.ColumnDS()).Update(ctx, input.id, input.title, input.position, input.boardId)
 	if err != nil {
 		return nil, err
 	}
