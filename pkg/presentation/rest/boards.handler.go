@@ -35,7 +35,7 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 			handleClientError(w, err, 401, "Invalid token")
 			return
 		}
-		output, err := boards.GetOne(r.Context(), datasource.Board{}, datasource.Column{}, datasource.Card{}, datasource.User{}, boards.NewGetOneInput(id, token.UID))
+		ucBoard, ucColumns, ucCards, err := boards.GetOne(r.Context(), datasource.Board{}, datasource.Column{}, datasource.Card{}, datasource.User{}, id, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
@@ -44,7 +44,7 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 		columns := []columnResponse{}
 		cards := []cardResponse{}
 
-		for _, column := range output.Columns {
+		for _, column := range ucColumns {
 			columns = append(columns, columnResponse{
 				ID:       column.ID(),
 				Title:    column.Title(),
@@ -52,7 +52,7 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 				BoardId:  column.BoardId(),
 			})
 		}
-		for _, card := range output.Cards {
+		for _, card := range ucCards {
 			cards = append(cards, cardResponse{
 				ID:          card.ID(),
 				Title:       card.Title(),
@@ -63,8 +63,8 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		json.NewEncoder(w).Encode(boardResponse{
-			ID:      output.Board.ID(),
-			Title:   output.Board.Title(),
+			ID:      ucBoard.ID(),
+			Title:   ucBoard.Title(),
 			Columns: columns,
 			Cards:   cards,
 		})
@@ -82,13 +82,13 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		json.NewDecoder(r.Body).Decode(&body)
 
-		output, err := boards.Update(r.Context(), datasource.Board{}, datasource.User{}, boards.NewUpdateInput(id, body.Title, token.UID))
+		ucBoard, err := boards.Update(r.Context(), datasource.Board{}, datasource.User{}, id, body.Title, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
 		}
 
-		json.NewEncoder(w).Encode(boardResponse{ID: output.Board.ID(), Title: output.Board.Title()})
+		json.NewEncoder(w).Encode(boardResponse{ID: ucBoard.ID(), Title: ucBoard.Title()})
 		return
 	}
 

@@ -6,23 +6,11 @@ import (
 	boardDomain "drello-api/pkg/domain/board"
 )
 
-func Create(ctx context.Context, boardRepo repository.Board, input *CreateInput) (*CreateOutput, error) {
-	board, err := boardRepo.Create(ctx, input.title)
+func Create(ctx context.Context, boardRepo repository.Board, title string) (*boardDomain.Board, error) {
+	board, err := boardRepo.Create(ctx, title)
 	if err != nil {
 		return nil, err
 	}
 
-	return &CreateOutput{Board: *board}, nil
-}
-
-type CreateInput struct {
-	title string
-}
-
-func NewCreateInput(title string) *CreateInput {
-	return &CreateInput{title: title}
-}
-
-type CreateOutput struct {
-	Board boardDomain.Board
+	return board, nil
 }

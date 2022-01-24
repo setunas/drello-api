@@ -9,23 +9,23 @@ import (
 	"fmt"
 )
 
-func GetOne(ctx context.Context, boardRepo repository.Board, columnRepo repository.Column, cardRepo repository.Card, userRepo repository.User, input *GetOneInput) (*GetOneOutput, error) {
-	user, err := userRepo.GetOneByFirebaseUID(ctx, input.firebaseUID)
+func GetOne(ctx context.Context, boardRepo repository.Board, columnRepo repository.Column, cardRepo repository.Card, userRepo repository.User, id int, firebaseUID string) (*boardDomain.Board, []*columnDomain.Column, []*cardDomain.Card, error) {
+	user, err := userRepo.GetOneByFirebaseUID(ctx, firebaseUID)
 	if err != nil {
-		return nil, err
+		return nil, nil, nil, err
 	}
-	if user.BoardID() != input.id {
-		return nil, fmt.Errorf("not a valid request with firebase UID: %s, and board id: %d", input.firebaseUID, input.id)
+	if user.BoardID() != id {
+		return nil, nil, nil, fmt.Errorf("not a valid request with firebase UID: %s, and board id: %d", firebaseUID, id)
 	}
 
-	board, err := boardRepo.GetOne(ctx, input.id)
+	board, err := boardRepo.GetOne(ctx, id)
 	if err != nil {
-		return nil, err
+		return nil, nil, nil, err
 	}
 
 	columns, err := columnRepo.GetListByBoardId(ctx, board.ID())
 	if err != nil {
-		return nil, err
+		return nil, nil, nil, err
 	}
 
 	columnIds := []int{}
@@ -34,23 +34,8 @@ func GetOne(ctx context.Context, boardRepo repository.Board, columnRepo reposito
 	}
 	cards, err := cardRepo.GetListByColumnIds(ctx, columnIds)
 	if err != nil {
-		return nil, err
+		return nil, nil, nil, err
 	}
 
-	return &GetOneOutput{Board: boardDomain.New(board.ID(), board.Title()), Columns: columns, Cards: cards}, nil
-}
-
-type GetOneInput struct {
-	id          int
-	firebaseUID string
-}
-
-func NewGetOneInput(id int, firebaseUID string) *GetOneInput {
-	return &GetOneInput{id: id, firebaseUID: firebaseUID}
-}
-
-type GetOneOutput struct {
-	Board   *boardDomain.Board
-	Columns []*columnDomain.Column
-	Cards   []*cardDomain.Card
+	return boardDomain.New(board.ID(), board.Title()), columns, cards, nil
 }
