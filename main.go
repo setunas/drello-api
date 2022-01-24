@@ -11,6 +11,13 @@ import (
 )
 
 func main() {
+	setupDB()
+	setupDataSources()
+	firebase.InitApp()
+	rest.HandleRequests()
+}
+
+func setupDB() {
 	var (
 		dbUser    = utils.MustGetenv("DB_USER")     // e.g. 'my-db-user'
 		dbPwd     = utils.MustGetenv("DB_PASS")     // e.g. 'my-db-password'
@@ -23,12 +30,11 @@ func main() {
 	if err != nil {
 		log.Println(err)
 	}
+}
 
+func setupDataSources() {
 	repository.SetBoardDS(datasource.Board{})
 	repository.SetColumnDS(datasource.Column{})
 	repository.SetCardDS(datasource.Card{})
 	repository.SetUserDS(datasource.User{})
-
-	firebase.InitApp()
-	rest.HandleRequests()
 }
