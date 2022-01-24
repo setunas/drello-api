@@ -35,14 +35,14 @@ func columnsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		json.NewDecoder(r.Body).Decode(&body)
 
-		output, err := columns.Create(r.Context(), columns.NewCreateInput(body.Title, body.Position, body.BoardId, token.UID))
+		column, err := columns.Create(r.Context(), body.Title, body.Position, body.BoardId, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
 		}
 
 		w.WriteHeader(http.StatusCreated)
-		json.NewEncoder(w).Encode(columnResponse{ID: output.Column.ID(), Title: output.Column.Title(), Position: output.Column.Positon(), BoardId: output.Column.BoardId()})
+		json.NewEncoder(w).Encode(columnResponse{ID: column.ID(), Title: column.Title(), Position: column.Positon(), BoardId: column.BoardId()})
 		return
 	}
 
@@ -74,13 +74,13 @@ func columnHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		json.NewDecoder(r.Body).Decode(&body)
 
-		output, err := columns.Update(r.Context(), columns.NewUpdateInput(id, body.Title, body.Position, body.BoardId, token.UID))
+		column, err := columns.Update(r.Context(), id, body.Title, body.Position, body.BoardId, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
 		}
 
-		json.NewEncoder(w).Encode(columnResponse{ID: output.Column.ID(), Title: output.Column.Title(), Position: output.Column.Positon(), BoardId: output.Column.BoardId()})
+		json.NewEncoder(w).Encode(columnResponse{ID: column.ID(), Title: column.Title(), Position: column.Positon(), BoardId: column.BoardId()})
 		return
 
 	case http.MethodDelete:
@@ -90,7 +90,7 @@ func columnHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = columns.Delete(r.Context(), columns.NewDeleteInput(id, token.UID))
+		err = columns.Delete(r.Context(), id, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return

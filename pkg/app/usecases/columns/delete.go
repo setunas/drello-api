@@ -3,16 +3,15 @@ package columns
 import (
 	"context"
 	"drello-api/pkg/app/repository"
-	"drello-api/pkg/domain/column"
 	"fmt"
 )
 
-func Delete(ctx context.Context, input *DeleteInput) error {
-	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, input.firebaseUID)
+func Delete(ctx context.Context, id int, firebaseUID string) error {
+	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
 	if err != nil {
 		return err
 	}
-	column, err := (*repository.ColumnDS()).GetOneByID(ctx, input.id)
+	column, err := (*repository.ColumnDS()).GetOneByID(ctx, id)
 	if err != nil {
 		return err
 	}
@@ -24,23 +23,10 @@ func Delete(ctx context.Context, input *DeleteInput) error {
 		return fmt.Errorf("invalid board ID: %d, user's borad ID is: %d", board.ID(), user.BoardID())
 	}
 
-	err = (*repository.ColumnDS()).Delete(ctx, input.id)
+	err = (*repository.ColumnDS()).Delete(ctx, id)
 	if err != nil {
 		return err
 	}
 
 	return nil
-}
-
-type DeleteInput struct {
-	id          int
-	firebaseUID string
-}
-
-func NewDeleteInput(id int, firebaseUID string) *DeleteInput {
-	return &DeleteInput{id: id, firebaseUID: firebaseUID}
-}
-
-type DeleteOutput struct {
-	Column column.Column
 }
