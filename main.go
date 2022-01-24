@@ -1,6 +1,8 @@
 package main
 
 import (
+	"drello-api/pkg/app/repository"
+	"drello-api/pkg/infrastructure/datasource"
 	"drello-api/pkg/infrastructure/mysql"
 	"drello-api/pkg/presentation/rest"
 	"drello-api/pkg/utils"
@@ -21,6 +23,11 @@ func main() {
 	if err != nil {
 		log.Println(err)
 	}
+
+	repository.SetBoardDS(datasource.Board{})
+	repository.SetColumnDS(datasource.Column{})
+	repository.SetCardDS(datasource.Card{})
+	repository.SetUserDS(datasource.User{})
 
 	firebase.InitApp()
 	rest.HandleRequests()

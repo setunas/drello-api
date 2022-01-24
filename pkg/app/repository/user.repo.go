@@ -10,12 +10,12 @@ type User interface {
 	Create(ctx context.Context, username string, boardID int, firebaseUID string) (*user.User, error)
 }
 
-var userDS User
+var userDS *User
 
-func SetUserDS(ds *User) {
-	userDS = *ds
+func SetUserDS(ds User) {
+	userDS = &ds
 }
 
 func UserDS() *User {
-	return &userDS
+	return userDS
 }

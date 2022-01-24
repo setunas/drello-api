@@ -18,12 +18,12 @@ type Card interface {
 	Delete(ctx context.Context, id int) error
 }
 
-var cardDS Card
+var cardDS *Card
 
-func SetCardDS(ds *Card) {
-	cardDS = *ds
+func SetCardDS(ds Card) {
+	cardDS = &ds
 }
 
 func CardDS() *Card {
-	return &cardDS
+	return cardDS
 }

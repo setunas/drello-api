@@ -11,12 +11,12 @@ type Board interface {
 	Update(ctx context.Context, id int, title string) (*board.Board, error)
 }
 
-var boardDS Board
+var boardDS *Board
 
-func SetBoardDS(ds *Board) {
-	boardDS = *ds
+func SetBoardDS(ds Board) {
+	boardDS = &ds
 }
 
 func BoardDS() *Board {
-	return &boardDS
+	return boardDS
 }

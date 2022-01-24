@@ -13,12 +13,12 @@ type Column interface {
 	Delete(ctx context.Context, id int) error
 }
 
-var columnDS Column
+var columnDS *Column
 
-func SetColumnDS(ds *Column) {
-	columnDS = *ds
+func SetColumnDS(ds Column) {
+	columnDS = &ds
 }
 
 func ColumnDS() *Column {
-	return &columnDS
+	return columnDS
 }
