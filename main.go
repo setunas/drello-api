@@ -28,7 +28,7 @@ func setupDB() {
 
 	err := mysql.Open(dbUser, dbPwd, dbTCPHost, dbPort, dbName)
 	if err != nil {
-		log.Println(err)
+		log.Fatal(err)
 	}
 }
 

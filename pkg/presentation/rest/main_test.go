@@ -23,7 +23,7 @@ func TestMain(m *testing.M) {
 
 	err := mysql.Open(dbUser, dbPwd, dbTCPHost, dbPort, dbName)
 	if err != nil {
-		log.Println(err)
+		log.Fatal(err)
 	}
 
 	router = mux.NewRouter()
