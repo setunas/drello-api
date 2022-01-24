@@ -17,3 +17,13 @@ type Card interface {
 	}) error
 	Delete(ctx context.Context, id int) error
 }
+
+var cardDS Card
+
+func SetCardDS(ds *Card) {
+	cardDS = *ds
+}
+
+func CardDS() *Card {
+	return &cardDS
+}

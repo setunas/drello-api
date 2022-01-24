@@ -10,3 +10,13 @@ type Board interface {
 	Create(ctx context.Context, title string) (*board.Board, error)
 	Update(ctx context.Context, id int, title string) (*board.Board, error)
 }
+
+var boardDS Board
+
+func SetBoardDS(ds *Board) {
+	boardDS = *ds
+}
+
+func BoardDS() *Board {
+	return &boardDS
+}

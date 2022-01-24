@@ -12,3 +12,13 @@ type Column interface {
 	Update(ctx context.Context, id int, title string, position float64, boardId int) (*column.Column, error)
 	Delete(ctx context.Context, id int) error
 }
+
+var columnDS Column
+
+func SetColumnDS(ds *Column) {
+	columnDS = *ds
+}
+
+func ColumnDS() *Column {
+	return &columnDS
+}
