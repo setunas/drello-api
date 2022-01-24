@@ -9,8 +9,8 @@ import (
 	"fmt"
 )
 
-func GetOne(ctx context.Context, boardRepo repository.Board, columnRepo repository.Column, cardRepo repository.Card, userRepo repository.User, id int, firebaseUID string) (*boardDomain.Board, []*columnDomain.Column, []*cardDomain.Card, error) {
-	user, err := userRepo.GetOneByFirebaseUID(ctx, firebaseUID)
+func GetOne(ctx context.Context, id int, firebaseUID string) (*boardDomain.Board, []*columnDomain.Column, []*cardDomain.Card, error) {
+	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -18,12 +18,12 @@ func GetOne(ctx context.Context, boardRepo repository.Board, columnRepo reposito
 		return nil, nil, nil, fmt.Errorf("not a valid request with firebase UID: %s, and board id: %d", firebaseUID, id)
 	}
 
-	board, err := boardRepo.GetOne(ctx, id)
+	board, err := (*repository.BoardDS()).GetOne(ctx, id)
 	if err != nil {
 		return nil, nil, nil, err
 	}
 
-	columns, err := columnRepo.GetListByBoardId(ctx, board.ID())
+	columns, err := (*repository.ColumnDS()).GetListByBoardId(ctx, board.ID())
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -32,7 +32,7 @@ func GetOne(ctx context.Context, boardRepo repository.Board, columnRepo reposito
 	for _, column := range columns {
 		columnIds = append(columnIds, column.ID())
 	}
-	cards, err := cardRepo.GetListByColumnIds(ctx, columnIds)
+	cards, err := (*repository.CardDS()).GetListByColumnIds(ctx, columnIds)
 	if err != nil {
 		return nil, nil, nil, err
 	}

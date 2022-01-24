@@ -6,8 +6,8 @@ import (
 	boardDomain "drello-api/pkg/domain/board"
 )
 
-func Create(ctx context.Context, boardRepo repository.Board, title string) (*boardDomain.Board, error) {
-	board, err := boardRepo.Create(ctx, title)
+func Create(ctx context.Context, title string) (*boardDomain.Board, error) {
+	board, err := (*repository.BoardDS()).Create(ctx, title)
 	if err != nil {
 		return nil, err
 	}
