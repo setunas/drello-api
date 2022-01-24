@@ -28,7 +28,7 @@ func (c Column) GetOneByID(ctx context.Context, id int) (*domainColumn.Column, e
 	}
 }
 
-func (c Column) GetListByBoardId(ctx context.Context, boardId int) (*[]*domainColumn.Column, error) {
+func (c Column) GetListByBoardId(ctx context.Context, boardId int) ([]*domainColumn.Column, error) {
 	db := mysql.DBPool()
 	rows, err := db.Query("SELECT id, title, position FROM columns WHERE board_id = ?", boardId)
 	if err != nil {
@@ -56,7 +56,7 @@ func (c Column) GetListByBoardId(ctx context.Context, boardId int) (*[]*domainCo
 		return nil, fmt.Errorf("failed querying columns: %w", err)
 	}
 
-	return &columns, nil
+	return columns, nil
 }
 
 func (c Column) Create(ctx context.Context, title string, position float64, boardId int) (*domainColumn.Column, error) {

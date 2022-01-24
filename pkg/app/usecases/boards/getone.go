@@ -29,7 +29,7 @@ func GetOne(ctx context.Context, boardRepo repository.Board, columnRepo reposito
 	}
 
 	columnIds := []int{}
-	for _, column := range *columns {
+	for _, column := range columns {
 		columnIds = append(columnIds, column.ID())
 	}
 	cards, err := cardRepo.GetListByColumnIds(ctx, columnIds)
@@ -37,7 +37,7 @@ func GetOne(ctx context.Context, boardRepo repository.Board, columnRepo reposito
 		return nil, err
 	}
 
-	return &GetOneOutput{Board: boardDomain.New(board.ID(), board.Title()), Columns: *columns, Cards: *cards}, nil
+	return &GetOneOutput{Board: boardDomain.New(board.ID(), board.Title()), Columns: columns, Cards: cards}, nil
 }
 
 type GetOneInput struct {

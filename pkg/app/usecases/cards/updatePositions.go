@@ -18,7 +18,7 @@ func UpdatePositions(ctx context.Context, columnRepo repository.Column, cardRepo
 	}
 
 	columnMap := make(map[int]bool)
-	for _, column := range *columns {
+	for _, column := range columns {
 		columnMap[column.ID()] = true
 	}
 
@@ -31,7 +31,7 @@ func UpdatePositions(ctx context.Context, columnRepo repository.Column, cardRepo
 		return err
 	}
 
-	for _, card := range *cards {
+	for _, card := range cards {
 		if columnMap[card.ColumnId()] != true {
 			return fmt.Errorf("invalid columnID: %d", card.ColumnId())
 		}

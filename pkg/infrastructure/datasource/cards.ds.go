@@ -30,13 +30,13 @@ func (c Card) GetOneByID(ctx context.Context, id int) (*domainCard.Card, error) 
 	}
 }
 
-func (c Card) GetListByIDs(ctx context.Context, ids []int) (*[]*domainCard.Card, error) {
+func (c Card) GetListByIDs(ctx context.Context, ids []int) ([]*domainCard.Card, error) {
 	db := mysql.DBPool()
 
 	cards := []*domainCard.Card{}
 
 	if len(ids) == 0 {
-		return &cards, nil
+		return cards, nil
 	}
 
 	args := make([]interface{}, len(ids))
@@ -72,16 +72,16 @@ func (c Card) GetListByIDs(ctx context.Context, ids []int) (*[]*domainCard.Card,
 		return nil, fmt.Errorf("failed querying cards: %w", err)
 	}
 
-	return &cards, nil
+	return cards, nil
 }
 
-func (c Card) GetListByColumnIds(ctx context.Context, columnIds []int) (*[]*domainCard.Card, error) {
+func (c Card) GetListByColumnIds(ctx context.Context, columnIds []int) ([]*domainCard.Card, error) {
 	db := mysql.DBPool()
 
 	cards := []*domainCard.Card{}
 
 	if len(columnIds) == 0 {
-		return &cards, nil
+		return cards, nil
 	}
 
 	args := make([]interface{}, len(columnIds))
@@ -117,7 +117,7 @@ func (c Card) GetListByColumnIds(ctx context.Context, columnIds []int) (*[]*doma
 		return nil, fmt.Errorf("failed querying cards: %w", err)
 	}
 
-	return &cards, nil
+	return cards, nil
 }
 
 func (c Card) Create(ctx context.Context, title string, description string, position float64, columnId int) (*domainCard.Card, error) {
