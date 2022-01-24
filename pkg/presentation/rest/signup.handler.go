@@ -2,7 +2,6 @@ package rest
 
 import (
 	"drello-api/pkg/app/usecases/signup"
-	"drello-api/pkg/infrastructure/datasource"
 	"encoding/json"
 	"net/http"
 )
@@ -31,7 +30,7 @@ func signupHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		json.NewDecoder(r.Body).Decode(&body)
 
-		signupOutput, err := signup.Signup(r.Context(), datasource.User{}, datasource.Board{}, datasource.Column{}, signup.NewSignupInput(body.Username, token.UID, body.Title))
+		signupOutput, err := signup.Signup(r.Context(), signup.NewSignupInput(body.Username, token.UID, body.Title))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured while creating a user")
 			return

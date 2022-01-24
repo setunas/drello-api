@@ -6,8 +6,8 @@ import (
 	userDM "drello-api/pkg/domain/user"
 )
 
-func Create(ctx context.Context, userRepo repository.User, input *CreateInput) (*CreateOutput, error) {
-	user, err := userRepo.Create(ctx, input.username, input.boardID, input.firebaseUID)
+func Create(ctx context.Context, input *CreateInput) (*CreateOutput, error) {
+	user, err := (*repository.UserDS()).Create(ctx, input.username, input.boardID, input.firebaseUID)
 	if err != nil {
 		return nil, err
 	}

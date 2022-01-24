@@ -7,26 +7,26 @@ import (
 	userDM "drello-api/pkg/domain/user"
 )
 
-func Signup(ctx context.Context, userRepo repository.User, boardRepo repository.Board, columnRepo repository.Column, input *SignupInput) (*SignupOutput, error) {
-	board, err := boardRepo.Create(ctx, input.title)
+func Signup(ctx context.Context, input *SignupInput) (*SignupOutput, error) {
+	board, err := (*repository.BoardDS()).Create(ctx, input.title)
 	if err != nil {
 		return nil, err
 	}
 
-	user, err := userRepo.Create(ctx, input.username, board.ID(), input.firebaseUID)
+	user, err := (*repository.UserDS()).Create(ctx, input.username, board.ID(), input.firebaseUID)
 	if err != nil {
 		return nil, err
 	}
 
-	_, err = columnRepo.Create(ctx, "Todo", columnDM.InitialPositionGap()*1, board.ID())
+	_, err = (*repository.ColumnDS()).Create(ctx, "Todo", columnDM.InitialPositionGap()*1, board.ID())
 	if err != nil {
 		return nil, err
 	}
-	_, err = columnRepo.Create(ctx, "Doing", columnDM.InitialPositionGap()*2, board.ID())
+	_, err = (*repository.ColumnDS()).Create(ctx, "Doing", columnDM.InitialPositionGap()*2, board.ID())
 	if err != nil {
 		return nil, err
 	}
-	_, err = columnRepo.Create(ctx, "Done", columnDM.InitialPositionGap()*3, board.ID())
+	_, err = (*repository.ColumnDS()).Create(ctx, "Done", columnDM.InitialPositionGap()*3, board.ID())
 	if err != nil {
 		return nil, err
 	}

@@ -2,7 +2,6 @@ package rest
 
 import (
 	"drello-api/pkg/app/usecases/users"
-	"drello-api/pkg/infrastructure/datasource"
 	"encoding/json"
 	"net/http"
 )
@@ -25,7 +24,7 @@ func meHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		output, err := users.GetOne(r.Context(), datasource.User{}, users.NewGetOneInput(token.UID))
+		output, err := users.GetOne(r.Context(), users.NewGetOneInput(token.UID))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
