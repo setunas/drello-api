@@ -14,20 +14,18 @@ type meResponse struct {
 }
 
 func meHandler(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
 	switch r.Method {
 	case http.MethodOptions:
 		return
 
 	case http.MethodGet:
-		token, err := verifyIDToken(ctx, r)
+		token, err := verifyIDToken(r.Context(), r)
 		if err != nil {
 			handleClientError(w, err, 401, "Invalid token")
 			return
 		}
 
-		output, err := users.GetOne(ctx, datasource.User{}, users.NewGetOneInput(token.UID))
+		output, err := users.GetOne(r.Context(), datasource.User{}, users.NewGetOneInput(token.UID))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return

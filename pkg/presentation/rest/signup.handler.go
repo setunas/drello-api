@@ -14,14 +14,12 @@ type signupResponse struct {
 }
 
 func signupHandler(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
 	switch r.Method {
 	case http.MethodOptions:
 		return
 
 	case http.MethodPost:
-		token, err := verifyIDToken(ctx, r)
+		token, err := verifyIDToken(r.Context(), r)
 		if err != nil {
 			handleClientError(w, err, 401, "Invalid token")
 			return

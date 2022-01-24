@@ -18,7 +18,6 @@ type boardResponse struct {
 }
 
 func boardHandler(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
@@ -31,12 +30,12 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodGet:
-		token, err := verifyIDToken(ctx, r)
+		token, err := verifyIDToken(r.Context(), r)
 		if err != nil {
 			handleClientError(w, err, 401, "Invalid token")
 			return
 		}
-		output, err := boards.GetOne(ctx, datasource.Board{}, datasource.Column{}, datasource.Card{}, datasource.User{}, boards.NewGetOneInput(id, token.UID))
+		output, err := boards.GetOne(r.Context(), datasource.Board{}, datasource.Column{}, datasource.Card{}, datasource.User{}, boards.NewGetOneInput(id, token.UID))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
@@ -72,7 +71,7 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodPatch:
-		token, err := verifyIDToken(ctx, r)
+		token, err := verifyIDToken(r.Context(), r)
 		if err != nil {
 			handleClientError(w, err, 401, "Invalid token")
 			return
@@ -83,7 +82,7 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		json.NewDecoder(r.Body).Decode(&body)
 
-		output, err := boards.Update(ctx, datasource.Board{}, datasource.User{}, boards.NewUpdateInput(id, body.Title, token.UID))
+		output, err := boards.Update(r.Context(), datasource.Board{}, datasource.User{}, boards.NewUpdateInput(id, body.Title, token.UID))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
