@@ -6,13 +6,13 @@ import (
 	"fmt"
 )
 
-func UpdatePositions(ctx context.Context, columnRepo repository.Column, cardRepo repository.Card, userRepo repository.User, input *UpdatePositionsInput) error {
-	user, err := userRepo.GetOneByFirebaseUID(ctx, input.firebaseUID)
+func UpdatePositions(ctx context.Context, input *UpdatePositionsInput) error {
+	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, input.firebaseUID)
 	if err != nil {
 		return err
 	}
 
-	columns, err := columnRepo.GetListByBoardId(ctx, user.BoardID())
+	columns, err := (*repository.ColumnDS()).GetListByBoardId(ctx, user.BoardID())
 	if err != nil {
 		return err
 	}
@@ -26,7 +26,7 @@ func UpdatePositions(ctx context.Context, columnRepo repository.Column, cardRepo
 	for _, card := range input.cards {
 		cardIDs = append(cardIDs, card.id)
 	}
-	cards, err := cardRepo.GetListByIDs(ctx, cardIDs)
+	cards, err := (*repository.CardDS()).GetListByIDs(ctx, cardIDs)
 	if err != nil {
 		return err
 	}
@@ -46,7 +46,7 @@ func UpdatePositions(ctx context.Context, columnRepo repository.Column, cardRepo
 		data[i].Position = c.position
 	}
 
-	err = cardRepo.UpdatePositions(ctx, data)
+	err = (*repository.CardDS()).UpdatePositions(ctx, data)
 	if err != nil {
 		return err
 	}

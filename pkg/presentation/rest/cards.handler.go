@@ -2,7 +2,6 @@ package rest
 
 import (
 	"drello-api/pkg/app/usecases/cards"
-	"drello-api/pkg/infrastructure/datasource"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -40,7 +39,7 @@ func cardsHandler(w http.ResponseWriter, r *http.Request) {
 		json.NewDecoder(r.Body).Decode(&body)
 		fmt.Println("body", body)
 
-		output, err := cards.Create(r.Context(), datasource.Column{}, datasource.Card{}, datasource.User{}, cards.NewCreateInput(body.Title, body.Description, body.Position, body.ColumnID, token.UID))
+		output, err := cards.Create(r.Context(), cards.NewCreateInput(body.Title, body.Description, body.Position, body.ColumnID, token.UID))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
@@ -82,7 +81,7 @@ func cardHandler(w http.ResponseWriter, r *http.Request) {
 		json.NewDecoder(r.Body).Decode(&body)
 		fmt.Println("body", body)
 
-		output, err := cards.Update(r.Context(), datasource.Column{}, datasource.Card{}, datasource.User{}, cards.NewUpdateInput(id, body.Title, body.Description, body.Position, body.ColumnID, token.UID))
+		output, err := cards.Update(r.Context(), cards.NewUpdateInput(id, body.Title, body.Description, body.Position, body.ColumnID, token.UID))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
@@ -98,7 +97,7 @@ func cardHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = cards.Delete(r.Context(), datasource.Column{}, datasource.Card{}, datasource.User{}, cards.NewDeleteInput(id, token.UID))
+		err = cards.Delete(r.Context(), cards.NewDeleteInput(id, token.UID))
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return

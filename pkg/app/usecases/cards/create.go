@@ -7,12 +7,12 @@ import (
 	"fmt"
 )
 
-func Create(ctx context.Context, columnRepo repository.Column, cardRepo repository.Card, userRepo repository.User, input *CreateInput) (*CreateOutput, error) {
-	user, err := userRepo.GetOneByFirebaseUID(ctx, input.firebaseUID)
+func Create(ctx context.Context, input *CreateInput) (*CreateOutput, error) {
+	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, input.firebaseUID)
 	if err != nil {
 		return nil, err
 	}
-	column, err := columnRepo.GetOneByID(ctx, input.columnId)
+	column, err := (*repository.ColumnDS()).GetOneByID(ctx, input.columnId)
 	if err != nil {
 		return nil, err
 	}
@@ -20,7 +20,7 @@ func Create(ctx context.Context, columnRepo repository.Column, cardRepo reposito
 		return nil, fmt.Errorf("invalid board ID: %d, user's borad ID is: %d", column.BoardId(), user.BoardID())
 	}
 	fmt.Println("position", input.position)
-	cardDomain, err := cardRepo.Create(ctx, input.title, input.description, input.position, input.columnId)
+	cardDomain, err := (*repository.CardDS()).Create(ctx, input.title, input.description, input.position, input.columnId)
 	if err != nil {
 		return nil, err
 	}
