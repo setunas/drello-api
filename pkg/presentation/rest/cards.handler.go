@@ -39,14 +39,14 @@ func cardsHandler(w http.ResponseWriter, r *http.Request) {
 		json.NewDecoder(r.Body).Decode(&body)
 		fmt.Println("body", body)
 
-		output, err := cards.Create(r.Context(), cards.NewCreateInput(body.Title, body.Description, body.Position, body.ColumnID, token.UID))
+		ucCard, err := cards.Create(r.Context(), body.Title, body.Description, body.Position, body.ColumnID, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
 		}
 
 		w.WriteHeader(http.StatusCreated)
-		json.NewEncoder(w).Encode(cardResponse{ID: output.Card.ID(), Title: output.Card.Title(), Description: output.Card.Description(), Position: output.Card.Position(), ColumnId: output.Card.ColumnId()})
+		json.NewEncoder(w).Encode(cardResponse{ID: ucCard.ID(), Title: ucCard.Title(), Description: ucCard.Description(), Position: ucCard.Position(), ColumnId: ucCard.ColumnId()})
 		return
 	}
 
@@ -81,13 +81,13 @@ func cardHandler(w http.ResponseWriter, r *http.Request) {
 		json.NewDecoder(r.Body).Decode(&body)
 		fmt.Println("body", body)
 
-		output, err := cards.Update(r.Context(), cards.NewUpdateInput(id, body.Title, body.Description, body.Position, body.ColumnID, token.UID))
+		ucCard, err := cards.Update(r.Context(), id, body.Title, body.Description, body.Position, body.ColumnID, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
 		}
 
-		json.NewEncoder(w).Encode(cardResponse{ID: output.Card.ID(), Title: output.Card.Title(), Description: output.Card.Description(), Position: output.Card.Position(), ColumnId: output.Card.ColumnId()})
+		json.NewEncoder(w).Encode(cardResponse{ID: ucCard.ID(), Title: ucCard.Title(), Description: ucCard.Description(), Position: ucCard.Position(), ColumnId: ucCard.ColumnId()})
 		return
 
 	case http.MethodDelete:
@@ -97,7 +97,7 @@ func cardHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = cards.Delete(r.Context(), cards.NewDeleteInput(id, token.UID))
+		err = cards.Delete(r.Context(), id, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return

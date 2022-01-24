@@ -30,12 +30,12 @@ func cardPositionsHandler(w http.ResponseWriter, r *http.Request) {
 		json.NewDecoder(r.Body).Decode(&body)
 		fmt.Println("body", body)
 
-		cds := []cards.CardInput{}
+		inputCards := []cards.InputCard{}
 		for _, card := range body.Cards {
-			cds = append(cds, *cards.NewCardInput(card.ID, card.Position))
+			inputCards = append(inputCards, *cards.NewInputCard(card.ID, card.Position))
 		}
 
-		err = cards.UpdatePositions(r.Context(), cards.NewUpdatePositionsInput(cds, token.UID))
+		err = cards.UpdatePositions(r.Context(), inputCards, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return

@@ -6,8 +6,8 @@ import (
 	"fmt"
 )
 
-func UpdatePositions(ctx context.Context, input *UpdatePositionsInput) error {
-	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, input.firebaseUID)
+func UpdatePositions(ctx context.Context, inputCards []InputCard, firebaseUID string) error {
+	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
 	if err != nil {
 		return err
 	}
@@ -22,8 +22,8 @@ func UpdatePositions(ctx context.Context, input *UpdatePositionsInput) error {
 		columnMap[column.ID()] = true
 	}
 
-	cardIDs := make([]int, len(input.cards))
-	for _, card := range input.cards {
+	cardIDs := make([]int, len(inputCards))
+	for _, card := range inputCards {
 		cardIDs = append(cardIDs, card.id)
 	}
 	cards, err := (*repository.CardDS()).GetListByIDs(ctx, cardIDs)
@@ -40,8 +40,8 @@ func UpdatePositions(ctx context.Context, input *UpdatePositionsInput) error {
 	data := make([]struct {
 		ID       int
 		Position float64
-	}, len(input.cards))
-	for i, c := range input.cards {
+	}, len(inputCards))
+	for i, c := range inputCards {
 		data[i].ID = c.id
 		data[i].Position = c.position
 	}
@@ -54,20 +54,11 @@ func UpdatePositions(ctx context.Context, input *UpdatePositionsInput) error {
 	return nil
 }
 
-type CardInput struct {
+type InputCard struct {
 	id       int
 	position float64
 }
 
-func NewCardInput(id int, position float64) *CardInput {
-	return &CardInput{id: id, position: position}
-}
-
-type UpdatePositionsInput struct {
-	cards       []CardInput
-	firebaseUID string
-}
-
-func NewUpdatePositionsInput(cards []CardInput, firebaseUID string) *UpdatePositionsInput {
-	return &UpdatePositionsInput{cards: cards, firebaseUID: firebaseUID}
+func NewInputCard(id int, position float64) *InputCard {
+	return &InputCard{id: id, position: position}
 }

@@ -7,39 +7,23 @@ import (
 	"fmt"
 )
 
-func Create(ctx context.Context, input *CreateInput) (*CreateOutput, error) {
-	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, input.firebaseUID)
+func Create(ctx context.Context, title string, description string, position float64, columnId int, firebaseUID string) (*card.Card, error) {
+	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
 	if err != nil {
 		return nil, err
 	}
-	column, err := (*repository.ColumnDS()).GetOneByID(ctx, input.columnId)
+	column, err := (*repository.ColumnDS()).GetOneByID(ctx, columnId)
 	if err != nil {
 		return nil, err
 	}
 	if user.BoardID() != column.BoardId() {
 		return nil, fmt.Errorf("invalid board ID: %d, user's borad ID is: %d", column.BoardId(), user.BoardID())
 	}
-	fmt.Println("position", input.position)
-	cardDomain, err := (*repository.CardDS()).Create(ctx, input.title, input.description, input.position, input.columnId)
+	fmt.Println("position", position)
+	cardDomain, err := (*repository.CardDS()).Create(ctx, title, description, position, columnId)
 	if err != nil {
 		return nil, err
 	}
 
-	return &CreateOutput{Card: *cardDomain}, nil
-}
-
-type CreateInput struct {
-	title       string
-	description string
-	position    float64
-	columnId    int
-	firebaseUID string
-}
-
-func NewCreateInput(title string, description string, position float64, columnId int, firebaseUID string) *CreateInput {
-	return &CreateInput{title: title, description: description, position: position, columnId: columnId, firebaseUID: firebaseUID}
-}
-
-type CreateOutput struct {
-	Card card.Card
+	return cardDomain, nil
 }
