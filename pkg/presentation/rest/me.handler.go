@@ -7,13 +7,13 @@ import (
 	"net/http"
 )
 
-type usreResponse struct {
+type meResponse struct {
 	ID       int    `json:"id"`
 	Username string `json:"username"`
 	BoardID  int    `json:"boardId"`
 }
 
-func usersHandler(w http.ResponseWriter, r *http.Request) {
+func meHandler(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	switch r.Method {
@@ -33,7 +33,7 @@ func usersHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		json.NewEncoder(w).Encode(usreResponse{
+		json.NewEncoder(w).Encode(meResponse{
 			ID:       output.User.ID(),
 			Username: output.User.Username(),
 			BoardID:  output.User.BoardID(),
