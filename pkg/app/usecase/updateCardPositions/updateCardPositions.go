@@ -7,6 +7,29 @@ import (
 )
 
 func Call(ctx context.Context, inputCards []Card, firebaseUID string) error {
+	err := authorize(ctx, firebaseUID, inputCards)
+	if err != nil {
+		return err
+	}
+
+	data := make([]struct {
+		ID       int
+		Position float64
+	}, len(inputCards))
+	for i, c := range inputCards {
+		data[i].ID = c.id
+		data[i].Position = c.position
+	}
+
+	err = (*repository.CardDS()).UpdatePositions(ctx, data)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func authorize(ctx context.Context, firebaseUID string, inputCards []Card) error {
 	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
 	if err != nil {
 		return err
@@ -35,20 +58,6 @@ func Call(ctx context.Context, inputCards []Card, firebaseUID string) error {
 		if columnMap[card.ColumnId()] != true {
 			return fmt.Errorf("invalid columnID: %d", card.ColumnId())
 		}
-	}
-
-	data := make([]struct {
-		ID       int
-		Position float64
-	}, len(inputCards))
-	for i, c := range inputCards {
-		data[i].ID = c.id
-		data[i].Position = c.position
-	}
-
-	err = (*repository.CardDS()).UpdatePositions(ctx, data)
-	if err != nil {
-		return err
 	}
 
 	return nil

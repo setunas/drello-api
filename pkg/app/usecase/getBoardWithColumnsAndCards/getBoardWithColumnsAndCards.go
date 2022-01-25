@@ -9,16 +9,13 @@ import (
 	"fmt"
 )
 
-func Call(ctx context.Context, id int, firebaseUID string) (*boardDomain.Board, []*columnDomain.Column, []*cardDomain.Card, error) {
-	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
+func Call(ctx context.Context, boardID int, firebaseUID string) (*boardDomain.Board, []*columnDomain.Column, []*cardDomain.Card, error) {
+	err := authorize(ctx, firebaseUID, boardID)
 	if err != nil {
 		return nil, nil, nil, err
 	}
-	if user.BoardID() != id {
-		return nil, nil, nil, fmt.Errorf("not a valid request with firebase UID: %s, and board id: %d", firebaseUID, id)
-	}
 
-	board, err := (*repository.BoardDS()).GetOne(ctx, id)
+	board, err := (*repository.BoardDS()).GetOne(ctx, boardID)
 	if err != nil {
 		return nil, nil, nil, err
 	}
@@ -38,4 +35,17 @@ func Call(ctx context.Context, id int, firebaseUID string) (*boardDomain.Board, 
 	}
 
 	return boardDomain.New(board.ID(), board.Title()), columns, cards, nil
+}
+
+func authorize(ctx context.Context, firebaseUID string, boardID int) error {
+	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
+	if err != nil {
+		return err
+	}
+
+	if user.BoardID() != boardID {
+		return fmt.Errorf("not a valid request with firebase UID: %s, and board id: %d", firebaseUID, boardID)
+	}
+
+	return nil
 }

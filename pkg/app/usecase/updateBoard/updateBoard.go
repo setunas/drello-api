@@ -7,19 +7,29 @@ import (
 	"fmt"
 )
 
-func Call(ctx context.Context, id int, title string, firebaseUID string) (*board.Board, error) {
-	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
+func Call(ctx context.Context, boardID int, title string, firebaseUID string) (*board.Board, error) {
+	err := authorize(ctx, firebaseUID, boardID)
 	if err != nil {
 		return nil, err
 	}
-	if user.BoardID() != id {
-		return nil, fmt.Errorf("invalid board ID: %d, user's borad ID is: %d", id, user.BoardID())
-	}
 
-	boardDomain, err := (*repository.BoardDS()).Update(ctx, id, title)
+	boardDomain, err := (*repository.BoardDS()).Update(ctx, boardID, title)
 	if err != nil {
 		return nil, err
 	}
 
 	return boardDomain, nil
+}
+
+func authorize(ctx context.Context, firebaseUID string, boardID int) error {
+	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
+	if err != nil {
+		return err
+	}
+
+	if user.BoardID() != boardID {
+		return fmt.Errorf("invalid board ID: %d, user's borad ID is: %d", boardID, user.BoardID())
+	}
+
+	return nil
 }

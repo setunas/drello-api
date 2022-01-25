@@ -7,26 +7,36 @@ import (
 	"fmt"
 )
 
-func Call(ctx context.Context, id int, title string, position float64, boardId int, firebaseUID string) (*column.Column, error) {
-	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
+func Call(ctx context.Context, columnID int, title string, position float64, boardID int, firebaseUID string) (*column.Column, error) {
+	err := authorize(ctx, firebaseUID, columnID, boardID)
 	if err != nil {
 		return nil, err
-	}
-	if user.BoardID() != boardId {
-		return nil, fmt.Errorf("invalid board ID that you are changing to: %d, user's borad ID is: %d", boardId, user.BoardID())
-	}
-	column, err := (*repository.ColumnDS()).GetOneByID(ctx, id)
-	if err != nil {
-		return nil, err
-	}
-	if user.BoardID() != column.BoardId() {
-		return nil, fmt.Errorf("invalid board ID that you are changing from: %d, user's borad ID is: %d", column.BoardId(), user.BoardID())
 	}
 
-	columnDomain, err := (*repository.ColumnDS()).Update(ctx, id, title, position, boardId)
+	columnDomain, err := (*repository.ColumnDS()).Update(ctx, columnID, title, position, boardID)
 	if err != nil {
 		return nil, err
 	}
 
 	return columnDomain, nil
+}
+
+func authorize(ctx context.Context, firebaseUID string, columnID int, boardID int) error {
+	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
+	if err != nil {
+		return err
+	}
+	if user.BoardID() != boardID {
+		return fmt.Errorf("invalid board ID that you are changing to: %d, user's borad ID is: %d", boardID, user.BoardID())
+	}
+
+	column, err := (*repository.ColumnDS()).GetOneByID(ctx, columnID)
+	if err != nil {
+		return err
+	}
+	if user.BoardID() != column.BoardId() {
+		return fmt.Errorf("invalid board ID that you are changing from: %d, user's borad ID is: %d", column.BoardId(), user.BoardID())
+	}
+
+	return nil
 }
