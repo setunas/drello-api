@@ -4,6 +4,7 @@ import (
 	"drello-api/pkg/app/repository"
 	"drello-api/pkg/infrastructure/datasource"
 	"drello-api/pkg/infrastructure/datasource/boardsDS"
+	"drello-api/pkg/infrastructure/datasource/cardsDS"
 	"drello-api/pkg/infrastructure/mysql"
 	"drello-api/pkg/presentation/rest"
 	"drello-api/pkg/utils"
@@ -36,6 +37,6 @@ func setupDB() {
 func setupDataSources() {
 	repository.SetBoardDS(boardsDS.BoardsDS{})
 	repository.SetColumnDS(datasource.Column{})
-	repository.SetCardDS(datasource.Card{})
+	repository.SetCardDS(cardsDS.CardsDS{})
 	repository.SetUserDS(datasource.User{})
 }
