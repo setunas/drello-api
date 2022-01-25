@@ -2,6 +2,7 @@ package rest
 
 import (
 	"drello-api/pkg/app/usecase/signup"
+	"drello-api/pkg/presentation/rest/utils"
 	"encoding/json"
 	"net/http"
 )
@@ -18,9 +19,9 @@ func signupHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodPost:
-		token, err := verifyIDToken(r.Context(), r)
+		token, err := utils.VerifyIDToken(r.Context(), r)
 		if err != nil {
-			handleClientError(w, err, 401, "Invalid token")
+			utils.HandleClientError(w, err, 401, "Invalid token")
 			return
 		}
 
@@ -32,7 +33,7 @@ func signupHandler(w http.ResponseWriter, r *http.Request) {
 
 		user, err := signup.Call(r.Context(), body.Username, token.UID, body.Title)
 		if err != nil {
-			handleClientError(w, err, 422, "An error occured while creating a user")
+			utils.HandleClientError(w, err, 422, "An error occured while creating a user")
 			return
 		}
 
@@ -41,5 +42,5 @@ func signupHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	handleClientError(w, nil, 404, "Invalid method")
+	utils.HandleClientError(w, nil, 404, "Invalid method")
 }

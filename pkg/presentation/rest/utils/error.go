@@ -1,4 +1,4 @@
-package rest
+package utils
 
 import (
 	"encoding/json"
@@ -14,13 +14,13 @@ func newErrorResponse(message string) *errorResponse {
 	return &errorResponse{Message: message}
 }
 
-func handleClientError(w http.ResponseWriter, err error, status int, message string) {
+func HandleClientError(w http.ResponseWriter, err error, status int, message string) {
 	log.Printf("REST Client Error: %v", err)
 	w.WriteHeader(status)
 	json.NewEncoder(w).Encode(newErrorResponse(message))
 }
 
-func handleServerError(w http.ResponseWriter, err error) {
+func HandleServerError(w http.ResponseWriter, err error) {
 	log.Printf("REST Server Error: %v", err)
 	w.WriteHeader(500)
 	json.NewEncoder(w).Encode(newErrorResponse("An internal server error occurred"))

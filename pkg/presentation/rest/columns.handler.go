@@ -4,6 +4,7 @@ import (
 	"drello-api/pkg/app/usecase/createColumn"
 	"drello-api/pkg/app/usecase/deleteColumn"
 	"drello-api/pkg/app/usecase/updateColumn"
+	"drello-api/pkg/presentation/rest/utils"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -24,9 +25,9 @@ func columnsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodPost:
-		token, err := verifyIDToken(r.Context(), r)
+		token, err := utils.VerifyIDToken(r.Context(), r)
 		if err != nil {
-			handleClientError(w, err, 401, "Invalid token")
+			utils.HandleClientError(w, err, 401, "Invalid token")
 			return
 		}
 
@@ -39,7 +40,7 @@ func columnsHandler(w http.ResponseWriter, r *http.Request) {
 
 		column, err := createColumn.Call(r.Context(), body.Title, body.Position, body.BoardId, token.UID)
 		if err != nil {
-			handleClientError(w, err, 422, "An error occured during the prosess")
+			utils.HandleClientError(w, err, 422, "An error occured during the prosess")
 			return
 		}
 
@@ -48,14 +49,14 @@ func columnsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	handleClientError(w, nil, 404, "Invalid method")
+	utils.HandleClientError(w, nil, 404, "Invalid method")
 }
 
 func columnHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
-		handleClientError(w, err, 400, "Invalid ID.")
+		utils.HandleClientError(w, err, 400, "Invalid ID.")
 	}
 
 	switch r.Method {
@@ -63,9 +64,9 @@ func columnHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodPatch:
-		token, err := verifyIDToken(r.Context(), r)
+		token, err := utils.VerifyIDToken(r.Context(), r)
 		if err != nil {
-			handleClientError(w, err, 401, "Invalid token")
+			utils.HandleClientError(w, err, 401, "Invalid token")
 			return
 		}
 
@@ -78,7 +79,7 @@ func columnHandler(w http.ResponseWriter, r *http.Request) {
 
 		column, err := updateColumn.Call(r.Context(), id, body.Title, body.Position, body.BoardId, token.UID)
 		if err != nil {
-			handleClientError(w, err, 422, "An error occured during the prosess")
+			utils.HandleClientError(w, err, 422, "An error occured during the prosess")
 			return
 		}
 
@@ -86,15 +87,15 @@ func columnHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodDelete:
-		token, err := verifyIDToken(r.Context(), r)
+		token, err := utils.VerifyIDToken(r.Context(), r)
 		if err != nil {
-			handleClientError(w, err, 401, "Invalid token")
+			utils.HandleClientError(w, err, 401, "Invalid token")
 			return
 		}
 
 		err = deleteColumn.Call(r.Context(), id, token.UID)
 		if err != nil {
-			handleClientError(w, err, 422, "An error occured during the prosess")
+			utils.HandleClientError(w, err, 422, "An error occured during the prosess")
 			return
 		}
 
@@ -102,5 +103,5 @@ func columnHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	handleClientError(w, nil, 404, "Invalid method")
+	utils.HandleClientError(w, nil, 404, "Invalid method")
 }

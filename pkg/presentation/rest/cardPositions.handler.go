@@ -2,6 +2,7 @@ package rest
 
 import (
 	"drello-api/pkg/app/usecase/updateCardPositions"
+	"drello-api/pkg/presentation/rest/utils"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -13,9 +14,9 @@ func cardPositionsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodPatch:
-		token, err := verifyIDToken(r.Context(), r)
+		token, err := utils.VerifyIDToken(r.Context(), r)
 		if err != nil {
-			handleClientError(w, err, 401, "Invalid token")
+			utils.HandleClientError(w, err, 401, "Invalid token")
 			return
 		}
 
@@ -37,7 +38,7 @@ func cardPositionsHandler(w http.ResponseWriter, r *http.Request) {
 
 		err = updateCardPositions.Call(r.Context(), Cards, token.UID)
 		if err != nil {
-			handleClientError(w, err, 422, "An error occured during the prosess")
+			utils.HandleClientError(w, err, 422, "An error occured during the prosess")
 			return
 		}
 
@@ -45,5 +46,5 @@ func cardPositionsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	handleClientError(w, nil, 404, "Invalid method")
+	utils.HandleClientError(w, nil, 404, "Invalid method")
 }

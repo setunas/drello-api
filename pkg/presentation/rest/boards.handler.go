@@ -3,6 +3,7 @@ package rest
 import (
 	"drello-api/pkg/app/usecase/getBoardWithColumnsAndCards"
 	"drello-api/pkg/app/usecase/updateBoard"
+	"drello-api/pkg/presentation/rest/utils"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -21,7 +22,7 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
-		handleClientError(w, err, 400, "Invalid ID.")
+		utils.HandleClientError(w, err, 400, "Invalid ID.")
 		return
 	}
 
@@ -30,14 +31,14 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodGet:
-		token, err := verifyIDToken(r.Context(), r)
+		token, err := utils.VerifyIDToken(r.Context(), r)
 		if err != nil {
-			handleClientError(w, err, 401, "Invalid token")
+			utils.HandleClientError(w, err, 401, "Invalid token")
 			return
 		}
 		ucBoard, ucColumns, ucCards, err := getBoardWithColumnsAndCards.Call(r.Context(), id, token.UID)
 		if err != nil {
-			handleClientError(w, err, 422, "An error occured during the prosess")
+			utils.HandleClientError(w, err, 422, "An error occured during the prosess")
 			return
 		}
 
@@ -71,9 +72,9 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 		return
 
 	case http.MethodPatch:
-		token, err := verifyIDToken(r.Context(), r)
+		token, err := utils.VerifyIDToken(r.Context(), r)
 		if err != nil {
-			handleClientError(w, err, 401, "Invalid token")
+			utils.HandleClientError(w, err, 401, "Invalid token")
 			return
 		}
 
@@ -84,7 +85,7 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 
 		ucBoard, err := updateBoard.Call(r.Context(), id, body.Title, token.UID)
 		if err != nil {
-			handleClientError(w, err, 422, "An error occured during the prosess")
+			utils.HandleClientError(w, err, 422, "An error occured during the prosess")
 			return
 		}
 
@@ -92,5 +93,5 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	handleClientError(w, nil, 404, "Invalid method")
+	utils.HandleClientError(w, nil, 404, "Invalid method")
 }
