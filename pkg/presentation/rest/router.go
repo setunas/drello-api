@@ -11,18 +11,6 @@ import (
 
 var router *mux.Router
 
-type handler func(http.ResponseWriter, *http.Request)
-
-func (fn handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	logHTTPRequest(r)
-
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT")
-	w.Header().Set("Access-Control-Allow-Headers", "*")
-
-	fn(w, r)
-}
-
 func HandleRequests() {
 	port := fmt.Sprintf(":%s", utils.MustGetenv("PORT"))
 	fmt.Println("Listening on PORT:", port)
@@ -41,4 +29,16 @@ func setHandlers() {
 	router.Handle("/cards/positions", handler(cardPositionsHandler))
 	router.Handle("/cards/{id:[0-9]+}", handler(cardHandler))
 	router.Handle("/cards", handler(cardsHandler))
+}
+
+type handler func(http.ResponseWriter, *http.Request)
+
+func (fn handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	logHTTPRequest(r)
+
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+
+	fn(w, r)
 }
