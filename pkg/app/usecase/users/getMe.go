@@ -6,7 +6,7 @@ import (
 	userDM "drello-api/pkg/domain/user"
 )
 
-func GetOne(ctx context.Context, firebaseUID string) (*userDM.User, error) {
+func GetMe(ctx context.Context, firebaseUID string) (*userDM.User, error) {
 	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
 	if err != nil {
 		return nil, err

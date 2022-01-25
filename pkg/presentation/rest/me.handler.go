@@ -24,7 +24,7 @@ func meHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		user, err := users.GetOne(r.Context(), token.UID)
+		user, err := users.GetMe(r.Context(), token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return

@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-func Delete(ctx context.Context, id int, firebaseUID string) error {
+func DeleteCard(ctx context.Context, id int, firebaseUID string) error {
 	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
 	if err != nil {
 		return err

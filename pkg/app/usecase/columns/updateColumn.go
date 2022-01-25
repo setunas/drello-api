@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-func Update(ctx context.Context, id int, title string, position float64, boardId int, firebaseUID string) (*column.Column, error) {
+func UpdateColumn(ctx context.Context, id int, title string, position float64, boardId int, firebaseUID string) (*column.Column, error) {
 	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
 	if err != nil {
 		return nil, err

@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-func Update(ctx context.Context, id int, title string, firebaseUID string) (*board.Board, error) {
+func UpdateBoard(ctx context.Context, id int, title string, firebaseUID string) (*board.Board, error) {
 	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
 	if err != nil {
 		return nil, err

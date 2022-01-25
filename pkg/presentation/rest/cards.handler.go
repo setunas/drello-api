@@ -39,7 +39,7 @@ func cardsHandler(w http.ResponseWriter, r *http.Request) {
 		json.NewDecoder(r.Body).Decode(&body)
 		fmt.Println("body", body)
 
-		ucCard, err := cards.Create(r.Context(), body.Title, body.Description, body.Position, body.ColumnID, token.UID)
+		ucCard, err := cards.CreateCard(r.Context(), body.Title, body.Description, body.Position, body.ColumnID, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
@@ -81,7 +81,7 @@ func cardHandler(w http.ResponseWriter, r *http.Request) {
 		json.NewDecoder(r.Body).Decode(&body)
 		fmt.Println("body", body)
 
-		ucCard, err := cards.Update(r.Context(), id, body.Title, body.Description, body.Position, body.ColumnID, token.UID)
+		ucCard, err := cards.UpdateCard(r.Context(), id, body.Title, body.Description, body.Position, body.ColumnID, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
@@ -97,7 +97,7 @@ func cardHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = cards.Delete(r.Context(), id, token.UID)
+		err = cards.DeleteCard(r.Context(), id, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return

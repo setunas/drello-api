@@ -9,7 +9,7 @@ import (
 	"fmt"
 )
 
-func GetOne(ctx context.Context, id int, firebaseUID string) (*boardDomain.Board, []*columnDomain.Column, []*cardDomain.Card, error) {
+func GetBoardWithColumnsAndCards(ctx context.Context, id int, firebaseUID string) (*boardDomain.Board, []*columnDomain.Column, []*cardDomain.Card, error) {
 	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
 	if err != nil {
 		return nil, nil, nil, err

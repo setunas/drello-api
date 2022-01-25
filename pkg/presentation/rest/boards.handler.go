@@ -34,7 +34,7 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 			handleClientError(w, err, 401, "Invalid token")
 			return
 		}
-		ucBoard, ucColumns, ucCards, err := boards.GetOne(r.Context(), id, token.UID)
+		ucBoard, ucColumns, ucCards, err := boards.GetBoardWithColumnsAndCards(r.Context(), id, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
@@ -81,7 +81,7 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		json.NewDecoder(r.Body).Decode(&body)
 
-		ucBoard, err := boards.Update(r.Context(), id, body.Title, token.UID)
+		ucBoard, err := boards.UpdateBoard(r.Context(), id, body.Title, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return

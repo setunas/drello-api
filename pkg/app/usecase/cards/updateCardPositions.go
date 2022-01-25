@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-func UpdatePositions(ctx context.Context, inputCards []InputCard, firebaseUID string) error {
+func UpdateCardPositions(ctx context.Context, inputCards []InputCard, firebaseUID string) error {
 	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
 	if err != nil {
 		return err

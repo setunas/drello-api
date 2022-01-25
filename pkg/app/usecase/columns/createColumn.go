@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-func Create(ctx context.Context, title string, position float64, boardId int, firebaseUID string) (*column.Column, error) {
+func CreateColumn(ctx context.Context, title string, position float64, boardId int, firebaseUID string) (*column.Column, error) {
 	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
 	if err != nil {
 		return nil, err
