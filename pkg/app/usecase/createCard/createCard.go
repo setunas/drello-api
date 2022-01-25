@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-func CreateCard(ctx context.Context, title string, description string, position float64, columnId int, firebaseUID string) (*card.Card, error) {
+func Call(ctx context.Context, title string, description string, position float64, columnId int, firebaseUID string) (*card.Card, error) {
 	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
 	if err != nil {
 		return nil, err

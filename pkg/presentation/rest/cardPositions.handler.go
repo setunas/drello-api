@@ -35,7 +35,7 @@ func cardPositionsHandler(w http.ResponseWriter, r *http.Request) {
 			inputCards = append(inputCards, *updateCardPositions.NewInputCard(card.ID, card.Position))
 		}
 
-		err = updateCardPositions.UpdateCardPositions(r.Context(), inputCards, token.UID)
+		err = updateCardPositions.Call(r.Context(), inputCards, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return

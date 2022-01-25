@@ -7,7 +7,7 @@ import (
 	userDM "drello-api/pkg/domain/user"
 )
 
-func Signup(ctx context.Context, username string, firebaseUID string, title string) (*userDM.User, error) {
+func Call(ctx context.Context, username string, firebaseUID string, title string) (*userDM.User, error) {
 	board, err := (*repository.BoardDS()).Create(ctx, title)
 	if err != nil {
 		return nil, err

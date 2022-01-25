@@ -30,7 +30,7 @@ func signupHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		json.NewDecoder(r.Body).Decode(&body)
 
-		user, err := signup.Signup(r.Context(), body.Username, token.UID, body.Title)
+		user, err := signup.Call(r.Context(), body.Username, token.UID, body.Title)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured while creating a user")
 			return

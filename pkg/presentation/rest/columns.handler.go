@@ -37,7 +37,7 @@ func columnsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		json.NewDecoder(r.Body).Decode(&body)
 
-		column, err := createColumn.CreateColumn(r.Context(), body.Title, body.Position, body.BoardId, token.UID)
+		column, err := createColumn.Call(r.Context(), body.Title, body.Position, body.BoardId, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
@@ -76,7 +76,7 @@ func columnHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		json.NewDecoder(r.Body).Decode(&body)
 
-		column, err := updateColumn.UpdateColumn(r.Context(), id, body.Title, body.Position, body.BoardId, token.UID)
+		column, err := updateColumn.Call(r.Context(), id, body.Title, body.Position, body.BoardId, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
@@ -92,7 +92,7 @@ func columnHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = deleteColumn.DeleteColumn(r.Context(), id, token.UID)
+		err = deleteColumn.Call(r.Context(), id, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
