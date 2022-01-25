@@ -3,7 +3,7 @@ package rest
 import (
 	"bytes"
 	"context"
-	"drello-api/pkg/infrastructure/datasource"
+	"drello-api/pkg/app/repository"
 	"drello-api/pkg/infrastructure/mysql"
 	"encoding/json"
 	"io"
@@ -21,8 +21,8 @@ func clearCardsTable() {
 
 func TestCreateCard(t *testing.T) {
 	ctx := context.TODO()
-	datasource.Board{}.Create(ctx, "test1")
-	datasource.ColumnsDS{}.Create(ctx, "test1", 1.0, 1)
+	(*repository.BoardDS()).Create(ctx, "test1")
+	(*repository.ColumnDS()).Create(ctx, "test1", 1.0, 1)
 
 	var body bytes.Buffer
 	writer := multipart.NewWriter(&body)
@@ -72,9 +72,9 @@ func TestCreateCard(t *testing.T) {
 
 func TestUpdateCard(t *testing.T) {
 	ctx := context.TODO()
-	datasource.Board{}.Create(ctx, "test1")
-	datasource.ColumnsDS{}.Create(ctx, "test1", 1.0, 1)
-	datasource.Card{}.Create(ctx, "test1", "desc1", 1.0, 1)
+	(*repository.BoardDS()).Create(ctx, "test1")
+	(*repository.ColumnDS()).Create(ctx, "test1", 1.0, 1)
+	(*repository.CardDS()).Create(ctx, "test1", "desc1", 1.0, 1)
 
 	var body bytes.Buffer
 	writer := multipart.NewWriter(&body)
@@ -124,9 +124,9 @@ func TestUpdateCard(t *testing.T) {
 
 func TestDeleteCard(t *testing.T) {
 	ctx := context.TODO()
-	datasource.Board{}.Create(ctx, "test1")
-	datasource.ColumnsDS{}.Create(ctx, "test1", 1.0, 1)
-	datasource.Card{}.Create(ctx, "test1", "description1", 1.0, 1)
+	(*repository.BoardDS()).Create(ctx, "test1")
+	(*repository.ColumnDS()).Create(ctx, "test1", 1.0, 1)
+	(*repository.CardDS()).Create(ctx, "test1", "description1", 1.0, 1)
 
 	req, _ := http.NewRequest("DELETE", "/cards/1", nil)
 	response := executeRequest(req)

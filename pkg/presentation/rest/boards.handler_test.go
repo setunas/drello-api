@@ -3,7 +3,7 @@ package rest
 import (
 	"bytes"
 	"context"
-	"drello-api/pkg/infrastructure/datasource"
+	"drello-api/pkg/app/repository"
 	"drello-api/pkg/infrastructure/mysql"
 	"encoding/json"
 	"io"
@@ -21,12 +21,12 @@ func clearBoardsTable() {
 
 func TestGetBoard(t *testing.T) {
 	ctx := context.TODO()
-	datasource.Board{}.Create(ctx, "test1")
-	datasource.Board{}.Create(ctx, "test2")
-	datasource.ColumnsDS{}.Create(ctx, "test1", 1.0, 1)
-	datasource.ColumnsDS{}.Create(ctx, "test2", 2.0, 2)
-	datasource.Card{}.Create(ctx, "test1", "desc1", 1.0, 1)
-	datasource.Card{}.Create(ctx, "test2", "desc2", 2.0, 2)
+	(*repository.BoardDS()).Create(ctx, "test1")
+	(*repository.BoardDS()).Create(ctx, "test2")
+	(*repository.ColumnDS()).Create(ctx, "test1", 1.0, 1)
+	(*repository.ColumnDS()).Create(ctx, "test2", 2.0, 2)
+	(*repository.CardDS()).Create(ctx, "test1", "desc1", 1.0, 1)
+	(*repository.CardDS()).Create(ctx, "test2", "desc2", 2.0, 2)
 
 	req, _ := http.NewRequest("GET", "/boards/3", nil)
 	response := executeRequest(req)
@@ -53,7 +53,7 @@ func TestGetBoard(t *testing.T) {
 
 func TestUpdateBoard(t *testing.T) {
 	ctx := context.TODO()
-	datasource.Board{}.Create(ctx, "test1")
+	(*repository.BoardDS()).Create(ctx, "test1")
 
 	var body bytes.Buffer
 	writer := multipart.NewWriter(&body)

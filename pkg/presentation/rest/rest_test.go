@@ -1,6 +1,11 @@
 package rest
 
 import (
+	"drello-api/pkg/app/repository"
+	"drello-api/pkg/infrastructure/datasource/boardsDS"
+	"drello-api/pkg/infrastructure/datasource/cardsDS"
+	"drello-api/pkg/infrastructure/datasource/columnsDS"
+	"drello-api/pkg/infrastructure/datasource/usersDS"
 	"drello-api/pkg/infrastructure/mysql"
 	"drello-api/pkg/utils"
 	"log"
@@ -26,9 +31,18 @@ func TestMain(m *testing.M) {
 		log.Fatal(err)
 	}
 
+	setupDataSources()
+
 	router = mux.NewRouter()
 	setHandlers()
 	os.Exit(m.Run())
+}
+
+func setupDataSources() {
+	repository.SetBoardDS(boardsDS.BoardsDS{})
+	repository.SetColumnDS(columnsDS.ColumnsDS{})
+	repository.SetCardDS(cardsDS.CardsDS{})
+	repository.SetUserDS(usersDS.UsersDS{})
 }
 
 func executeRequest(req *http.Request) *httptest.ResponseRecorder {

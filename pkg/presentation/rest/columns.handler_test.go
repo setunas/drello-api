@@ -3,7 +3,7 @@ package rest
 import (
 	"bytes"
 	"context"
-	"drello-api/pkg/infrastructure/datasource"
+	"drello-api/pkg/app/repository"
 	"drello-api/pkg/infrastructure/mysql"
 	"encoding/json"
 	"io"
@@ -21,7 +21,7 @@ func clearColumnsTable() {
 
 func TestCreateColumn(t *testing.T) {
 	ctx := context.TODO()
-	datasource.Board{}.Create(ctx, "test1")
+	(*repository.BoardDS()).Create(ctx, "test1")
 
 	var body bytes.Buffer
 	writer := multipart.NewWriter(&body)
@@ -63,8 +63,8 @@ func TestCreateColumn(t *testing.T) {
 
 func TestUpdateColumn(t *testing.T) {
 	ctx := context.TODO()
-	datasource.Board{}.Create(ctx, "test1")
-	datasource.ColumnsDS{}.Create(ctx, "test1", 1.0, 1)
+	(*repository.BoardDS()).Create(ctx, "test1")
+	(*repository.ColumnDS()).Create(ctx, "test1", 1.0, 1)
 
 	var body bytes.Buffer
 	writer := multipart.NewWriter(&body)
@@ -106,8 +106,8 @@ func TestUpdateColumn(t *testing.T) {
 
 func TestDeleteColumn(t *testing.T) {
 	ctx := context.TODO()
-	datasource.Board{}.Create(ctx, "test1")
-	datasource.ColumnsDS{}.Create(ctx, "test1", 1.0, 1)
+	(*repository.BoardDS()).Create(ctx, "test1")
+	(*repository.ColumnDS()).Create(ctx, "test1", 1.0, 1)
 
 	req, _ := http.NewRequest("DELETE", "/columns/1", nil)
 	response := executeRequest(req)
