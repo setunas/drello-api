@@ -1,7 +1,8 @@
 package rest
 
 import (
-	"drello-api/pkg/app/usecase"
+	"drello-api/pkg/app/usecase/getBoardWithColumnsAndCards"
+	"drello-api/pkg/app/usecase/updateBoard"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -34,7 +35,7 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 			handleClientError(w, err, 401, "Invalid token")
 			return
 		}
-		ucBoard, ucColumns, ucCards, err := usecase.GetBoardWithColumnsAndCards(r.Context(), id, token.UID)
+		ucBoard, ucColumns, ucCards, err := getBoardWithColumnsAndCards.GetBoardWithColumnsAndCards(r.Context(), id, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
@@ -81,7 +82,7 @@ func boardHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		json.NewDecoder(r.Body).Decode(&body)
 
-		ucBoard, err := usecase.UpdateBoard(r.Context(), id, body.Title, token.UID)
+		ucBoard, err := updateBoard.UpdateBoard(r.Context(), id, body.Title, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return

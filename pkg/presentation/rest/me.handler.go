@@ -1,7 +1,7 @@
 package rest
 
 import (
-	"drello-api/pkg/app/usecase"
+	"drello-api/pkg/app/usecase/getMe"
 	"encoding/json"
 	"net/http"
 )
@@ -24,7 +24,7 @@ func meHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		user, err := usecase.GetMe(r.Context(), token.UID)
+		user, err := getMe.GetMe(r.Context(), token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return

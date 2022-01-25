@@ -1,7 +1,9 @@
 package rest
 
 import (
-	"drello-api/pkg/app/usecase"
+	"drello-api/pkg/app/usecase/createColumn"
+	"drello-api/pkg/app/usecase/deleteColumn"
+	"drello-api/pkg/app/usecase/updateColumn"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -35,7 +37,7 @@ func columnsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		json.NewDecoder(r.Body).Decode(&body)
 
-		column, err := usecase.CreateColumn(r.Context(), body.Title, body.Position, body.BoardId, token.UID)
+		column, err := createColumn.CreateColumn(r.Context(), body.Title, body.Position, body.BoardId, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
@@ -74,7 +76,7 @@ func columnHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		json.NewDecoder(r.Body).Decode(&body)
 
-		column, err := usecase.UpdateColumn(r.Context(), id, body.Title, body.Position, body.BoardId, token.UID)
+		column, err := updateColumn.UpdateColumn(r.Context(), id, body.Title, body.Position, body.BoardId, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return
@@ -90,7 +92,7 @@ func columnHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		err = usecase.DeleteColumn(r.Context(), id, token.UID)
+		err = deleteColumn.DeleteColumn(r.Context(), id, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return

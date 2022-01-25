@@ -1,4 +1,4 @@
-package usecase
+package updateBoard
 
 import (
 	"context"
