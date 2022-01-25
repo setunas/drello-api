@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-func Call(ctx context.Context, inputCards []InputCard, firebaseUID string) error {
+func Call(ctx context.Context, inputCards []Card, firebaseUID string) error {
 	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
 	if err != nil {
 		return err
@@ -54,11 +54,11 @@ func Call(ctx context.Context, inputCards []InputCard, firebaseUID string) error
 	return nil
 }
 
-type InputCard struct {
+type Card struct {
 	id       int
 	position float64
 }
 
-func NewInputCard(id int, position float64) *InputCard {
-	return &InputCard{id: id, position: position}
+func NewCard(id int, position float64) *Card {
+	return &Card{id: id, position: position}
 }
