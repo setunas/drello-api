@@ -1,4 +1,4 @@
-package boards
+package boardsDS
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"fmt"
 )
 
-func (w Board) GetOne(ctx context.Context, id int) (*domainBoard.Board, error) {
+func (b BoardsDS) GetOne(ctx context.Context, id int) (*domainBoard.Board, error) {
 	var title string
 
 	db := mysql.DBPool()

@@ -1,4 +1,4 @@
-package boards
+package boardsDS
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-func (w Board) Update(ctx context.Context, id int, title string) (*domainBoard.Board, error) {
+func (b BoardsDS) Update(ctx context.Context, id int, title string) (*domainBoard.Board, error) {
 	db := mysql.DBPool()
 	_, err := db.Exec("UPDATE boards SET title = ? WHERE id = ?", title, id)
 	if err != nil {

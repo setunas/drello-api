@@ -1,4 +1,4 @@
-package boards
+package boardsDS
 
 import (
 	"context"
@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-func (w Board) Create(ctx context.Context, title string) (*domainBoard.Board, error) {
+func (b BoardsDS) Create(ctx context.Context, title string) (*domainBoard.Board, error) {
 	db := mysql.DBPool()
 
 	result, err := db.Exec("INSERT INTO boards (title) VALUES (?)", title)
