@@ -19,7 +19,7 @@ func CreateCard(ctx context.Context, title string, description string, position 
 	if user.BoardID() != column.BoardId() {
 		return nil, fmt.Errorf("invalid board ID: %d, user's borad ID is: %d", column.BoardId(), user.BoardID())
 	}
-	fmt.Println("position", position)
+
 	cardDomain, err := (*repository.CardDS()).Create(ctx, title, description, position, columnId)
 	if err != nil {
 		return nil, err
