@@ -1,7 +1,7 @@
 package rest
 
 import (
-	"drello-api/pkg/app/usecase/cards"
+	"drello-api/pkg/app/usecase"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -30,12 +30,12 @@ func cardPositionsHandler(w http.ResponseWriter, r *http.Request) {
 		json.NewDecoder(r.Body).Decode(&body)
 		fmt.Println("body", body)
 
-		inputCards := []cards.InputCard{}
+		inputCards := []usecase.InputCard{}
 		for _, card := range body.Cards {
-			inputCards = append(inputCards, *cards.NewInputCard(card.ID, card.Position))
+			inputCards = append(inputCards, *usecase.NewInputCard(card.ID, card.Position))
 		}
 
-		err = cards.UpdateCardPositions(r.Context(), inputCards, token.UID)
+		err = usecase.UpdateCardPositions(r.Context(), inputCards, token.UID)
 		if err != nil {
 			handleClientError(w, err, 422, "An error occured during the prosess")
 			return

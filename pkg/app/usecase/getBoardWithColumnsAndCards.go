@@ -1,4 +1,4 @@
-package boards
+package usecase
 
 import (
 	"context"
