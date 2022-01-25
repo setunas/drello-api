@@ -1,15 +1,11 @@
 package rest
 
 import (
-	"context"
 	"drello-api/pkg/utils"
-	"drello-api/pkg/utils/firebase"
 	"fmt"
 	"log"
 	"net/http"
-	"strings"
 
-	"firebase.google.com/go/v4/auth"
 	"github.com/gorilla/mux"
 )
 
@@ -45,9 +41,4 @@ func setHandlers() {
 	router.Handle("/cards/positions", handler(cardPositionsHandler))
 	router.Handle("/cards/{id:[0-9]+}", handler(cardHandler))
 	router.Handle("/cards", handler(cardsHandler))
-}
-
-func verifyIDToken(ctx context.Context, r *http.Request) (*auth.Token, error) {
-	idToken := strings.Replace(r.Header.Get("Authorization"), "Bearer ", "", 1)
-	return firebase.VerifyIDToken(ctx, idToken)
 }
