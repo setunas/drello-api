@@ -2,6 +2,7 @@ package rest
 
 import (
 	"drello-api/pkg/presentation/rest/boardHandler"
+	"drello-api/pkg/presentation/rest/cardHandler"
 	"drello-api/pkg/presentation/rest/cardPositionsHandler"
 	"drello-api/pkg/presentation/rest/cardsHandler"
 	"drello-api/pkg/presentation/rest/meHandler"
@@ -31,7 +32,7 @@ func setHandlers() {
 	router.Handle("/columns/{id:[0-9]+}", handler(columnHandler))
 	router.Handle("/columns", handler(columnsHandler))
 	router.Handle("/cards/positions", handler(cardPositionsHandler.CardPositionsHandler))
-	router.Handle("/cards/{id:[0-9]+}", handler(cardHandler))
+	router.Handle("/cards/{id:[0-9]+}", handler(cardHandler.CardHandler))
 	router.Handle("/cards", handler(cardsHandler.CardsHandler))
 }
 
