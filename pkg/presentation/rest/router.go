@@ -6,6 +6,7 @@ import (
 	"drello-api/pkg/presentation/rest/cardPositionsHandler"
 	"drello-api/pkg/presentation/rest/cardsHandler"
 	"drello-api/pkg/presentation/rest/meHandler"
+	"drello-api/pkg/presentation/rest/signupHandler"
 	"drello-api/pkg/utils"
 	"fmt"
 	"log"
@@ -27,7 +28,7 @@ func HandleRequests() {
 
 func setHandlers() {
 	router.Handle("/me", handler(meHandler.MeHandler))
-	router.Handle("/signup", handler(signupHandler))
+	router.Handle("/signup", handler(signupHandler.SignupHandler))
 	router.Handle("/boards/{id:[0-9]+}", handler(boardHandler.BoardHandler))
 	router.Handle("/columns/{id:[0-9]+}", handler(columnHandler))
 	router.Handle("/columns", handler(columnsHandler))
