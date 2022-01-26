@@ -1,7 +1,7 @@
 package meHandler
 
 import (
-	"drello-api/pkg/presentation/rest/utils"
+	"drello-api/pkg/presentation/rest/util"
 	"net/http"
 )
 
@@ -21,5 +21,5 @@ func MeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	utils.HandleClientError(w, nil, 404, "Invalid method")
+	util.HandleClientError(w, nil, 404, "Invalid method")
 }

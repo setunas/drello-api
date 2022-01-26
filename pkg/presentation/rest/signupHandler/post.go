@@ -2,15 +2,15 @@ package signupHandler
 
 import (
 	"drello-api/pkg/app/usecase/signup"
-	"drello-api/pkg/presentation/rest/utils"
+	"drello-api/pkg/presentation/rest/util"
 	"encoding/json"
 	"net/http"
 )
 
 func post(w http.ResponseWriter, r *http.Request) {
-	token, err := utils.VerifyIDToken(r.Context(), r)
+	token, err := util.VerifyIDToken(r.Context(), r)
 	if err != nil {
-		utils.HandleClientError(w, err, 401, "Invalid token")
+		util.HandleClientError(w, err, 401, "Invalid token")
 		return
 	}
 
@@ -22,7 +22,7 @@ func post(w http.ResponseWriter, r *http.Request) {
 
 	user, err := signup.Call(r.Context(), body.Username, token.UID, body.Title)
 	if err != nil {
-		utils.HandleClientError(w, err, 422, "An error occured while creating a user")
+		util.HandleClientError(w, err, 422, "An error occured while creating a user")
 		return
 	}
 

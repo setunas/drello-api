@@ -2,16 +2,16 @@ package cardsHandler
 
 import (
 	"drello-api/pkg/app/usecase/createCard"
-	"drello-api/pkg/presentation/rest/utils"
+	"drello-api/pkg/presentation/rest/util"
 	"encoding/json"
 	"fmt"
 	"net/http"
 )
 
 func post(w http.ResponseWriter, r *http.Request) {
-	token, err := utils.VerifyIDToken(r.Context(), r)
+	token, err := util.VerifyIDToken(r.Context(), r)
 	if err != nil {
-		utils.HandleClientError(w, err, 401, "Invalid token")
+		util.HandleClientError(w, err, 401, "Invalid token")
 		return
 	}
 
@@ -26,7 +26,7 @@ func post(w http.ResponseWriter, r *http.Request) {
 
 	ucCard, err := createCard.Call(r.Context(), body.Title, body.Description, body.Position, body.ColumnID, token.UID)
 	if err != nil {
-		utils.HandleClientError(w, err, 422, "An error occured during the prosess")
+		util.HandleClientError(w, err, 422, "An error occured during the prosess")
 		return
 	}
 

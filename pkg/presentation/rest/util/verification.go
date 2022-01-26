@@ -1,8 +1,8 @@
-package utils
+package util
 
 import (
 	"context"
-	"drello-api/pkg/utils/firebase"
+	"drello-api/pkg/util/firebase"
 	"net/http"
 	"strings"
 

@@ -2,16 +2,16 @@ package cardHandler
 
 import (
 	"drello-api/pkg/app/usecase/updateCard"
-	"drello-api/pkg/presentation/rest/utils"
+	"drello-api/pkg/presentation/rest/util"
 	"encoding/json"
 	"fmt"
 	"net/http"
 )
 
 func patch(w http.ResponseWriter, r *http.Request, id int) {
-	token, err := utils.VerifyIDToken(r.Context(), r)
+	token, err := util.VerifyIDToken(r.Context(), r)
 	if err != nil {
-		utils.HandleClientError(w, err, 401, "Invalid token")
+		util.HandleClientError(w, err, 401, "Invalid token")
 		return
 	}
 
@@ -26,7 +26,7 @@ func patch(w http.ResponseWriter, r *http.Request, id int) {
 
 	ucCard, err := updateCard.Call(r.Context(), id, body.Title, body.Description, body.Position, body.ColumnID, token.UID)
 	if err != nil {
-		utils.HandleClientError(w, err, 422, "An error occured during the prosess")
+		util.HandleClientError(w, err, 422, "An error occured during the prosess")
 		return
 	}
 

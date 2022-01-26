@@ -1,7 +1,7 @@
 package columnHandler
 
 import (
-	"drello-api/pkg/presentation/rest/utils"
+	"drello-api/pkg/presentation/rest/util"
 	"net/http"
 	"strconv"
 
@@ -19,7 +19,7 @@ func ColumnHandler(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
-		utils.HandleClientError(w, err, 400, "Invalid ID.")
+		util.HandleClientError(w, err, 400, "Invalid ID.")
 	}
 
 	switch r.Method {
@@ -35,5 +35,5 @@ func ColumnHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	utils.HandleClientError(w, nil, 404, "Invalid method")
+	util.HandleClientError(w, nil, 404, "Invalid method")
 }

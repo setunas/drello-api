@@ -1,7 +1,7 @@
 package cardsHandler
 
 import (
-	"drello-api/pkg/presentation/rest/utils"
+	"drello-api/pkg/presentation/rest/util"
 	"net/http"
 )
 
@@ -23,5 +23,5 @@ func CardsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	utils.HandleClientError(w, nil, 404, "Invalid method")
+	util.HandleClientError(w, nil, 404, "Invalid method")
 }

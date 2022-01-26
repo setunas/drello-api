@@ -9,7 +9,7 @@ import (
 	"drello-api/pkg/presentation/rest/columnsHandler"
 	"drello-api/pkg/presentation/rest/meHandler"
 	"drello-api/pkg/presentation/rest/signupHandler"
-	"drello-api/pkg/utils"
+	"drello-api/pkg/util"
 	"fmt"
 	"log"
 	"net/http"
@@ -20,7 +20,7 @@ import (
 var router *mux.Router
 
 func HandleRequests() {
-	port := fmt.Sprintf(":%s", utils.MustGetenv("PORT"))
+	port := fmt.Sprintf(":%s", util.MustGetenv("PORT"))
 	fmt.Println("Listening on PORT:", port)
 
 	router = mux.NewRouter()
