@@ -1,7 +1,6 @@
 package rest
 
 import (
-	"drello-api/pkg/app/usecase/createColumn"
 	"drello-api/pkg/app/usecase/deleteColumn"
 	"drello-api/pkg/app/usecase/updateColumn"
 	"drello-api/pkg/presentation/rest/utils"
@@ -17,39 +16,6 @@ type columnResponse struct {
 	Title    string  `json:"title"`
 	Position float64 `json:"position"`
 	BoardId  int     `json:"boardId"`
-}
-
-func columnsHandler(w http.ResponseWriter, r *http.Request) {
-	switch r.Method {
-	case http.MethodOptions:
-		return
-
-	case http.MethodPost:
-		token, err := utils.VerifyIDToken(r.Context(), r)
-		if err != nil {
-			utils.HandleClientError(w, err, 401, "Invalid token")
-			return
-		}
-
-		var body struct {
-			Title    string
-			Position float64
-			BoardId  int
-		}
-		json.NewDecoder(r.Body).Decode(&body)
-
-		column, err := createColumn.Call(r.Context(), body.Title, body.Position, body.BoardId, token.UID)
-		if err != nil {
-			utils.HandleClientError(w, err, 422, "An error occured during the prosess")
-			return
-		}
-
-		w.WriteHeader(http.StatusCreated)
-		json.NewEncoder(w).Encode(columnResponse{ID: column.ID(), Title: column.Title(), Position: column.Positon(), BoardId: column.BoardId()})
-		return
-	}
-
-	utils.HandleClientError(w, nil, 404, "Invalid method")
 }
 
 func columnHandler(w http.ResponseWriter, r *http.Request) {
