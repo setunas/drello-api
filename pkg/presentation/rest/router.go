@@ -10,6 +10,7 @@ import (
 	"drello-api/pkg/presentation/rest/meHandler"
 	"drello-api/pkg/presentation/rest/signupHandler"
 	"drello-api/pkg/util"
+	"drello-api/pkg/util/myerr"
 	"fmt"
 	"log"
 	"net/http"
@@ -49,4 +50,26 @@ func (fn handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 
 	fn(w, r)
+	// err := fn(w, r)
+	var err error
+
+	httpError, ok := err.(*myerr.HTTPError)
+	if !ok {
+		w.WriteHeader(500)
+		w.Header().Set("Content-Type", "application/text")
+		w.Write([]byte("Unwraped error: " + err.Error()))
+		return
+	}
+
+	if 400 <= httpError.Status && httpError.Status < 500 {
+		w.WriteHeader(httpError.Status)
+		w.Header().Set("Content-Type", "application/text")
+		w.Write([]byte(httpError.Detail))
+		return
+	} else {
+		w.WriteHeader(httpError.Status)
+		w.Header().Set("Content-Type", "application/text")
+		w.Write([]byte("Internal server error"))
+		return
+	}
 }
