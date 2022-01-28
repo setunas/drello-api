@@ -7,12 +7,12 @@ import (
 
 type HTTPError struct {
 	status     int
-	detail     string
+	message    string
 	occurredAt string
 }
 
 func (e *HTTPError) Error() string {
-	return e.detail
+	return e.message
 }
 
 func (e *HTTPError) Status() int {
@@ -31,24 +31,24 @@ func NewHTTPError(status int, detail string, err error) error {
 	httpError, ok := err.(*HTTPError)
 	if ok {
 		return &HTTPError{
-			status:     newStatus(status, httpError.status),
-			detail:     newDetail(detail, err),
+			status:     inheritStatus(status, httpError.status),
+			message:    newMessage(detail, err),
 			occurredAt: httpError.occurredAt,
 		}
 	}
 
 	return &HTTPError{
 		status:     status,
-		detail:     newDetail(detail, err),
+		message:    newMessage(detail, err),
 		occurredAt: newOccurredAt(),
 	}
 }
 
-func newStatus(status int, oldStatus int) int {
+func inheritStatus(newStatus int, oldStatus int) int {
 	if oldStatus != 0 {
 		return oldStatus
 	} else {
-		return status
+		return newStatus
 	}
 }
 
@@ -61,12 +61,12 @@ func newOccurredAt() string {
 	return place
 }
 
-func newDetail(detail string, err error) string {
-	if detail != "" && err != nil {
-		return detail + ": " + err.Error()
+func newMessage(message string, err error) string {
+	if message != "" && err != nil {
+		return message + ": " + err.Error()
 	} else if err != nil {
 		return err.Error()
 	} else {
-		return detail
+		return message
 	}
 }
