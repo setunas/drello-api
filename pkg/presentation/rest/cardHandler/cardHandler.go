@@ -1,7 +1,7 @@
 package cardHandler
 
 import (
-	"drello-api/pkg/presentation/rest/util"
+	"drello-api/pkg/util/myerr"
 	"net/http"
 	"strconv"
 
@@ -16,24 +16,23 @@ type cardResponse struct {
 	ColumnId    int     `json:"columnId"`
 }
 
-func CardHandler(w http.ResponseWriter, r *http.Request) {
+func CardHandler(w http.ResponseWriter, r *http.Request) error {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
-		util.HandleClientError(w, err, 400, "Invalid ID.")
-		return
+		return myerr.NewHTTPError(404, "Invalid path ID", nil)
 	}
 
 	switch r.Method {
 	case http.MethodOptions:
-		return
+		return nil
 	case http.MethodPatch:
 		patch(w, r, id)
-		return
+		return nil
 	case http.MethodDelete:
 		delete(w, r, id)
-		return
+		return nil
 	}
 
-	util.HandleClientError(w, nil, 404, "Invalid method")
+	return myerr.NewHTTPError(404, "Invalid method", nil)
 }

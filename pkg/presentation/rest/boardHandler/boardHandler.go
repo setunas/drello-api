@@ -1,33 +1,32 @@
 package boardHandler
 
 import (
-	"drello-api/pkg/presentation/rest/util"
+	"drello-api/pkg/util/myerr"
 	"net/http"
 	"strconv"
 
 	"github.com/gorilla/mux"
 )
 
-func BoardHandler(w http.ResponseWriter, r *http.Request) {
+func BoardHandler(w http.ResponseWriter, r *http.Request) error {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
-		util.HandleClientError(w, err, 400, "Invalid ID.")
-		return
+		return myerr.NewHTTPError(404, "Invalid path ID", nil)
 	}
 
 	switch r.Method {
 	case http.MethodOptions:
-		return
+		return nil
 	case http.MethodGet:
 		get(w, r, id)
-		return
+		return nil
 	case http.MethodPatch:
 		patch(w, r, id)
-		return
+		return nil
 	}
 
-	util.HandleClientError(w, nil, 404, "Invalid method")
+	return myerr.NewHTTPError(404, "Invalid method", nil)
 }
 
 type boardResponse struct {

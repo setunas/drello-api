@@ -1,7 +1,7 @@
 package meHandler
 
 import (
-	"drello-api/pkg/presentation/rest/util"
+	"drello-api/pkg/util/myerr"
 	"net/http"
 )
 
@@ -11,15 +11,15 @@ type meResponse struct {
 	BoardID  int    `json:"boardId"`
 }
 
-func MeHandler(w http.ResponseWriter, r *http.Request) {
+func MeHandler(w http.ResponseWriter, r *http.Request) error {
 	switch r.Method {
 	case http.MethodOptions:
-		return
+		return nil
 
 	case http.MethodGet:
 		get(w, r)
-		return
+		return nil
 	}
 
-	util.HandleClientError(w, nil, 404, "Invalid method")
+	return myerr.NewHTTPError(404, "Invalid method", nil)
 }

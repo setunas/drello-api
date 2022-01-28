@@ -40,7 +40,7 @@ func setHandlers() {
 	router.Handle("/cards", handler(cardsHandler.CardsHandler))
 }
 
-type handler func(http.ResponseWriter, *http.Request)
+type handler func(http.ResponseWriter, *http.Request) error
 
 func (fn handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	logHTTPRequest(r)
@@ -50,8 +50,7 @@ func (fn handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 
 	fn(w, r)
-	// err := fn(w, r)
-	var err error
+	err := fn(w, r)
 
 	httpError, ok := err.(*myerr.HTTPError)
 	if !ok {
