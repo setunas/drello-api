@@ -1,4 +1,4 @@
-package error
+package myerr
 
 import (
 	"fmt"
@@ -16,6 +16,7 @@ type HTTPErrorIF interface {
 	Error() string
 	GetStatus() int
 	GetPlace() string
+	ResponseBody() string
 }
 
 func (e *HTTPError) Error() string {
@@ -62,10 +63,10 @@ func newDetail(detail string, err error) string {
 }
 
 func NewHTTPError(status int, detail string, err error) error {
-	httpError, ok := err.(HTTPErrorIF)
+	httpError, ok := err.(*HTTPError)
 	if !ok {
 		return &HTTPError{
-			Status: httpError.GetStatus(),
+			Status: httpError.GetStatus(status, err),
 			Detail: newDetail(detail, err) + ": " + httpError.Error(),
 			Place:  httpError.GetPlace(),
 		}
