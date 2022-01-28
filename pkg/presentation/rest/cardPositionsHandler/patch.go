@@ -3,16 +3,16 @@ package cardPositionsHandler
 import (
 	"drello-api/pkg/app/usecase/updateCardPositions"
 	"drello-api/pkg/presentation/rest/util"
+	"drello-api/pkg/util/myerr"
 	"encoding/json"
 	"fmt"
 	"net/http"
 )
 
-func patch(w http.ResponseWriter, r *http.Request) {
+func patch(w http.ResponseWriter, r *http.Request) error {
 	token, err := util.VerifyIDToken(r.Context(), r)
 	if err != nil {
-		util.HandleClientError(w, err, 401, "Invalid token")
-		return
+		return myerr.NewHTTPError(401, "Invalid token", err)
 	}
 
 	type card struct {
@@ -33,9 +33,9 @@ func patch(w http.ResponseWriter, r *http.Request) {
 
 	err = updateCardPositions.Call(r.Context(), Cards, token.UID)
 	if err != nil {
-		util.HandleClientError(w, err, 422, "An error occured during the prosess")
-		return
+		return myerr.NewHTTPError(500, "An error occured during the prosess", err)
 	}
 
 	w.WriteHeader(200)
+	return nil
 }

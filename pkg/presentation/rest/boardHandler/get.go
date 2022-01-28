@@ -3,20 +3,19 @@ package boardHandler
 import (
 	"drello-api/pkg/app/usecase/getBoardWithColumnsAndCards"
 	"drello-api/pkg/presentation/rest/util"
+	"drello-api/pkg/util/myerr"
 	"encoding/json"
 	"net/http"
 )
 
-func get(w http.ResponseWriter, r *http.Request, id int) {
+func get(w http.ResponseWriter, r *http.Request, id int) error {
 	token, err := util.VerifyIDToken(r.Context(), r)
 	if err != nil {
-		util.HandleClientError(w, err, 401, "Invalid token")
-		return
+		return myerr.NewHTTPError(401, "Invalid token", err)
 	}
 	ucBoard, ucColumns, ucCards, err := getBoardWithColumnsAndCards.Call(r.Context(), id, token.UID)
 	if err != nil {
-		util.HandleClientError(w, err, 422, "An error occured during the prosess")
-		return
+		return myerr.NewHTTPError(500, "An error occured during the prosess", err)
 	}
 
 	columns := []columnResponse{}
@@ -46,4 +45,6 @@ func get(w http.ResponseWriter, r *http.Request, id int) {
 		Columns: columns,
 		Cards:   cards,
 	})
+
+	return nil
 }
