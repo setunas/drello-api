@@ -12,27 +12,16 @@ type HTTPError struct {
 	Place  string
 }
 
-type HTTPErrorIF interface {
-	Error() string
-	GetStatus() int
-	GetPlace() string
-	ResponseBody() string
-}
-
 func (e *HTTPError) Error() string {
 	return e.Detail
 }
 
-func (e *HTTPError) GetStatus(status int) int {
-	if e.Status != 0 {
-		return e.Status
+func newStatus(status int, oldStatus int) int {
+	if oldStatus != 0 {
+		return oldStatus
 	} else {
 		return status
 	}
-}
-
-func (e *HTTPError) GetPlace() string {
-	return e.Place
 }
 
 func newPlace() string {
@@ -58,9 +47,9 @@ func NewHTTPError(status int, detail string, err error) error {
 	httpError, ok := err.(*HTTPError)
 	if ok {
 		return &HTTPError{
-			Status: httpError.GetStatus(status),
+			Status: newStatus(status, httpError.Status),
 			Detail: newDetail(detail, err),
-			Place:  httpError.GetPlace(),
+			Place:  httpError.Place,
 		}
 	}
 
