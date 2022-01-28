@@ -51,6 +51,11 @@ func (fn handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	fn(w, r)
 	err := fn(w, r)
+	if err == nil {
+		return
+	}
+
+	log.Printf("[error]: %v", err)
 
 	httpError, ok := err.(*myerr.HTTPError)
 	if !ok {
