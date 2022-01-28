@@ -20,10 +20,7 @@ type HTTPErrorIF interface {
 }
 
 func (e *HTTPError) Error() string {
-	if e.Cause == nil {
-		return e.Detail
-	}
-	return e.Detail + " : " + e.Cause.Error()
+	return e.Detail
 }
 
 func (e *HTTPError) GetStatus(status int, err error) int {
@@ -64,7 +61,7 @@ func newDetail(detail string, err error) string {
 
 func NewHTTPError(status int, detail string, err error) error {
 	httpError, ok := err.(*HTTPError)
-	if !ok {
+	if ok {
 		return &HTTPError{
 			Status: httpError.GetStatus(status, err),
 			Detail: newDetail(detail, err) + ": " + httpError.Error(),
