@@ -23,17 +23,12 @@ func (e *HTTPError) Error() string {
 	return e.Detail
 }
 
-func (e *HTTPError) GetStatus(status int, err error) int {
-	_, ok := err.(HTTPErrorIF)
-	if !ok {
-		return status
-	}
-
+func (e *HTTPError) GetStatus(status int) int {
 	if e.Status != 0 {
 		return e.Status
+	} else {
+		return status
 	}
-
-	return status
 }
 
 func (e *HTTPError) GetPlace() string {
@@ -63,8 +58,8 @@ func NewHTTPError(status int, detail string, err error) error {
 	httpError, ok := err.(*HTTPError)
 	if ok {
 		return &HTTPError{
-			Status: httpError.GetStatus(status, err),
-			Detail: newDetail(detail, err) + ": " + httpError.Error(),
+			Status: httpError.GetStatus(status),
+			Detail: newDetail(detail, err),
 			Place:  httpError.GetPlace(),
 		}
 	}
