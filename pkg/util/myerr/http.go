@@ -27,6 +27,23 @@ func (e *HTTPError) IsClientError() bool {
 	return 400 <= e.Status() && e.Status() < 500
 }
 
+func NewHTTPError(status int, detail string, err error) error {
+	httpError, ok := err.(*HTTPError)
+	if ok {
+		return &HTTPError{
+			status:     newStatus(status, httpError.status),
+			detail:     newDetail(detail, err),
+			occurredAt: httpError.occurredAt,
+		}
+	}
+
+	return &HTTPError{
+		status:     status,
+		detail:     newDetail(detail, err),
+		occurredAt: newOccurredAt(),
+	}
+}
+
 func newStatus(status int, oldStatus int) int {
 	if oldStatus != 0 {
 		return oldStatus
@@ -51,22 +68,5 @@ func newDetail(detail string, err error) string {
 		return err.Error()
 	} else {
 		return detail
-	}
-}
-
-func NewHTTPError(status int, detail string, err error) error {
-	httpError, ok := err.(*HTTPError)
-	if ok {
-		return &HTTPError{
-			status:     newStatus(status, httpError.status),
-			detail:     newDetail(detail, err),
-			occurredAt: httpError.occurredAt,
-		}
-	}
-
-	return &HTTPError{
-		status:     status,
-		detail:     newDetail(detail, err),
-		occurredAt: newOccurredAt(),
 	}
 }
