@@ -55,16 +55,16 @@ func (fn handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Printf("[error]: %v", err)
-
 	httpError, ok := err.(*myerr.HTTPError)
 	if !ok {
+		log.Printf("[error]: %v", err)
 		w.WriteHeader(500)
 		w.Header().Set("Content-Type", "application/text")
 		w.Write([]byte("Unwraped error occured"))
 		return
 	}
 
+	log.Printf("[error]: %v: occurred at %s", httpError, httpError.OccurredAt())
 	if httpError.IsClientError() {
 		w.WriteHeader(httpError.Status())
 		w.Header().Set("Content-Type", "application/text")
