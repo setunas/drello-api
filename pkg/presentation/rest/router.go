@@ -60,7 +60,7 @@ func (fn handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		log.Printf("[error]: %v", err)
 		w.WriteHeader(500)
 		w.Header().Set("Content-Type", "application/text")
-		w.Write([]byte("Unwraped error occured"))
+		w.Write([]byte("Unknown type of error occured"))
 		return
 	}
 
