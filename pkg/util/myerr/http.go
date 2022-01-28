@@ -6,14 +6,25 @@ import (
 )
 
 type HTTPError struct {
-	Status int    `json:"-"`
-	Detail string `json:"detail"`
-	Cause  error  `json:"-"`
-	Place  string
+	status int
+	detail string
+	place  string
 }
 
 func (e *HTTPError) Error() string {
-	return e.Detail
+	return e.detail
+}
+
+func (e *HTTPError) Status() int {
+	return e.status
+}
+
+func (e *HTTPError) Place() string {
+	return e.place
+}
+
+func (e *HTTPError) IsClientError() bool {
+	return 400 <= e.Status() && e.Status() < 500
 }
 
 func newStatus(status int, oldStatus int) int {
@@ -47,15 +58,15 @@ func NewHTTPError(status int, detail string, err error) error {
 	httpError, ok := err.(*HTTPError)
 	if ok {
 		return &HTTPError{
-			Status: newStatus(status, httpError.Status),
-			Detail: newDetail(detail, err),
-			Place:  httpError.Place,
+			status: newStatus(status, httpError.status),
+			detail: newDetail(detail, err),
+			place:  httpError.place,
 		}
 	}
 
 	return &HTTPError{
-		Status: status,
-		Detail: newDetail(detail, err),
-		Place:  newPlace(),
+		status: status,
+		detail: newDetail(detail, err),
+		place:  newPlace(),
 	}
 }

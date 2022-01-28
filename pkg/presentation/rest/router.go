@@ -65,13 +65,13 @@ func (fn handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if 400 <= httpError.Status && httpError.Status < 500 {
-		w.WriteHeader(httpError.Status)
+	if httpError.IsClientError() {
+		w.WriteHeader(httpError.Status())
 		w.Header().Set("Content-Type", "application/text")
-		w.Write([]byte(httpError.Detail))
+		w.Write([]byte(httpError.Error()))
 		return
 	} else {
-		w.WriteHeader(httpError.Status)
+		w.WriteHeader(httpError.Status())
 		w.Header().Set("Content-Type", "application/text")
 		w.Write([]byte("Internal server error"))
 		return
