@@ -61,7 +61,7 @@ func (fn handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		w.WriteHeader(500)
 		w.Header().Set("Content-Type", "application/text")
-		w.Write([]byte("Unwraped error: " + err.Error()))
+		w.Write([]byte("Unwraped error occured"))
 		return
 	}
 
