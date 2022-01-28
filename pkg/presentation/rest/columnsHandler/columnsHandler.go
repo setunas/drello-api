@@ -16,10 +16,8 @@ func ColumnsHandler(w http.ResponseWriter, r *http.Request) error {
 	switch r.Method {
 	case http.MethodOptions:
 		return nil
-
 	case http.MethodPost:
-		post(w, r)
-		return nil
+		return post(w, r)
 	}
 
 	return myerr.NewHTTPError(404, "Invalid method", nil)

@@ -19,11 +19,9 @@ func BoardHandler(w http.ResponseWriter, r *http.Request) error {
 	case http.MethodOptions:
 		return nil
 	case http.MethodGet:
-		get(w, r, id)
-		return nil
+		return get(w, r, id)
 	case http.MethodPatch:
-		patch(w, r, id)
-		return nil
+		return patch(w, r, id)
 	}
 
 	return myerr.NewHTTPError(404, "Invalid method", nil)
