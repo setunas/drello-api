@@ -67,6 +67,5 @@ func newOccurredAt() string {
 	runtime.Callers(3, pc)
 	f := runtime.FuncForPC(pc[0])
 	file, line := f.FileLine(pc[0])
-	place := fmt.Sprintf("%s:%d %s\n", file, line, f.Name())
-	return place
+	return fmt.Sprintf("%s:%d %s\n", file, line, f.Name())
 }
