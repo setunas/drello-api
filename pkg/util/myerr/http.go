@@ -6,9 +6,9 @@ import (
 )
 
 type HTTPError struct {
-	status int
-	detail string
-	place  string
+	status     int
+	detail     string
+	occurredAt string
 }
 
 func (e *HTTPError) Error() string {
@@ -19,8 +19,8 @@ func (e *HTTPError) Status() int {
 	return e.status
 }
 
-func (e *HTTPError) Place() string {
-	return e.place
+func (e *HTTPError) OccurredAt() string {
+	return e.occurredAt
 }
 
 func (e *HTTPError) IsClientError() bool {
@@ -35,7 +35,7 @@ func newStatus(status int, oldStatus int) int {
 	}
 }
 
-func newPlace() string {
+func newOccurredAt() string {
 	pc := make([]uintptr, 10)
 	runtime.Callers(3, pc)
 	f := runtime.FuncForPC(pc[0])
@@ -58,15 +58,15 @@ func NewHTTPError(status int, detail string, err error) error {
 	httpError, ok := err.(*HTTPError)
 	if ok {
 		return &HTTPError{
-			status: newStatus(status, httpError.status),
-			detail: newDetail(detail, err),
-			place:  httpError.place,
+			status:     newStatus(status, httpError.status),
+			detail:     newDetail(detail, err),
+			occurredAt: httpError.occurredAt,
 		}
 	}
 
 	return &HTTPError{
-		status: status,
-		detail: newDetail(detail, err),
-		place:  newPlace(),
+		status:     status,
+		detail:     newDetail(detail, err),
+		occurredAt: newOccurredAt(),
 	}
 }
