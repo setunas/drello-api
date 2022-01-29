@@ -4,11 +4,12 @@ import (
 	"context"
 	"drello-api/pkg/app/repository"
 	"drello-api/pkg/domain/card"
+	"drello-api/pkg/domain/user"
 	"fmt"
 )
 
-func Call(ctx context.Context, cardID int, title string, description string, position float64, columnID int, firebaseUID string) (*card.Card, error) {
-	err := authorize(ctx, firebaseUID, cardID, columnID)
+func Call(ctx context.Context, cardID int, title string, description string, position float64, columnID int, user *user.User) (*card.Card, error) {
+	err := authorize(ctx, user, cardID, columnID)
 	if err != nil {
 		return nil, err
 	}
@@ -21,11 +22,7 @@ func Call(ctx context.Context, cardID int, title string, description string, pos
 	return cardDomain, nil
 }
 
-func authorize(ctx context.Context, firebaseUID string, cardID int, columnID int) error {
-	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
-	if err != nil {
-		return err
-	}
+func authorize(ctx context.Context, user *user.User, cardID int, columnID int) error {
 	card, err := (*repository.CardDS()).GetOneByID(ctx, cardID)
 	if err != nil {
 		return err
