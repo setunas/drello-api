@@ -9,6 +9,7 @@ import (
 	"drello-api/pkg/presentation/rest/columnsHandler"
 	"drello-api/pkg/presentation/rest/meHandler"
 	"drello-api/pkg/presentation/rest/signupHandler"
+	restutil "drello-api/pkg/presentation/rest/util"
 	"drello-api/pkg/util"
 	"drello-api/pkg/util/apperr"
 	"drello-api/pkg/util/log"
@@ -44,6 +45,7 @@ func setHandlers() {
 type handler func(http.ResponseWriter, *http.Request) error
 
 func (fn handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	r = restutil.AppendReqIDToCtx(r)
 	logHTTPRequest(r)
 	setHeaders(w)
 
@@ -52,11 +54,12 @@ func (fn handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	handleError(w, err)
+	handleError(w, r, err)
 }
 
 func logHTTPRequest(r *http.Request) {
 	log.Info("Got a HTTP Request").
+		Add("RequestID", restutil.RetrieveReqID(r)).
 		Add("Method", r.Method).
 		Add("URI", r.URL.String()).
 		Add("Referer", r.Header.Get("Referer")).
@@ -70,7 +73,9 @@ func setHeaders(w http.ResponseWriter) {
 	w.Header().Set("Access-Control-Allow-Headers", "*")
 }
 
-func handleError(w http.ResponseWriter, err error) {
+func handleError(w http.ResponseWriter, r *http.Request, err error) {
+	reqID := restutil.RetrieveReqID(r)
+
 	type errRes struct {
 		Message string `json:"message"`
 	}
@@ -79,13 +84,13 @@ func handleError(w http.ResponseWriter, err error) {
 
 	httpError, ok := err.(*apperr.HTTPError)
 	if !ok {
-		log.Error("Unknown error type: %v", err).Write()
+		log.Errorf("Unknown error type: %v", err).Add("RequestID", reqID).Write()
 		w.WriteHeader(500)
 		json.NewEncoder(w).Encode(errRes{Message: "Unknown error occured"})
 		return
 	}
 
-	log.Error(httpError).Add("OccurredAt", httpError.OccurredAt()).Write()
+	log.Errorf("httpError").Add("RequestID", reqID).Add("OccurredAt", httpError.OccurredAt()).Write()
 	w.WriteHeader(httpError.Status())
 	if httpError.IsClientError() {
 		json.NewEncoder(w).Encode(errRes{Message: httpError.Error()})
