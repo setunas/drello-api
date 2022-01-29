@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	domainBoard "drello-api/pkg/domain/board"
 	"drello-api/pkg/infrastructure/mysql"
+	"drello-api/pkg/util/apperr"
 	"fmt"
 )
 
@@ -16,7 +17,12 @@ func (b BoardsDS) GetOne(ctx context.Context, id int) (*domainBoard.Board, error
 
 	switch err := row.Scan(&title); err {
 	case sql.ErrNoRows:
-		return nil, fmt.Errorf("board record not found with id %d", id)
+		return nil,
+			apperr.NewAppError(
+				[]apperr.Tag{apperr.RecordNotFound},
+				fmt.Sprintf("board record not found with id %d", id),
+				nil,
+			)
 	case nil:
 		return domainBoard.New(id, title), nil
 	default:
