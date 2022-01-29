@@ -33,7 +33,7 @@ func (l *Log) Write() {
 	case warn:
 		output = color.Yellow + "[WARN] " + color.Reset + l.message
 	default:
-		output = color.Green + "[INFO] " + color.Reset + l.message
+		output = color.Cyan + "[INFO] " + color.Reset + l.message
 	}
 
 	if len(l.fields) != 0 {
@@ -42,7 +42,7 @@ func (l *Log) Write() {
 		prefix := ""
 		for _, v := range l.fields {
 			key := color.Green + v.key + color.Reset
-			value := color.Yellow + v.value + color.Reset
+			value := color.Purple + v.value + color.Reset
 			output += prefix + key + ": " + value
 			prefix = ", "
 		}
