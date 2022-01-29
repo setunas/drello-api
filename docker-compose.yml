@@ -4,6 +4,7 @@ services:
     build:
       context: "."
       args:
+        SERVER_ENV: dev
         DB_USER: root
         DB_PASS: password
         DB_TCP_HOST: db

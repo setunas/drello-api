@@ -28,7 +28,7 @@ func HandleRequests() {
 
 	router = mux.NewRouter()
 	setHandlers()
-	log.Fatal(http.ListenAndServe(port, router)).Write()
+	log.Fatal(http.ListenAndServe(port, router))
 }
 
 func setHandlers() {

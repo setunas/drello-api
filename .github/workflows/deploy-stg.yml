@@ -39,6 +39,7 @@ jobs:
         run: docker build
           --no-cache
           -t registry.heroku.com/$APP_NAME/web
+          --build-arg SERVER_ENV=stg
           --build-arg DB_USER=$STG_DB_USER
           --build-arg DB_PASS=$STG_DB_PASS
           --build-arg DB_TCP_HOST=$STG_DB_TCP_HOST

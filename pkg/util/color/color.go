@@ -1,6 +1,9 @@
 package color
 
-import "runtime"
+import (
+	"drello-api/pkg/util/serverEnv"
+	"runtime"
+)
 
 var Reset = "\033[0m"
 var Red = "\033[31m"
@@ -13,7 +16,7 @@ var Gray = "\033[37m"
 var White = "\033[97m"
 
 func init() {
-	if runtime.GOOS == "windows" {
+	if runtime.GOOS == "windows" || serverEnv.ServerEnv() != serverEnv.Dev {
 		Reset = ""
 		Red = ""
 		Green = ""

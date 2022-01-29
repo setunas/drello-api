@@ -51,10 +51,6 @@ func (l *Log) Write() {
 	}
 
 	log.Println(output)
-
-	if l.level == fatal {
-		os.Exit(1)
-	}
 }
 
 type Level int
@@ -114,18 +110,24 @@ func Errorf(format string, values ...interface{}) *Log {
 	}
 }
 
-func Fatal(values ...interface{}) *Log {
-	return &Log{
+func Fatal(values ...interface{}) {
+	l := &Log{
 		level:   fatal,
 		message: fmt.Sprint(values...),
 		fields:  nil,
 	}
+
+	l.Write()
+	os.Exit(1)
 }
 
-func Fatalf(format string, values ...interface{}) *Log {
-	return &Log{
+func Fatalf(format string, values ...interface{}) {
+	l := &Log{
 		level:   fatal,
 		message: fmt.Sprintf(format, values...),
 		fields:  nil,
 	}
+
+	l.Write()
+	os.Exit(1)
 }
