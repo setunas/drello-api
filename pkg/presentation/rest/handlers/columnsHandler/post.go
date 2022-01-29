@@ -4,7 +4,9 @@ import (
 	"drello-api/pkg/app/usecase/createColumn"
 	"drello-api/pkg/presentation/rest/restutil"
 	"drello-api/pkg/util/apperr"
+	"drello-api/pkg/util/log"
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
@@ -20,6 +22,7 @@ func post(w http.ResponseWriter, r *http.Request) error {
 		BoardId  int
 	}
 	json.NewDecoder(r.Body).Decode(&body)
+	log.Info("Request Body").Add("RequestID", restutil.RetrieveReqID(r.Context())).Add("Body", fmt.Sprintf("%+v", body)).Write()
 
 	column, err := createColumn.Call(r.Context(), body.Title, body.Position, body.BoardId, user)
 	if err != nil {

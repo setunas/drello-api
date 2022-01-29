@@ -4,6 +4,7 @@ import (
 	"drello-api/pkg/app/usecase/updateCardPositions"
 	"drello-api/pkg/presentation/rest/restutil"
 	"drello-api/pkg/util/apperr"
+	"drello-api/pkg/util/log"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -24,7 +25,7 @@ func patch(w http.ResponseWriter, r *http.Request) error {
 		Cards []card
 	}
 	json.NewDecoder(r.Body).Decode(&body)
-	fmt.Println("body", body)
+	log.Info("Request Body").Add("RequestID", restutil.RetrieveReqID(r.Context())).Add("Body", fmt.Sprintf("%+v", body)).Write()
 
 	Cards := []updateCardPositions.Card{}
 	for _, card := range body.Cards {
