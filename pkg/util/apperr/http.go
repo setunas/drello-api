@@ -28,19 +28,25 @@ func (e *HTTPError) IsClientError() bool {
 }
 
 func NewHTTPError(status int, message string, err error) error {
-	httpError, ok := err.(*HTTPError)
-	if ok {
+	switch e := err.(type) {
+	case *AppError:
 		return &HTTPError{
-			status:     inheritStatus(status, httpError.status),
+			status:     convertTagsToStatus(status, e.tags),
 			message:    combineMessages(message, err),
-			occurredAt: httpError.occurredAt,
+			occurredAt: e.occurredAt,
 		}
-	}
-
-	return &HTTPError{
-		status:     status,
-		message:    combineMessages(message, err),
-		occurredAt: newOccurredAt(),
+	case *HTTPError:
+		return &HTTPError{
+			status:     inheritStatus(status, e.status),
+			message:    combineMessages(message, err),
+			occurredAt: e.occurredAt,
+		}
+	default:
+		return &HTTPError{
+			status:     status,
+			message:    combineMessages(message, err),
+			occurredAt: newOccurredAt(),
+		}
 	}
 }
 
@@ -68,4 +74,18 @@ func newOccurredAt() string {
 	f := runtime.FuncForPC(pc[0])
 	file, line := f.FileLine(pc[0])
 	return fmt.Sprintf("%s:%d %s\n", file, line, f.Name())
+}
+
+var tagStatusMap = map[Tag]int{
+	RecordNotFound:      404,
+	FailedAuthorization: 403,
+}
+
+func convertTagsToStatus(newStatus int, tags []Tag) int {
+	for _, tag := range tags {
+		if oldStatus := tagStatusMap[tag]; oldStatus != 0 {
+			return oldStatus
+		}
+	}
+	return newStatus
 }
