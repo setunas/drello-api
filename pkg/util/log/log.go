@@ -82,7 +82,7 @@ func Warn(values ...interface{}) *Log {
 	}
 }
 
-func Err(values ...interface{}) *Log {
+func Error(values ...interface{}) *Log {
 	return &Log{
 		level:   err,
 		message: fmt.Sprint(values...),

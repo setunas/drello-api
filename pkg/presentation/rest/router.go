@@ -80,13 +80,13 @@ func handleError(w http.ResponseWriter, err error) {
 
 	httpError, ok := err.(*apperr.HTTPError)
 	if !ok {
-		log.Err("Unknown error type: %v", err).Write()
+		log.Error("Unknown error type: %v", err).Write()
 		w.WriteHeader(500)
 		json.NewEncoder(w).Encode(errRes{Message: "Unknown error occured"})
 		return
 	}
 
-	log.Err(httpError).Add("OccurredAt", httpError.OccurredAt()).Write()
+	log.Error(httpError).Add("OccurredAt", httpError.OccurredAt()).Write()
 	w.WriteHeader(httpError.Status())
 	if httpError.IsClientError() {
 		json.NewEncoder(w).Encode(errRes{Message: httpError.Error()})
