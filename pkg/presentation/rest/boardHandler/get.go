@@ -9,11 +9,11 @@ import (
 )
 
 func get(w http.ResponseWriter, r *http.Request, id int) error {
-	token, err := util.VerifyIDToken(r.Context(), r)
+	user, err := util.AuthenticateUser(r)
 	if err != nil {
-		return myerr.NewHTTPError(401, "Invalid token", err)
+		return err
 	}
-	ucBoard, ucColumns, ucCards, err := getBoardWithColumnsAndCards.Call(r.Context(), id, token.UID)
+	ucBoard, ucColumns, ucCards, err := getBoardWithColumnsAndCards.Call(r.Context(), id, user)
 	if err != nil {
 		return myerr.NewHTTPError(500, "An error occured during the prosess", err)
 	}
