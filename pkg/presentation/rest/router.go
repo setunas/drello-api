@@ -1,15 +1,15 @@
 package rest
 
 import (
-	"drello-api/pkg/presentation/rest/boardHandler"
-	"drello-api/pkg/presentation/rest/cardHandler"
-	"drello-api/pkg/presentation/rest/cardPositionsHandler"
-	"drello-api/pkg/presentation/rest/cardsHandler"
-	"drello-api/pkg/presentation/rest/columnHandler"
-	"drello-api/pkg/presentation/rest/columnsHandler"
-	"drello-api/pkg/presentation/rest/meHandler"
+	"drello-api/pkg/presentation/rest/handlers/boardHandler"
+	"drello-api/pkg/presentation/rest/handlers/cardHandler"
+	"drello-api/pkg/presentation/rest/handlers/cardPositionsHandler"
+	"drello-api/pkg/presentation/rest/handlers/cardsHandler"
+	"drello-api/pkg/presentation/rest/handlers/columnHandler"
+	"drello-api/pkg/presentation/rest/handlers/columnsHandler"
+	"drello-api/pkg/presentation/rest/handlers/meHandler"
+	"drello-api/pkg/presentation/rest/handlers/signupHandler"
 	"drello-api/pkg/presentation/rest/restutil"
-	"drello-api/pkg/presentation/rest/signupHandler"
 	"drello-api/pkg/util"
 	"drello-api/pkg/util/apperr"
 	"drello-api/pkg/util/log"
