@@ -3,7 +3,7 @@ package boardHandler
 import (
 	"drello-api/pkg/app/usecase/getBoardWithColumnsAndCards"
 	"drello-api/pkg/presentation/rest/util"
-	"drello-api/pkg/util/myerr"
+	"drello-api/pkg/util/apperr"
 	"encoding/json"
 	"net/http"
 )
@@ -15,7 +15,7 @@ func get(w http.ResponseWriter, r *http.Request, id int) error {
 	}
 	ucBoard, ucColumns, ucCards, err := getBoardWithColumnsAndCards.Call(r.Context(), id, user)
 	if err != nil {
-		return myerr.NewHTTPError(500, "An error occured during the prosess", err)
+		return apperr.NewHTTPError(500, "An error occured during the prosess", err)
 	}
 
 	columns := []columnResponse{}

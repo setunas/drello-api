@@ -3,7 +3,7 @@ package boardHandler
 import (
 	"drello-api/pkg/app/usecase/updateBoard"
 	"drello-api/pkg/presentation/rest/util"
-	"drello-api/pkg/util/myerr"
+	"drello-api/pkg/util/apperr"
 	"encoding/json"
 	"net/http"
 )
@@ -21,7 +21,7 @@ func patch(w http.ResponseWriter, r *http.Request, id int) error {
 
 	ucBoard, err := updateBoard.Call(r.Context(), id, body.Title, user)
 	if err != nil {
-		return myerr.NewHTTPError(500, "An error occured during the prosess", err)
+		return apperr.NewHTTPError(500, "An error occured during the prosess", err)
 	}
 
 	json.NewEncoder(w).Encode(boardResponse{ID: ucBoard.ID(), Title: ucBoard.Title()})

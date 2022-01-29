@@ -3,7 +3,7 @@ package columnsHandler
 import (
 	"drello-api/pkg/app/usecase/createColumn"
 	"drello-api/pkg/presentation/rest/util"
-	"drello-api/pkg/util/myerr"
+	"drello-api/pkg/util/apperr"
 	"encoding/json"
 	"net/http"
 )
@@ -23,7 +23,7 @@ func post(w http.ResponseWriter, r *http.Request) error {
 
 	column, err := createColumn.Call(r.Context(), body.Title, body.Position, body.BoardId, user)
 	if err != nil {
-		return myerr.NewHTTPError(500, "An error occured during the prosess", err)
+		return apperr.NewHTTPError(500, "An error occured during the prosess", err)
 	}
 
 	w.WriteHeader(http.StatusCreated)

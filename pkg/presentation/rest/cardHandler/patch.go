@@ -3,7 +3,7 @@ package cardHandler
 import (
 	"drello-api/pkg/app/usecase/updateCard"
 	"drello-api/pkg/presentation/rest/util"
-	"drello-api/pkg/util/myerr"
+	"drello-api/pkg/util/apperr"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -26,7 +26,7 @@ func patch(w http.ResponseWriter, r *http.Request, id int) error {
 
 	ucCard, err := updateCard.Call(r.Context(), id, body.Title, body.Description, body.Position, body.ColumnID, user)
 	if err != nil {
-		return myerr.NewHTTPError(500, "An error occured during the prosess", err)
+		return apperr.NewHTTPError(500, "An error occured during the prosess", err)
 	}
 
 	json.NewEncoder(w).Encode(cardResponse{ID: ucCard.ID(), Title: ucCard.Title(), Description: ucCard.Description(), Position: ucCard.Position(), ColumnId: ucCard.ColumnId()})

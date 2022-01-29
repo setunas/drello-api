@@ -3,7 +3,7 @@ package cardsHandler
 import (
 	"drello-api/pkg/app/usecase/createCard"
 	"drello-api/pkg/presentation/rest/util"
-	"drello-api/pkg/util/myerr"
+	"drello-api/pkg/util/apperr"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -26,7 +26,7 @@ func post(w http.ResponseWriter, r *http.Request) error {
 
 	ucCard, err := createCard.Call(r.Context(), body.Title, body.Description, body.Position, body.ColumnID, user)
 	if err != nil {
-		return myerr.NewHTTPError(500, "An error occured during the prosess", err)
+		return apperr.NewHTTPError(500, "An error occured during the prosess", err)
 	}
 
 	w.WriteHeader(http.StatusCreated)

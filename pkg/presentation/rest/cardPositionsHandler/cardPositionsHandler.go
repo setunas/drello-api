@@ -1,7 +1,7 @@
 package cardPositionsHandler
 
 import (
-	"drello-api/pkg/util/myerr"
+	"drello-api/pkg/util/apperr"
 	"net/http"
 )
 
@@ -13,5 +13,5 @@ func CardPositionsHandler(w http.ResponseWriter, r *http.Request) error {
 		return patch(w, r)
 	}
 
-	return myerr.NewHTTPError(404, "Invalid method", nil)
+	return apperr.NewHTTPError(404, "Invalid method", nil)
 }

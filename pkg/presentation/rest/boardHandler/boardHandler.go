@@ -1,7 +1,7 @@
 package boardHandler
 
 import (
-	"drello-api/pkg/util/myerr"
+	"drello-api/pkg/util/apperr"
 	"net/http"
 	"strconv"
 
@@ -12,7 +12,7 @@ func BoardHandler(w http.ResponseWriter, r *http.Request) error {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])
 	if err != nil {
-		return myerr.NewHTTPError(404, "Invalid path ID", nil)
+		return apperr.NewHTTPError(404, "Invalid path ID", nil)
 	}
 
 	switch r.Method {
@@ -24,7 +24,7 @@ func BoardHandler(w http.ResponseWriter, r *http.Request) error {
 		return patch(w, r, id)
 	}
 
-	return myerr.NewHTTPError(404, "Invalid method", nil)
+	return apperr.NewHTTPError(404, "Invalid method", nil)
 }
 
 type boardResponse struct {

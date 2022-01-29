@@ -10,7 +10,7 @@ import (
 	"drello-api/pkg/presentation/rest/meHandler"
 	"drello-api/pkg/presentation/rest/signupHandler"
 	"drello-api/pkg/util"
-	"drello-api/pkg/util/myerr"
+	"drello-api/pkg/util/apperr"
 	"fmt"
 	"log"
 	"net/http"
@@ -55,7 +55,7 @@ func (fn handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	httpError, ok := err.(*myerr.HTTPError)
+	httpError, ok := err.(*apperr.HTTPError)
 	if !ok {
 		log.Printf("[error]: %v", err)
 		w.WriteHeader(500)

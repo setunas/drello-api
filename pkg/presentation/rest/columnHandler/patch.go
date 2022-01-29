@@ -3,7 +3,7 @@ package columnHandler
 import (
 	"drello-api/pkg/app/usecase/updateColumn"
 	"drello-api/pkg/presentation/rest/util"
-	"drello-api/pkg/util/myerr"
+	"drello-api/pkg/util/apperr"
 	"encoding/json"
 	"net/http"
 )
@@ -23,7 +23,7 @@ func patch(w http.ResponseWriter, r *http.Request, id int) error {
 
 	column, err := updateColumn.Call(r.Context(), id, body.Title, body.Position, body.BoardId, user)
 	if err != nil {
-		return myerr.NewHTTPError(500, "An error occured during the prosess", err)
+		return apperr.NewHTTPError(500, "An error occured during the prosess", err)
 	}
 
 	json.NewEncoder(w).Encode(columnResponse{ID: column.ID(), Title: column.Title(), Position: column.Positon(), BoardId: column.BoardId()})

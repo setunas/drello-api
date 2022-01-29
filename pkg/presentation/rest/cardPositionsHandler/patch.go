@@ -3,7 +3,7 @@ package cardPositionsHandler
 import (
 	"drello-api/pkg/app/usecase/updateCardPositions"
 	"drello-api/pkg/presentation/rest/util"
-	"drello-api/pkg/util/myerr"
+	"drello-api/pkg/util/apperr"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -33,7 +33,7 @@ func patch(w http.ResponseWriter, r *http.Request) error {
 
 	err = updateCardPositions.Call(r.Context(), Cards, user)
 	if err != nil {
-		return myerr.NewHTTPError(500, "An error occured during the prosess", err)
+		return apperr.NewHTTPError(500, "An error occured during the prosess", err)
 	}
 
 	w.WriteHeader(200)

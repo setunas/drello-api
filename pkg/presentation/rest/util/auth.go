@@ -4,8 +4,8 @@ import (
 	"context"
 	"drello-api/pkg/app/usecase/getUserByIDToken"
 	"drello-api/pkg/domain/user"
+	"drello-api/pkg/util/apperr"
 	"drello-api/pkg/util/firebase"
-	"drello-api/pkg/util/myerr"
 	"net/http"
 	"strings"
 
@@ -20,7 +20,7 @@ func VerifyIDToken(ctx context.Context, r *http.Request) (*auth.Token, error) {
 func AuthenticateUser(r *http.Request) (*user.User, error) {
 	token, err := VerifyIDToken(r.Context(), r)
 	if err != nil {
-		return nil, myerr.NewHTTPError(401, "Invalid token", err)
+		return nil, apperr.NewHTTPError(401, "Invalid token", err)
 	}
 	return getUserByIDToken.Call(r.Context(), token.UID)
 }

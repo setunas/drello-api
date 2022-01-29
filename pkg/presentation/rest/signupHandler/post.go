@@ -3,7 +3,7 @@ package signupHandler
 import (
 	"drello-api/pkg/app/usecase/signup"
 	"drello-api/pkg/presentation/rest/util"
-	"drello-api/pkg/util/myerr"
+	"drello-api/pkg/util/apperr"
 	"encoding/json"
 	"net/http"
 )
@@ -11,7 +11,7 @@ import (
 func post(w http.ResponseWriter, r *http.Request) error {
 	token, err := util.VerifyIDToken(r.Context(), r)
 	if err != nil {
-		return myerr.NewHTTPError(401, "Invalid token", err)
+		return apperr.NewHTTPError(401, "Invalid token", err)
 	}
 
 	var body struct {
@@ -22,7 +22,7 @@ func post(w http.ResponseWriter, r *http.Request) error {
 
 	user, err := signup.Call(r.Context(), body.Username, token.UID, body.Title)
 	if err != nil {
-		return myerr.NewHTTPError(500, "An error occured during the prosess", err)
+		return apperr.NewHTTPError(500, "An error occured during the prosess", err)
 	}
 
 	w.WriteHeader(http.StatusCreated)
