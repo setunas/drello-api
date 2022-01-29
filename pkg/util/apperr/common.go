@@ -16,9 +16,6 @@ func combineMessages(message string, err error) string {
 }
 
 func newOccurredAt() string {
-	pc := make([]uintptr, 10)
-	runtime.Callers(3, pc)
-	f := runtime.FuncForPC(pc[0])
-	file, line := f.FileLine(pc[0])
-	return fmt.Sprintf("%s:%d %s", file, line, f.Name())
+	_, filename, line, _ := runtime.Caller(2)
+	return fmt.Sprintf("%s:%d", filename, line)
 }
