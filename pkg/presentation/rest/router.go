@@ -11,9 +11,9 @@ import (
 	"drello-api/pkg/presentation/rest/signupHandler"
 	"drello-api/pkg/util"
 	"drello-api/pkg/util/apperr"
+	"drello-api/pkg/util/log"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -23,11 +23,11 @@ var router *mux.Router
 
 func HandleRequests() {
 	port := fmt.Sprintf(":%s", util.MustGetenv("PORT"))
-	fmt.Println("Listening on PORT:", port)
+	log.Info("Listening on PORT:", port).Write()
 
 	router = mux.NewRouter()
 	setHandlers()
-	log.Fatal(http.ListenAndServe(port, router))
+	log.Fatal(http.ListenAndServe(port, router)).Write()
 }
 
 func setHandlers() {
@@ -56,6 +56,15 @@ func (fn handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	handleError(w, err)
 }
 
+func logHTTPRequest(r *http.Request) {
+	log.Info("Got a HTTP Request").
+		Add("Method", r.Method).
+		Add("URI", r.URL.String()).
+		Add("Referer", r.Header.Get("Referer")).
+		Add("UserAgent", r.Header.Get("User-Agent")).
+		Write()
+}
+
 func setHeaders(w http.ResponseWriter) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT")
@@ -71,13 +80,13 @@ func handleError(w http.ResponseWriter, err error) {
 
 	httpError, ok := err.(*apperr.HTTPError)
 	if !ok {
-		log.Printf("[error]: Unknown error type: %v", err)
+		log.Err("Unknown error type: %v", err).Write()
 		w.WriteHeader(500)
 		json.NewEncoder(w).Encode(errRes{Message: "Unknown error occured"})
 		return
 	}
 
-	log.Printf("[error]: %v: occurred at %s", httpError, httpError.OccurredAt())
+	log.Err(httpError).Add("OccurredAt", httpError.OccurredAt()).Write()
 	w.WriteHeader(httpError.Status())
 	if httpError.IsClientError() {
 		json.NewEncoder(w).Encode(errRes{Message: httpError.Error()})
