@@ -10,23 +10,24 @@ import (
 	"drello-api/pkg/presentation/rest"
 	"drello-api/pkg/util"
 	"drello-api/pkg/util/firebase"
-	"log"
-	"runtime"
+	"drello-api/pkg/util/log"
 )
 
 func main() {
-	pc := make([]uintptr, 10)
-	runtime.Callers(0, pc)
-	f := runtime.FuncForPC(pc[0])
-	file, line := f.FileLine(pc[0])
-	log.Printf("%s:%d %s\n", file, line, f.Name())
+	// pc := make([]uintptr, 10)
+	// runtime.Callers(0, pc)
+	// f := runtime.FuncForPC(pc[0])
+	// file, line := f.FileLine(pc[0])
+	// log.Printf("%s:%d %s\n", file, line, f.Name())
 
-	_, filename, line, _ := runtime.Caller(0)
-	log.Printf("[error] %s:%d %v", filename, line, "error occurd")
-	_, filename, line, _ = runtime.Caller(1)
-	log.Printf("[error] %s:%d %v", filename, line, "error occurd")
-	_, filename, line, _ = runtime.Caller(2)
-	log.Printf("[error] %s:%d %v", filename, line, "error occurd")
+	// _, filename, line, _ := runtime.Caller(0)
+	// log.Printf("[error] %s:%d %v", filename, line, "error occurd")
+	// _, filename, line, _ = runtime.Caller(1)
+	// log.Printf("[error] %s:%d %v", filename, line, "error occurd")
+	// _, filename, line, _ = runtime.Caller(2)
+	// log.Printf("[error] %s:%d %v", filename, line, "error occurd")
+
+	log.Err("It's not good").Add("API", "GOOD").Add("Hi", "NOAH").Write()
 
 	setupDB()
 	setupDataSources()
@@ -45,7 +46,7 @@ func setupDB() {
 
 	err := mysql.Open(dbUser, dbPwd, dbTCPHost, dbPort, dbName)
 	if err != nil {
-		log.Fatal(err)
+		// log.Fatal(err)
 	}
 }
 
