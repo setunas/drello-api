@@ -18,8 +18,8 @@ type Field struct {
 	value string
 }
 
-func (l *Log) Add(key, value string) *Log {
-	l.fields = append(l.fields, &Field{key: key, value: value})
+func (l *Log) Add(key, value interface{}) *Log {
+	l.fields = append(l.fields, &Field{key: fmt.Sprint(key), value: fmt.Sprint(value)})
 	return l
 }
 
