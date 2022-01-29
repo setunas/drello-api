@@ -9,9 +9,9 @@ import (
 )
 
 func patch(w http.ResponseWriter, r *http.Request, id int) error {
-	token, err := util.VerifyIDToken(r.Context(), r)
+	user, err := util.AuthenticateUser(r)
 	if err != nil {
-		return myerr.NewHTTPError(401, "Invalid token", err)
+		return err
 	}
 
 	var body struct {
@@ -19,7 +19,7 @@ func patch(w http.ResponseWriter, r *http.Request, id int) error {
 	}
 	json.NewDecoder(r.Body).Decode(&body)
 
-	ucBoard, err := updateBoard.Call(r.Context(), id, body.Title, token.UID)
+	ucBoard, err := updateBoard.Call(r.Context(), id, body.Title, user)
 	if err != nil {
 		return myerr.NewHTTPError(500, "An error occured during the prosess", err)
 	}
