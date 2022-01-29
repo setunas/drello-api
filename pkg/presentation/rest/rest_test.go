@@ -8,7 +8,8 @@ import (
 	"drello-api/pkg/infrastructure/datasource/usersDS"
 	"drello-api/pkg/infrastructure/mysql"
 	"drello-api/pkg/util"
-	"log"
+	"drello-api/pkg/util/log"
+
 	"net/http"
 	"net/http/httptest"
 	"os"

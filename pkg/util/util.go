@@ -1,14 +1,14 @@
 package util
 
 import (
-	"log"
+	"drello-api/pkg/util/log"
 	"os"
 )
 
 func MustGetenv(k string) string {
 	v := os.Getenv(k)
 	if v == "" {
-		log.Fatalf("Warning: %s environment variable not set.\n", k)
+		log.Warn("%s environment variable not set.", k).Write()
 	}
 	return v
 }

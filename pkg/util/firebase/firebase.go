@@ -2,8 +2,8 @@ package firebase
 
 import (
 	"context"
+	"drello-api/pkg/util/log"
 	"fmt"
-	"log"
 
 	firebase "firebase.google.com/go/v4"
 	"firebase.google.com/go/v4/auth"
@@ -14,7 +14,7 @@ var firebaseApp *firebase.App
 func InitApp() {
 	app, err := firebase.NewApp(context.Background(), nil)
 	if err != nil {
-		log.Fatalf("Error initializing firebase app: %v\n", err)
+		log.Fatal("Error initializing firebase app: %v\n", err)
 	}
 
 	firebaseApp = app
