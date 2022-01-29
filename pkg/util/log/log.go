@@ -2,7 +2,9 @@ package log
 
 import (
 	"drello-api/pkg/util/color"
+	"fmt"
 	"log"
+	"os"
 )
 
 type Log struct {
@@ -19,12 +21,14 @@ func (l *Log) Add(key, value string) *Log {
 func (l *Log) Write() {
 	var output string
 	switch l.level {
+	case fatal:
+		output = color.Red + "[!!!FATAL!!!] " + color.Reset
 	case err:
 		output = color.Red + "[ERROR] " + color.Reset
 	case warn:
 		output = color.Yellow + "[WARN] " + color.Reset
-	case info:
-		output = "[INFO] "
+	default:
+		output = color.Green + "[INFO] " + color.Reset
 	}
 
 	output += l.message
@@ -44,6 +48,10 @@ func (l *Log) Write() {
 	}
 
 	log.Println(output)
+
+	if l.level == fatal {
+		os.Exit(1)
+	}
 }
 
 type Level int
@@ -52,28 +60,37 @@ const (
 	info Level = iota
 	warn
 	err
+	fatal
 )
 
-func Info(message string) *Log {
+func Info(values ...interface{}) *Log {
 	return &Log{
 		level:   info,
-		message: message,
+		message: fmt.Sprint(values...),
 		fields:  map[string]string{},
 	}
 }
 
-func Warn(message string) *Log {
+func Warn(values ...interface{}) *Log {
 	return &Log{
 		level:   warn,
-		message: message,
+		message: fmt.Sprint(values...),
 		fields:  make(map[string]string),
 	}
 }
 
-func Err(message string) *Log {
+func Err(values ...interface{}) *Log {
 	return &Log{
 		level:   err,
-		message: message,
+		message: fmt.Sprint(values...),
+		fields:  make(map[string]string),
+	}
+}
+
+func Fatal(values ...interface{}) *Log {
+	return &Log{
+		level:   fatal,
+		message: fmt.Sprint(values...),
 		fields:  make(map[string]string),
 	}
 }
