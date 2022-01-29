@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	domainCard "drello-api/pkg/domain/card"
 	"drello-api/pkg/infrastructure/mysql"
+	"drello-api/pkg/presentation/rest/restutil"
 	"drello-api/pkg/util/log"
 	"fmt"
 )
@@ -17,7 +18,7 @@ func (c CardsDS) GetOneByID(ctx context.Context, id int) (*domainCard.Card, erro
 
 	db := mysql.DBPool()
 	query := "SELECT title, description, position, column_id FROM cards WHERE id = ?"
-	log.Info("SQL").Add("SQL", query).Add("id", id).Write()
+	log.Info("SQL").Add("RequestID", restutil.RetrieveReqID(ctx)).Add("SQL", query).Add("id", id).Write()
 	row := db.QueryRow(query, id)
 
 	switch err := row.Scan(&title, &description, &position, &columnID); err {

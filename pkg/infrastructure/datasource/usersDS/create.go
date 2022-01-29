@@ -5,6 +5,7 @@ import (
 
 	userDM "drello-api/pkg/domain/user"
 	"drello-api/pkg/infrastructure/mysql"
+	"drello-api/pkg/presentation/rest/restutil"
 	"drello-api/pkg/util/log"
 	"fmt"
 )
@@ -13,7 +14,7 @@ func (u UsersDS) Create(ctx context.Context, username string, boardID int, fireb
 	db := mysql.DBPool()
 
 	query := "INSERT INTO users (username, board_id, firebase_uid) VALUES (?, ?, ?)"
-	log.Info("SQL").Add("SQL", query).Add("username", username).Add("boardID", boardID).
+	log.Info("SQL").Add("RequestID", restutil.RetrieveReqID(ctx)).Add("SQL", query).Add("username", username).Add("boardID", boardID).
 		Add("firebaseUID", firebaseUID).Write()
 	result, err := db.Exec(query, username, boardID, firebaseUID)
 	if err != nil {

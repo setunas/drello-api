@@ -59,7 +59,7 @@ func (fn handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func logHTTPRequest(r *http.Request) {
 	log.Info("Got a HTTP Request").
-		Add("RequestID", restutil.RetrieveReqID(r)).
+		Add("RequestID", restutil.RetrieveReqID(r.Context())).
 		Add("Method", r.Method).
 		Add("URI", r.URL.String()).
 		Add("Referer", r.Header.Get("Referer")).
@@ -74,7 +74,7 @@ func setHeaders(w http.ResponseWriter) {
 }
 
 func handleError(w http.ResponseWriter, r *http.Request, err error) {
-	reqID := restutil.RetrieveReqID(r)
+	reqID := restutil.RetrieveReqID(r.Context())
 
 	type errRes struct {
 		Message string `json:"message"`

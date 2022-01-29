@@ -3,6 +3,7 @@ package cardsDS
 import (
 	"context"
 	"drello-api/pkg/infrastructure/mysql"
+	"drello-api/pkg/presentation/rest/restutil"
 	"drello-api/pkg/util/log"
 	"fmt"
 	"strings"
@@ -36,7 +37,7 @@ func (c CardsDS) UpdatePositions(ctx context.Context, data []struct {
 		`ELSE position END
 	WHERE id IN (?` + strings.Repeat(",?", len(ids)-1) + ")"
 
-	log.Info("SQL").Add("SQL", query).Add("placeholders...", placeholders).Write()
+	log.Info("SQL").Add("RequestID", restutil.RetrieveReqID(ctx)).Add("SQL", query).Add("placeholders...", placeholders).Write()
 
 	_, err := db.Exec(query, placeholders...)
 	if err != nil {

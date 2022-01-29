@@ -4,6 +4,7 @@ import (
 	"context"
 	domainBoard "drello-api/pkg/domain/board"
 	"drello-api/pkg/infrastructure/mysql"
+	"drello-api/pkg/presentation/rest/restutil"
 	"drello-api/pkg/util/log"
 	"fmt"
 )
@@ -12,7 +13,7 @@ func (b BoardsDS) Update(ctx context.Context, id int, title string) (*domainBoar
 	db := mysql.DBPool()
 
 	query := "UPDATE boards SET title = ? WHERE id = ?"
-	log.Info("SQL").Add("SQL", query).Add("title", title).Add("id", id).Write()
+	log.Info("SQL").Add("RequestID", restutil.RetrieveReqID(ctx)).Add("SQL", query).Add("title", title).Add("id", id).Write()
 
 	_, err := db.Exec(query, title, id)
 	if err != nil {

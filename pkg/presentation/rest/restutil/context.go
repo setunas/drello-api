@@ -15,8 +15,8 @@ func AppendReqIDToCtx(r *http.Request) *http.Request {
 	return r.WithContext(ctx)
 }
 
-func RetrieveReqID(r *http.Request) string {
-	reqIDRaw := r.Context().Value(requestID)
+func RetrieveReqID(ctx context.Context) string {
+	reqIDRaw := ctx.Value(requestID)
 	reqID, ok := reqIDRaw.(string)
 	if !ok {
 		reqID = "undefined"
