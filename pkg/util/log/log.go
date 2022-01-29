@@ -27,16 +27,14 @@ func (l *Log) Write() {
 	var output string
 	switch l.level {
 	case fatal:
-		output = color.Red + "[!!!FATAL!!!] " + color.Reset
+		output = color.Red + "[!!!FATAL!!!] " + l.message + color.Reset
 	case err:
-		output = color.Red + "[ERROR] " + color.Reset
+		output = color.Red + "[ERROR] " + l.message + color.Reset
 	case warn:
-		output = color.Yellow + "[WARN] " + color.Reset
+		output = color.Yellow + "[WARN] " + color.Reset + l.message
 	default:
-		output = color.Green + "[INFO] " + color.Reset
+		output = color.Green + "[INFO] " + color.Reset + l.message
 	}
-
-	output += l.message
 
 	if len(l.fields) != 0 {
 		output += " { "
