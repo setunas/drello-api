@@ -7,6 +7,7 @@ import (
 	userDM "drello-api/pkg/domain/user"
 	"drello-api/pkg/infrastructure/mysql"
 	"drello-api/pkg/presentation/rest/restutil"
+	"drello-api/pkg/util/apperr"
 	"drello-api/pkg/util/log"
 	"fmt"
 )
@@ -23,7 +24,7 @@ func (u UsersDS) GetOneByFirebaseUID(ctx context.Context, firebaseUID string) (*
 
 	switch err := row.Scan(&id, &username, &boardID); err {
 	case sql.ErrNoRows:
-		return nil, fmt.Errorf("not found with firebase UID %s", firebaseUID)
+		return nil, apperr.NewAppError([]apperr.Tag{apperr.RecordNotFound}, fmt.Sprintf("not found with firebase UID %s", firebaseUID), nil)
 	case nil:
 		return userDM.New(id, username, boardID, firebaseUID), nil
 	default:
