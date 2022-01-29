@@ -10,11 +10,11 @@ import (
 type Log struct {
 	level   Level
 	message string
-	fields  map[string]string
+	fields  [][]string
 }
 
 func (l *Log) Add(key, value string) *Log {
-	l.fields[key] = value
+	l.fields = append(l.fields, []string{key, value})
 	return l
 }
 
@@ -33,13 +33,13 @@ func (l *Log) Write() {
 
 	output += l.message
 
-	if l.fields != nil {
+	if len(l.fields) != 0 {
 		output += " { "
 
 		prefix := ""
-		for k, v := range l.fields {
-			key := color.Green + k + color.Reset
-			value := color.Yellow + v + color.Reset
+		for _, v := range l.fields {
+			key := color.Green + v[0] + color.Reset
+			value := color.Yellow + v[1] + color.Reset
 			output += prefix + key + ": " + value
 			prefix = ", "
 		}
@@ -67,7 +67,7 @@ func Info(values ...interface{}) *Log {
 	return &Log{
 		level:   info,
 		message: fmt.Sprint(values...),
-		fields:  map[string]string{},
+		fields:  nil,
 	}
 }
 
@@ -75,7 +75,7 @@ func Warn(values ...interface{}) *Log {
 	return &Log{
 		level:   warn,
 		message: fmt.Sprint(values...),
-		fields:  make(map[string]string),
+		fields:  nil,
 	}
 }
 
@@ -83,7 +83,7 @@ func Err(values ...interface{}) *Log {
 	return &Log{
 		level:   err,
 		message: fmt.Sprint(values...),
-		fields:  make(map[string]string),
+		fields:  nil,
 	}
 }
 
@@ -91,6 +91,6 @@ func Fatal(values ...interface{}) *Log {
 	return &Log{
 		level:   fatal,
 		message: fmt.Sprint(values...),
-		fields:  make(map[string]string),
+		fields:  nil,
 	}
 }
