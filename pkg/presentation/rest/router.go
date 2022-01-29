@@ -11,6 +11,7 @@ import (
 	"drello-api/pkg/presentation/rest/signupHandler"
 	"drello-api/pkg/util"
 	"drello-api/pkg/util/apperr"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -44,10 +45,7 @@ type handler func(http.ResponseWriter, *http.Request) error
 
 func (fn handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	logHTTPRequest(r)
-
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("Access-Control-Allow-Methods", "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT")
-	w.Header().Set("Access-Control-Allow-Headers", "*")
+	setHeaders(w)
 
 	fn(w, r)
 	err := fn(w, r)
@@ -55,25 +53,35 @@ func (fn handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	handleError(w, err)
+}
+
+func setHeaders(w http.ResponseWriter) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Access-Control-Allow-Methods", "DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT")
+	w.Header().Set("Access-Control-Allow-Headers", "*")
+}
+
+func handleError(w http.ResponseWriter, err error) {
+	type errRes struct {
+		Message string `json:"message"`
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+
 	httpError, ok := err.(*apperr.HTTPError)
 	if !ok {
-		log.Printf("[error]: %v", err)
+		log.Printf("[error]: Unknown error type: %v", err)
 		w.WriteHeader(500)
-		w.Header().Set("Content-Type", "application/text")
-		w.Write([]byte("Unknown type of error occured"))
+		json.NewEncoder(w).Encode(errRes{Message: "Unknown error occured"})
 		return
 	}
 
 	log.Printf("[error]: %v: occurred at %s", httpError, httpError.OccurredAt())
+	w.WriteHeader(httpError.Status())
 	if httpError.IsClientError() {
-		w.WriteHeader(httpError.Status())
-		w.Header().Set("Content-Type", "application/text")
-		w.Write([]byte(httpError.Error()))
-		return
+		json.NewEncoder(w).Encode(errRes{Message: httpError.Error()})
 	} else {
-		w.WriteHeader(httpError.Status())
-		w.Header().Set("Content-Type", "application/text")
-		w.Write([]byte("Internal server error"))
-		return
+		json.NewEncoder(w).Encode(errRes{Message: "Internal server error"})
 	}
 }
