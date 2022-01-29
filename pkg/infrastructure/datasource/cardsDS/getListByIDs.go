@@ -4,6 +4,7 @@ import (
 	"context"
 	domainCard "drello-api/pkg/domain/card"
 	"drello-api/pkg/infrastructure/mysql"
+	"drello-api/pkg/util/log"
 	"fmt"
 	"strings"
 )
@@ -22,9 +23,9 @@ func (c CardsDS) GetListByIDs(ctx context.Context, ids []int) ([]*domainCard.Car
 		args[i] = ids[i]
 	}
 
-	sql := "SELECT id, title, description, position, column_id FROM cards WHERE id IN (?" + strings.Repeat(",?", len(ids)-1) + ")"
-
-	rows, err := db.Query(sql, args...)
+	query := "SELECT id, title, description, position, column_id FROM cards WHERE id IN (?" + strings.Repeat(",?", len(ids)-1) + ")"
+	log.Info("SQL").Add("SQL", query).Add("args...", args).Write()
+	rows, err := db.Query(query, args...)
 	if err != nil {
 		return nil, fmt.Errorf("failed querying cards: %w", err)
 	}

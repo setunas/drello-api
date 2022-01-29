@@ -4,12 +4,15 @@ import (
 	"context"
 	domainColumn "drello-api/pkg/domain/column"
 	"drello-api/pkg/infrastructure/mysql"
+	"drello-api/pkg/util/log"
 	"fmt"
 )
 
 func (c ColumnsDS) GetListByBoardId(ctx context.Context, boardId int) ([]*domainColumn.Column, error) {
 	db := mysql.DBPool()
-	rows, err := db.Query("SELECT id, title, position FROM columns WHERE board_id = ?", boardId)
+	query := "SELECT id, title, position FROM columns WHERE board_id = ?"
+	log.Info("SQL").Add("SQL", query).Add("boardId", boardId).Write()
+	rows, err := db.Query(query, boardId)
 	if err != nil {
 		return nil, fmt.Errorf("failed querying columns: %w", err)
 	}

@@ -6,6 +6,7 @@ import (
 
 	userDM "drello-api/pkg/domain/user"
 	"drello-api/pkg/infrastructure/mysql"
+	"drello-api/pkg/util/log"
 	"fmt"
 )
 
@@ -15,7 +16,9 @@ func (u UsersDS) GetOneByFirebaseUID(ctx context.Context, firebaseUID string) (*
 	var boardID int
 
 	db := mysql.DBPool()
-	row := db.QueryRow("SELECT id, username, board_id FROM users WHERE firebase_uid = ?", firebaseUID)
+	query := "SELECT id, username, board_id FROM users WHERE firebase_uid = ?"
+	log.Info("SQL").Add("SQL", query).Add("firebaseUID", firebaseUID).Write()
+	row := db.QueryRow(query, firebaseUID)
 
 	switch err := row.Scan(&id, &username, &boardID); err {
 	case sql.ErrNoRows:

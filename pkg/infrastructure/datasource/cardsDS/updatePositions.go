@@ -3,6 +3,7 @@ package cardsDS
 import (
 	"context"
 	"drello-api/pkg/infrastructure/mysql"
+	"drello-api/pkg/util/log"
 	"fmt"
 	"strings"
 )
@@ -26,7 +27,7 @@ func (c CardsDS) UpdatePositions(ctx context.Context, data []struct {
 	}
 	placeholders = append(placeholders, ids...)
 
-	sql := `
+	query := `
 	UPDATE cards
 	SET position = 
 	CASE id 
@@ -34,9 +35,10 @@ func (c CardsDS) UpdatePositions(ctx context.Context, data []struct {
 		strings.Repeat("WHEN ? THEN ? ", len(data)) +
 		`ELSE position END
 	WHERE id IN (?` + strings.Repeat(",?", len(ids)-1) + ")"
-	fmt.Println(sql)
 
-	_, err := db.Exec(sql, placeholders...)
+	log.Info("SQL").Add("SQL", query).Add("placeholders...", placeholders).Write()
+
+	_, err := db.Exec(query, placeholders...)
 	if err != nil {
 		return fmt.Errorf("failed updating card positions: %w", err)
 	}

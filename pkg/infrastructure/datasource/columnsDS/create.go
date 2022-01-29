@@ -4,13 +4,17 @@ import (
 	"context"
 	domainColumn "drello-api/pkg/domain/column"
 	"drello-api/pkg/infrastructure/mysql"
+	"drello-api/pkg/util/log"
 	"fmt"
 )
 
 func (c ColumnsDS) Create(ctx context.Context, title string, position float64, boardId int) (*domainColumn.Column, error) {
 	db := mysql.DBPool()
 
-	result, err := db.Exec("INSERT INTO columns (title, position, board_id) VALUES (?, ?, ?)", title, position, boardId)
+	query := "INSERT INTO columns (title, position, board_id) VALUES (?, ?, ?)"
+	log.Info("SQL").Add("SQL", query).Add("title", title).
+		Add("position", position).Add("boardId", boardId).Write()
+	result, err := db.Exec(query, title, position, boardId)
 	if err != nil {
 		return nil, fmt.Errorf("failed creating column: %w", err)
 	}

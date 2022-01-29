@@ -4,13 +4,17 @@ import (
 	"context"
 	domainBoard "drello-api/pkg/domain/board"
 	"drello-api/pkg/infrastructure/mysql"
+	"drello-api/pkg/util/log"
 	"fmt"
 )
 
 func (b BoardsDS) Create(ctx context.Context, title string) (*domainBoard.Board, error) {
 	db := mysql.DBPool()
 
-	result, err := db.Exec("INSERT INTO boards (title) VALUES (?)", title)
+	query := "INSERT INTO boards (title) VALUES (?)"
+	log.Info("SQL").Add("SQL", query).Add("title", title).Write()
+
+	result, err := db.Exec(query, title)
 	if err != nil {
 		return nil, fmt.Errorf("failed creating board: %w", err)
 	}
