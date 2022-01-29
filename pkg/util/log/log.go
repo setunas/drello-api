@@ -10,11 +10,16 @@ import (
 type Log struct {
 	level   Level
 	message string
-	fields  [][]string
+	fields  []*Field
+}
+
+type Field struct {
+	key   string
+	value string
 }
 
 func (l *Log) Add(key, value string) *Log {
-	l.fields = append(l.fields, []string{key, value})
+	l.fields = append(l.fields, &Field{key: key, value: value})
 	return l
 }
 
@@ -38,8 +43,8 @@ func (l *Log) Write() {
 
 		prefix := ""
 		for _, v := range l.fields {
-			key := color.Green + v[0] + color.Reset
-			value := color.Yellow + v[1] + color.Reset
+			key := color.Green + v.key + color.Reset
+			value := color.Yellow + v.value + color.Reset
 			output += prefix + key + ": " + value
 			prefix = ", "
 		}
