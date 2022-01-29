@@ -47,7 +47,6 @@ func (fn handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	logHTTPRequest(r)
 	setHeaders(w)
 
-	fn(w, r)
 	err := fn(w, r)
 	if err == nil {
 		return
