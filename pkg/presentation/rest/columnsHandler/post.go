@@ -2,14 +2,14 @@ package columnsHandler
 
 import (
 	"drello-api/pkg/app/usecase/createColumn"
-	"drello-api/pkg/presentation/rest/util"
+	"drello-api/pkg/presentation/rest/restutil"
 	"drello-api/pkg/util/apperr"
 	"encoding/json"
 	"net/http"
 )
 
 func post(w http.ResponseWriter, r *http.Request) error {
-	user, err := util.AuthenticateUser(r)
+	user, err := restutil.AuthenticateUser(r)
 	if err != nil {
 		return err
 	}

@@ -1,13 +1,13 @@
 package meHandler
 
 import (
-	"drello-api/pkg/presentation/rest/util"
+	"drello-api/pkg/presentation/rest/restutil"
 	"encoding/json"
 	"net/http"
 )
 
 func get(w http.ResponseWriter, r *http.Request) error {
-	user, err := util.AuthenticateUser(r)
+	user, err := restutil.AuthenticateUser(r)
 	if err != nil {
 		return err
 	}

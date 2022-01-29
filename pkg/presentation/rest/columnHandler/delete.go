@@ -2,13 +2,13 @@ package columnHandler
 
 import (
 	"drello-api/pkg/app/usecase/deleteColumn"
-	"drello-api/pkg/presentation/rest/util"
+	"drello-api/pkg/presentation/rest/restutil"
 	"drello-api/pkg/util/apperr"
 	"net/http"
 )
 
 func delete(w http.ResponseWriter, r *http.Request, id int) error {
-	user, err := util.AuthenticateUser(r)
+	user, err := restutil.AuthenticateUser(r)
 	if err != nil {
 		return err
 	}

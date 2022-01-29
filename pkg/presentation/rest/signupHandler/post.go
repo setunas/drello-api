@@ -2,14 +2,14 @@ package signupHandler
 
 import (
 	"drello-api/pkg/app/usecase/signup"
-	"drello-api/pkg/presentation/rest/util"
+	"drello-api/pkg/presentation/rest/restutil"
 	"drello-api/pkg/util/apperr"
 	"encoding/json"
 	"net/http"
 )
 
 func post(w http.ResponseWriter, r *http.Request) error {
-	token, err := util.VerifyIDToken(r.Context(), r)
+	token, err := restutil.VerifyIDToken(r.Context(), r)
 	if err != nil {
 		return apperr.NewHTTPError(401, "Invalid token", err)
 	}

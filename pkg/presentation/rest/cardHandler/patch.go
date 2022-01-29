@@ -2,7 +2,7 @@ package cardHandler
 
 import (
 	"drello-api/pkg/app/usecase/updateCard"
-	"drello-api/pkg/presentation/rest/util"
+	"drello-api/pkg/presentation/rest/restutil"
 	"drello-api/pkg/util/apperr"
 	"encoding/json"
 	"fmt"
@@ -10,7 +10,7 @@ import (
 )
 
 func patch(w http.ResponseWriter, r *http.Request, id int) error {
-	user, err := util.AuthenticateUser(r)
+	user, err := restutil.AuthenticateUser(r)
 	if err != nil {
 		return err
 	}

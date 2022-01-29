@@ -1,4 +1,4 @@
-package util
+package restutil
 
 import (
 	"context"
