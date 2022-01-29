@@ -3,11 +3,12 @@ package updateCardPositions
 import (
 	"context"
 	"drello-api/pkg/app/repository"
+	"drello-api/pkg/domain/user"
 	"fmt"
 )
 
-func Call(ctx context.Context, inputCards []Card, firebaseUID string) error {
-	err := authorize(ctx, firebaseUID, inputCards)
+func Call(ctx context.Context, inputCards []Card, user *user.User) error {
+	err := authorize(ctx, user, inputCards)
 	if err != nil {
 		return err
 	}
@@ -29,12 +30,7 @@ func Call(ctx context.Context, inputCards []Card, firebaseUID string) error {
 	return nil
 }
 
-func authorize(ctx context.Context, firebaseUID string, inputCards []Card) error {
-	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
-	if err != nil {
-		return err
-	}
-
+func authorize(ctx context.Context, user *user.User, inputCards []Card) error {
 	columns, err := (*repository.ColumnDS()).GetListByBoardId(ctx, user.BoardID())
 	if err != nil {
 		return err

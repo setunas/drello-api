@@ -4,11 +4,12 @@ import (
 	"context"
 	"drello-api/pkg/app/repository"
 	"drello-api/pkg/domain/column"
+	"drello-api/pkg/domain/user"
 	"fmt"
 )
 
-func Call(ctx context.Context, title string, position float64, boardID int, firebaseUID string) (*column.Column, error) {
-	err := authorize(ctx, firebaseUID, boardID)
+func Call(ctx context.Context, title string, position float64, boardID int, user *user.User) (*column.Column, error) {
+	err := authorize(ctx, user, boardID)
 	if err != nil {
 		return nil, err
 	}
@@ -21,12 +22,7 @@ func Call(ctx context.Context, title string, position float64, boardID int, fire
 	return columnDomain, nil
 }
 
-func authorize(ctx context.Context, firebaseUID string, boardID int) error {
-	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
-	if err != nil {
-		return err
-	}
-
+func authorize(ctx context.Context, user *user.User, boardID int) error {
 	if user.BoardID() != boardID {
 		return fmt.Errorf("invalid board ID: %d, user's borad ID is: %d", boardID, user.BoardID())
 	}

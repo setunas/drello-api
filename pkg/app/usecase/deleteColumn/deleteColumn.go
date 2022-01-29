@@ -3,11 +3,12 @@ package deleteColumn
 import (
 	"context"
 	"drello-api/pkg/app/repository"
+	"drello-api/pkg/domain/user"
 	"fmt"
 )
 
-func Call(ctx context.Context, cardID int, firebaseUID string) error {
-	err := authorize(ctx, firebaseUID, cardID)
+func Call(ctx context.Context, cardID int, user *user.User) error {
+	err := authorize(ctx, user, cardID)
 	if err != nil {
 		return err
 	}
@@ -20,11 +21,7 @@ func Call(ctx context.Context, cardID int, firebaseUID string) error {
 	return nil
 }
 
-func authorize(ctx context.Context, firebaseUID string, cardID int) error {
-	user, err := (*repository.UserDS()).GetOneByFirebaseUID(ctx, firebaseUID)
-	if err != nil {
-		return err
-	}
+func authorize(ctx context.Context, user *user.User, cardID int) error {
 	column, err := (*repository.ColumnDS()).GetOneByID(ctx, cardID)
 	if err != nil {
 		return err

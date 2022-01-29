@@ -10,9 +10,9 @@ import (
 )
 
 func post(w http.ResponseWriter, r *http.Request) error {
-	token, err := util.VerifyIDToken(r.Context(), r)
+	user, err := util.AuthenticateUser(r)
 	if err != nil {
-		return myerr.NewHTTPError(401, "Invalid token", err)
+		return err
 	}
 
 	var body struct {
@@ -24,7 +24,7 @@ func post(w http.ResponseWriter, r *http.Request) error {
 	json.NewDecoder(r.Body).Decode(&body)
 	fmt.Println("body", body)
 
-	ucCard, err := createCard.Call(r.Context(), body.Title, body.Description, body.Position, body.ColumnID, token.UID)
+	ucCard, err := createCard.Call(r.Context(), body.Title, body.Description, body.Position, body.ColumnID, user)
 	if err != nil {
 		return myerr.NewHTTPError(500, "An error occured during the prosess", err)
 	}

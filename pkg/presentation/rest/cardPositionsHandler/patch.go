@@ -10,9 +10,9 @@ import (
 )
 
 func patch(w http.ResponseWriter, r *http.Request) error {
-	token, err := util.VerifyIDToken(r.Context(), r)
+	user, err := util.AuthenticateUser(r)
 	if err != nil {
-		return myerr.NewHTTPError(401, "Invalid token", err)
+		return err
 	}
 
 	type card struct {
@@ -31,7 +31,7 @@ func patch(w http.ResponseWriter, r *http.Request) error {
 		Cards = append(Cards, *updateCardPositions.NewCard(card.ID, card.Position))
 	}
 
-	err = updateCardPositions.Call(r.Context(), Cards, token.UID)
+	err = updateCardPositions.Call(r.Context(), Cards, user)
 	if err != nil {
 		return myerr.NewHTTPError(500, "An error occured during the prosess", err)
 	}
