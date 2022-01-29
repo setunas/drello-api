@@ -90,7 +90,7 @@ func handleError(w http.ResponseWriter, r *http.Request, err error) {
 		return
 	}
 
-	log.Errorf("httpError").Add("RequestID", reqID).Add("OccurredAt", httpError.OccurredAt()).Write()
+	log.Error("HTTP Error: ", err).Add("RequestID", reqID).Add("OccurredAt", httpError.OccurredAt()).Write()
 	w.WriteHeader(httpError.Status())
 	if httpError.IsClientError() {
 		json.NewEncoder(w).Encode(errRes{Message: httpError.Error()})
