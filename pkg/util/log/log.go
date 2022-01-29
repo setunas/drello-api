@@ -74,10 +74,26 @@ func Info(values ...interface{}) *Log {
 	}
 }
 
+func Infof(format string, values ...interface{}) *Log {
+	return &Log{
+		level:   info,
+		message: fmt.Sprintf(format, values...),
+		fields:  nil,
+	}
+}
+
 func Warn(values ...interface{}) *Log {
 	return &Log{
 		level:   warn,
 		message: fmt.Sprint(values...),
+		fields:  nil,
+	}
+}
+
+func Warnf(format string, values ...interface{}) *Log {
+	return &Log{
+		level:   warn,
+		message: fmt.Sprintf(format, values...),
 		fields:  nil,
 	}
 }
@@ -90,10 +106,26 @@ func Error(values ...interface{}) *Log {
 	}
 }
 
+func Errorf(format string, values ...interface{}) *Log {
+	return &Log{
+		level:   err,
+		message: fmt.Sprintf(format, values...),
+		fields:  nil,
+	}
+}
+
 func Fatal(values ...interface{}) *Log {
 	return &Log{
 		level:   fatal,
 		message: fmt.Sprint(values...),
+		fields:  nil,
+	}
+}
+
+func Fatalf(format string, values ...interface{}) *Log {
+	return &Log{
+		level:   fatal,
+		message: fmt.Sprintf(format, values...),
 		fields:  nil,
 	}
 }
