@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"drello-api/pkg/app/repository"
-	"drello-api/pkg/infrastructure/mysql"
 	"drello-api/pkg/presentation/rest/resttest"
 	"encoding/json"
 	"io"
@@ -17,6 +16,7 @@ import (
 func TestPatchBoardRequest(t *testing.T) {
 	ctx := context.TODO()
 	(*repository.BoardDS()).Create(ctx, "test1")
+	(*repository.UserDS()).Create(ctx, "user1", 1, "UID-1")
 
 	var body bytes.Buffer
 	writer := multipart.NewWriter(&body)
@@ -25,6 +25,7 @@ func TestPatchBoardRequest(t *testing.T) {
 	writer.Close()
 
 	req, _ := http.NewRequest("PATCH", "/boards/1", &body)
+	req.Header.Set("Authorization", "Bearer UID-1")
 	req.Header.Set("Content-Type", writer.FormDataContentType())
 
 	response := resttest.ExecuteRequest(req)
@@ -42,8 +43,6 @@ func TestPatchBoardRequest(t *testing.T) {
 	}
 
 	t.Cleanup(func() {
-		db := mysql.DBPool()
-		db.Exec("DELETE FROM boards")
-		db.Exec("ALTER TABLE boards AUTO_INCREMENT = 1")
+		resttest.CleanupAllTable()
 	})
 }
