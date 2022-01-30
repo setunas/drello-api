@@ -2,6 +2,7 @@ package firebase
 
 import (
 	"context"
+	"drello-api/pkg/util/apperr"
 	"drello-api/pkg/util/log"
 	"fmt"
 
@@ -18,17 +19,30 @@ func InitApp() {
 	}
 
 	firebaseApp = app
+	verifyIDToken = verifyIDTokenImpl
 }
 
+type verifyIDTokenType func(ctx context.Context, idToken string) (*auth.Token, error)
+
+var verifyIDToken verifyIDTokenType
+
 func VerifyIDToken(ctx context.Context, idToken string) (*auth.Token, error) {
+	return verifyIDToken(ctx, idToken)
+}
+
+func SetVerifyIDToken(fn verifyIDTokenType) {
+	verifyIDToken = fn
+}
+
+func verifyIDTokenImpl(ctx context.Context, idToken string) (*auth.Token, error) {
 	client, err := firebaseApp.Auth(ctx)
 	if err != nil {
-		return nil, fmt.Errorf("error getting Auth client: %v", err)
+		return nil, apperr.NewAppError([]apperr.Tag{apperr.FailedAuthorization}, fmt.Sprintf("error getting Auth client: %v", err), err)
 	}
 
 	token, err := client.VerifyIDToken(ctx, idToken)
 	if err != nil {
-		return nil, fmt.Errorf("error verifying ID token: %v", err)
+		return nil, apperr.NewAppError([]apperr.Tag{apperr.FailedAuthorization}, fmt.Sprintf("error verifying ID token: %v", err), err)
 	}
 
 	return token, nil
