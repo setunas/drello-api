@@ -18,12 +18,20 @@ func TestGetBoardRequest(t *testing.T) {
 	(*repository.ColumnDS()).Create(ctx, "test2", 2.0, 2)
 	(*repository.CardDS()).Create(ctx, "test1", "desc1", 1.0, 1)
 	(*repository.CardDS()).Create(ctx, "test2", "desc2", 2.0, 2)
+	(*repository.UserDS()).Create(ctx, "user1", 1, "UID-1")
 
 	req, _ := http.NewRequest("GET", "/boards/3", nil)
+	req.Header.Set("Authorization", "Bearer UID-1")
 	response := resttest.ExecuteRequest(req)
-	resttest.CheckResponseCode(t, 200, response)
+	resttest.CheckResponseCode(t, 500, response)
 
 	req, _ = http.NewRequest("GET", "/boards/1", nil)
+	req.Header.Set("Authorization", "Bearer UID-2")
+	response = resttest.ExecuteRequest(req)
+	resttest.CheckResponseCode(t, 401, response)
+
+	req, _ = http.NewRequest("GET", "/boards/1", nil)
+	req.Header.Set("Authorization", "Bearer UID-1")
 	response = resttest.ExecuteRequest(req)
 	resttest.CheckResponseCode(t, 200, response)
 
