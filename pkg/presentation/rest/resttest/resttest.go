@@ -1,6 +1,7 @@
 package resttest
 
 import (
+	"context"
 	"drello-api/pkg/app/repository"
 	"drello-api/pkg/infrastructure/datasource/boardsDS"
 	"drello-api/pkg/infrastructure/datasource/cardsDS"
@@ -16,6 +17,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"firebase.google.com/go/v4/auth"
 	"github.com/gorilla/mux"
 )
 
@@ -39,9 +41,14 @@ func InitTest() {
 		log.Fatal(err)
 	}
 
-	firebase.InitApp()
+	firebase.SetVerifyIDToken(verifyIDTokenImpl)
 	setupDataSources()
 	router = mux.NewRouter()
+}
+
+func verifyIDTokenImpl(ctx context.Context, idToken string) (*auth.Token, error) {
+	token := &auth.Token{UID: idToken}
+	return token, nil
 }
 
 func setupDataSources() {
