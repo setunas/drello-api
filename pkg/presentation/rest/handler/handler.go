@@ -48,19 +48,24 @@ func handleError(w http.ResponseWriter, r *http.Request, err error) {
 
 	w.Header().Set("Content-Type", "application/json")
 
-	httpError, ok := err.(*apperr.HTTPError)
-	if !ok {
-		log.Errorf("Unknown error type: %v", err).Add("RequestID", reqID).Write()
-		w.WriteHeader(500)
-		json.NewEncoder(w).Encode(errRes{Message: "Unknown error occured"})
-		return
+	if apperror, ok := err.(*apperr.AppError); ok {
+		err = apperr.NewHTTPError(500, "", apperror)
 	}
 
-	log.Error("HTTP Error: ", err).Add("RequestID", reqID).Add("OccurredAt", httpError.OccurredAt()).Write()
-	w.WriteHeader(httpError.Status())
-	if httpError.IsClientError() {
-		json.NewEncoder(w).Encode(errRes{Message: httpError.Error()})
-	} else {
-		json.NewEncoder(w).Encode(errRes{Message: "Internal server error"})
+	if httpError, ok := err.(*apperr.HTTPError); ok {
+		log.Error("HTTP Error: ", err).Add("RequestID", reqID).Add("OccurredAt", httpError.OccurredAt()).Write()
+		w.WriteHeader(httpError.Status())
+
+		if httpError.IsClientError() {
+			json.NewEncoder(w).Encode(errRes{Message: httpError.Error()})
+			return
+		} else {
+			json.NewEncoder(w).Encode(errRes{Message: "Internal server error"})
+			return
+		}
 	}
+
+	log.Errorf("Unknown error type: %v", err).Add("RequestID", reqID).Write()
+	w.WriteHeader(500)
+	json.NewEncoder(w).Encode(errRes{Message: "Unknown error occured"})
 }
