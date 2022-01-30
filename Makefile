@@ -16,3 +16,6 @@ db-rollback-all:
 
 db-migrate-all-test:
 	$(migrate-cmd) $(test-mysql-dsn) up
+
+db-rollback-all-test:
+	$(migrate-cmd) $(test-mysql-dsn) down
