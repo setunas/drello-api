@@ -31,9 +31,9 @@ func (l *Log) Write() {
 	case err:
 		output = color.Red + "[ERROR] " + l.message + color.Reset
 	case warn:
-		output = color.Yellow + "[WARN] " + color.Reset + l.message
+		output = color.Yellow + "[WARN] " + l.message + color.Reset
 	default:
-		output = color.Cyan + "[INFO] " + color.Reset + l.message
+		output = color.Cyan + "[INFO] " + l.message + color.Reset
 	}
 
 	if len(l.fields) != 0 {
