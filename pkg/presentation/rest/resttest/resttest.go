@@ -70,3 +70,19 @@ func CheckResponseCode(t *testing.T, expectedCode int, actualRes *httptest.Respo
 		t.Errorf("%s:%d Expected response code %d. Got %d. %s\n", filename, line, expectedCode, actualRes.Code, actualRes.Body)
 	}
 }
+
+func CleanupAllTable() {
+	db := mysql.DBPool()
+
+	db.Exec("DELETE FROM cards")
+	db.Exec("ALTER TABLE cards AUTO_INCREMENT = 1")
+
+	db.Exec("DELETE FROM columns")
+	db.Exec("ALTER TABLE columns AUTO_INCREMENT = 1")
+
+	db.Exec("DELETE FROM boards")
+	db.Exec("ALTER TABLE boards AUTO_INCREMENT = 1")
+
+	db.Exec("DELETE FROM users")
+	db.Exec("ALTER TABLE users AUTO_INCREMENT = 1")
+}
