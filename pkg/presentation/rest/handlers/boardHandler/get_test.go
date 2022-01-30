@@ -3,7 +3,6 @@ package boardHandler
 import (
 	"context"
 	"drello-api/pkg/app/repository"
-	"drello-api/pkg/infrastructure/mysql"
 	"drello-api/pkg/presentation/rest/resttest"
 	"encoding/json"
 	"net/http"
@@ -38,14 +37,12 @@ func TestGetBoardRequest(t *testing.T) {
 	var wr boardResponse
 	json.Unmarshal(response.Body.Bytes(), &wr)
 
-	expectedBody := `{"id":1,"title":"test1","columns":[{"id":1,"title":"test1","boardId":1}],"cards":[{"id":1,"title":"test1","description":"desc1","columnId":1}]}` + "\n"
+	expectedBody := `{"id":1,"title":"test1","columns":[{"id":1,"title":"test1","position":1,"boardId":1}],"cards":[{"id":1,"title":"test1","description":"desc1","position":1,"columnId":1}]}` + "\n"
 	if body := response.Body.String(); body != expectedBody {
 		t.Errorf("Expected %s. Got %s", expectedBody, body)
 	}
 
 	t.Cleanup(func() {
-		db := mysql.DBPool()
-		db.Exec("DELETE FROM boards")
-		db.Exec("ALTER TABLE boards AUTO_INCREMENT = 1")
+		resttest.CleanupAllTable()
 	})
 }
