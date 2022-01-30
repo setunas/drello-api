@@ -24,7 +24,7 @@ func (u UsersDS) GetOneByFirebaseUID(ctx context.Context, firebaseUID string) (*
 
 	switch err := row.Scan(&id, &username, &boardID); err {
 	case sql.ErrNoRows:
-		return nil, apperr.NewAppError([]apperr.Tag{apperr.RecordNotFound}, fmt.Sprintf("not found with firebase UID %s", firebaseUID), nil)
+		return nil, apperr.NewAppError([]apperr.Tag{apperr.FailedAuthentication}, fmt.Sprintf("not found with firebase UID %s", firebaseUID), nil)
 	case nil:
 		return userDM.New(id, username, boardID, firebaseUID), nil
 	default:
