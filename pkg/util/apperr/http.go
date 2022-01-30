@@ -54,8 +54,9 @@ func inheritStatus(newStatus int, oldStatus int) int {
 }
 
 var tagStatusMap = map[Tag]int{
-	RecordNotFound:      404,
-	FailedAuthorization: 403,
+	RecordNotFound:       404,
+	FailedAuthentication: 401,
+	FailedAuthorization:  403,
 }
 
 func convertTagsToStatus(newStatus int, tags []Tag) int {

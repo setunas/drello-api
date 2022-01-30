@@ -13,8 +13,9 @@ func (e *AppError) Error() string {
 type Tag string
 
 const (
-	RecordNotFound      Tag = "recordNotFound"
-	FailedAuthorization Tag = "FailedAuthorization"
+	RecordNotFound       Tag = "recordNotFound"
+	FailedAuthentication Tag = "FailedAuthentication"
+	FailedAuthorization  Tag = "FailedAuthorization"
 )
 
 func (e *AppError) Tags() []Tag {
