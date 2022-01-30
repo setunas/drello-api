@@ -4,7 +4,7 @@ import (
 	"context"
 	"drello-api/pkg/app/repository"
 	"drello-api/pkg/infrastructure/mysql"
-	"drello-api/pkg/presentation/rest/test"
+	"drello-api/pkg/presentation/rest/resttest"
 	"encoding/json"
 	"net/http"
 	"testing"
@@ -20,12 +20,12 @@ func TestGetBoardRequest(t *testing.T) {
 	(*repository.CardDS()).Create(ctx, "test2", "desc2", 2.0, 2)
 
 	req, _ := http.NewRequest("GET", "/boards/3", nil)
-	response := test.ExecuteRequest(req)
-	test.CheckResponseCode(t, 200, response)
+	response := resttest.ExecuteRequest(req)
+	resttest.CheckResponseCode(t, 200, response)
 
 	req, _ = http.NewRequest("GET", "/boards/1", nil)
-	response = test.ExecuteRequest(req)
-	test.CheckResponseCode(t, 200, response)
+	response = resttest.ExecuteRequest(req)
+	resttest.CheckResponseCode(t, 200, response)
 
 	var wr boardResponse
 	json.Unmarshal(response.Body.Bytes(), &wr)

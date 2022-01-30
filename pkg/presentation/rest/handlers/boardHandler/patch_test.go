@@ -5,7 +5,7 @@ import (
 	"context"
 	"drello-api/pkg/app/repository"
 	"drello-api/pkg/infrastructure/mysql"
-	"drello-api/pkg/presentation/rest/test"
+	"drello-api/pkg/presentation/rest/resttest"
 	"encoding/json"
 	"io"
 	"mime/multipart"
@@ -27,8 +27,8 @@ func TestPatchBoardRequest(t *testing.T) {
 	req, _ := http.NewRequest("PATCH", "/boards/1", &body)
 	req.Header.Set("Content-Type", writer.FormDataContentType())
 
-	response := test.ExecuteRequest(req)
-	test.CheckResponseCode(t, 200, response)
+	response := resttest.ExecuteRequest(req)
+	resttest.CheckResponseCode(t, 200, response)
 
 	var m map[string]interface{}
 	json.Unmarshal(response.Body.Bytes(), &m)
