@@ -16,6 +16,7 @@ https://drello.netlify.app/
 - You might have to **turn off your ad blocker** to log in since we use a popup window to log in with Firebase Authentication.
 
 ## Repositories for Drello
+We have two GitHub repositories. You can see all our codes here.
 - [`drello-api`](https://github.com/setunas/drello-api): The backend app exposes RESTful APIs connecting MySQL using Go.
 - [`drello-web`](https://github.com/setunas/drello-web): The frontend app for web mainly using React, Next.js and TypeScript.
 
