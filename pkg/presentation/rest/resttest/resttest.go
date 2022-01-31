@@ -80,9 +80,9 @@ func CleanupAllTable() {
 	db.Exec("DELETE FROM columns")
 	db.Exec("ALTER TABLE columns AUTO_INCREMENT = 1")
 
-	db.Exec("DELETE FROM boards")
-	db.Exec("ALTER TABLE boards AUTO_INCREMENT = 1")
-
 	db.Exec("DELETE FROM users")
 	db.Exec("ALTER TABLE users AUTO_INCREMENT = 1")
+
+	db.Exec("DELETE FROM boards")
+	db.Exec("ALTER TABLE boards AUTO_INCREMENT = 1")
 }

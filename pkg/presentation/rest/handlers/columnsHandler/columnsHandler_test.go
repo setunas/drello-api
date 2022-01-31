@@ -37,8 +37,8 @@ package columnsHandler
 // 	req, _ := http.NewRequest("POST", "/columns", &body)
 // 	req.Header.Set("Content-Type", writer.FormDataContentType())
 
-// 	response := executeRequest(req)
-// 	checkResponseCode(t, 201, response.Code)
+// 	response := resttest.ExecuteRequest(req)
+// 	resttest.CheckResponseCode(t, 201, response)
 
 // 	var m map[string]interface{}
 // 	json.Unmarshal(response.Body.Bytes(), &m)
@@ -80,8 +80,8 @@ package columnsHandler
 // 	req, _ := http.NewRequest("PATCH", "/columns/1", &body)
 // 	req.Header.Set("Content-Type", writer.FormDataContentType())
 
-// 	response := executeRequest(req)
-// 	checkResponseCode(t, 200, response.Code)
+// 	response := resttest.ExecuteRequest(req)
+// 	resttest.CheckResponseCode(t, 200, response)
 
 // 	var m map[string]interface{}
 // 	json.Unmarshal(response.Body.Bytes(), &m)
@@ -110,8 +110,8 @@ package columnsHandler
 // 	(*repository.ColumnDS()).Create(ctx, "test1", 1.0, 1)
 
 // 	req, _ := http.NewRequest("DELETE", "/columns/1", nil)
-// 	response := executeRequest(req)
-// 	checkResponseCode(t, 204, response.Code)
+// 	response := resttest.ExecuteRequest(req)
+// 	resttest.CheckResponseCode(t, 204, response)
 
 // 	t.Cleanup(func() {
 // 		clearBoardsTable()

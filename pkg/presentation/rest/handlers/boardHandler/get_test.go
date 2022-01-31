@@ -41,8 +41,4 @@ func TestGetBoardRequest(t *testing.T) {
 	if body := response.Body.String(); body != expectedBody {
 		t.Errorf("Expected %s. Got %s", expectedBody, body)
 	}
-
-	t.Cleanup(func() {
-		resttest.CleanupAllTable()
-	})
 }

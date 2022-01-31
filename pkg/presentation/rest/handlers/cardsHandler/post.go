@@ -17,10 +17,10 @@ func post(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	var body struct {
-		Title       string
-		Description string
-		Position    float64
-		ColumnID    int
+		Title       string  `json:"title"`
+		Description string  `json:"description"`
+		Position    float64 `json:"position"`
+		ColumnID    int     `json:"columnId"`
 	}
 	json.NewDecoder(r.Body).Decode(&body)
 	log.Info("Request Body").Add("RequestID", restutil.RetrieveReqID(r.Context())).Add("Body", fmt.Sprintf("%+v", body)).Write()
