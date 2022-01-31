@@ -9,7 +9,6 @@ import (
 	"testing"
 )
 
-// CHeck
 func TestGetBoardRequest(t *testing.T) {
 	ctx := context.TODO()
 	(*repository.BoardDS()).Create(ctx, "test1")
