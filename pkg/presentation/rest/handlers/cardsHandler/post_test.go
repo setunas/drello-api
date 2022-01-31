@@ -41,4 +41,8 @@ func TestCreateCard(t *testing.T) {
 	if m["columnId"] != 1.0 {
 		t.Errorf("Expected columnId to be '1'. Got '%v'", m["columnId"])
 	}
+
+	t.Cleanup(func() {
+		resttest.CleanupAllTable()
+	})
 }

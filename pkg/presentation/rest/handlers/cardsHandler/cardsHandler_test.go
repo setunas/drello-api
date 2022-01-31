@@ -11,6 +11,5 @@ func TestMain(m *testing.M) {
 	resttest.InitTest()
 	resttest.Router().Handle("/cards", handler.Handler(CardsHandler))
 	exitCode := m.Run()
-	resttest.CleanupAllTable()
 	os.Exit(exitCode)
 }
