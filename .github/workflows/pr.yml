@@ -15,6 +15,7 @@ jobs:
           MYSQL_ROOT_PASSWORD: password
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=3
     env:
+      SERVER_ENV: stg
       TEST_DB_USER: root
       TEST_DB_PASS: password
       TEST_DB_TCP_HOST: 172.17.0.1
