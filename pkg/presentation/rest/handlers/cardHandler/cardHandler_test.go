@@ -10,6 +10,5 @@ import (
 func TestMain(m *testing.M) {
 	resttest.InitTest()
 	resttest.Router().Handle("/cards/{id:[0-9]+}", handler.Handler(CardHandler))
-	exitCode := m.Run()
-	os.Exit(exitCode)
+	os.Exit(m.Run())
 }
