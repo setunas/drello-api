@@ -1,4 +1,4 @@
-package columnsHandler
+package columnHandler
 
 import (
 	"drello-api/pkg/presentation/rest/handler"
@@ -9,7 +9,7 @@ import (
 
 func TestMain(m *testing.M) {
 	resttest.InitTest()
-	resttest.Router().Handle("/columns", handler.Handler(ColumnsHandler))
+	resttest.Router().Handle("/columns/{id:[0-9]+}", handler.Handler(ColumnHandler))
 	exitCode := m.Run()
 	os.Exit(exitCode)
 }
