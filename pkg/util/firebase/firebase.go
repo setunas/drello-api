@@ -15,7 +15,7 @@ var firebaseApp *firebase.App
 func InitApp() {
 	app, err := firebase.NewApp(context.Background(), nil)
 	if err != nil {
-		log.Fatal("Error initializing firebase app: %v\n", err)
+		log.Fatalf("Error initializing firebase app: %v\n", err)
 	}
 
 	firebaseApp = app

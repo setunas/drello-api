@@ -10,6 +10,5 @@ import (
 func TestMain(m *testing.M) {
 	resttest.InitTest()
 	resttest.Router().Handle("/columns", handler.Handler(ColumnsHandler))
-	exitCode := m.Run()
-	os.Exit(exitCode)
+	os.Exit(m.Run())
 }
