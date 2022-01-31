@@ -19,4 +19,8 @@ func TestDeleteCard(t *testing.T) {
 	req.Header.Set("Authorization", "Bearer UID-1")
 	response := resttest.ExecuteRequest(req)
 	resttest.CheckResponseCode(t, 204, response)
+
+	t.Cleanup(func() {
+		resttest.CleanupAllTable()
+	})
 }

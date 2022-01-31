@@ -17,6 +17,7 @@ func TestUpdateCard(t *testing.T) {
 	ctx := context.TODO()
 	(*repository.BoardDS()).Create(ctx, "test1")
 	(*repository.ColumnDS()).Create(ctx, "test1", 1.0, 1)
+	(*repository.ColumnDS()).Create(ctx, "test2", 2.0, 1)
 	(*repository.CardDS()).Create(ctx, "test1", "desc1", 1.0, 1)
 	(*repository.UserDS()).Create(ctx, "user1", 1, "UID-1")
 
@@ -34,7 +35,11 @@ func TestUpdateCard(t *testing.T) {
 
 	writer.Close()
 
-	req, _ := http.NewRequest("PATCH", "/cards/1", &body)
+	jsonStr := []byte(`{
+		"title":"title2",
+		"ColumnID":2
+	}`)
+	req, _ := http.NewRequest("PATCH", "/cards/1", bytes.NewBuffer(jsonStr))
 	req.Header.Set("Authorization", "Bearer UID-1")
 	req.Header.Set("Content-Type", writer.FormDataContentType())
 
@@ -52,11 +57,10 @@ func TestUpdateCard(t *testing.T) {
 		t.Errorf("Expected the title to change from 'title1' to 'title2'. Got '%v'", m["title"])
 	}
 
-	if m["description"] == "desc2\n" {
-		t.Errorf("Expected the description to change from 'desc1' to 'desc2'. Got '%v'", m["description"])
-	}
-
 	if m["columnId"] != 2.0 {
 		t.Errorf("Expected columnId to be '2'. Got '%v'", m["columnId"])
 	}
+	t.Cleanup(func() {
+		resttest.CleanupAllTable()
+	})
 }
