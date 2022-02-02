@@ -2,15 +2,14 @@
 
 # Drello Overview
 
-
 ## What is Drello?
 <img width="1280" alt="drello-homepage" src="https://user-images.githubusercontent.com/12164726/151726340-aee69e0a-7867-42fc-8d6e-9fbacb15c024.png">
 
 Drello is a symple kanban web service for your todos. We created Drello as our portfolio. <br>
-Take a look 😁 <br>
+Take a look 😁 (Please read "Notes" below before checking it out 🙏) <br>
 https://drello.netlify.app/
 
-#### ⚠️ Notes (**BEFORE CHECKING IT OUT!**)
+#### ⚠️ Notes
 - Our server is probably [sleeping](https://devcenter.heroku.com/articles/free-dyno-hours#dyno-sleeping) when you access it. So it would have a delay (usually around 30 seconds) when you log in at first.
   - This occurs because we use a free plan server of [Dyno](https://devcenter.heroku.com/categories/dynos). See more details [here](https://devcenter.heroku.com/articles/free-dyno-hours#dyno-sleeping).
 - You might have to **turn off your ad blocker** to log in since we use a popup window to log in with Firebase Authentication.
