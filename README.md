@@ -3,7 +3,7 @@
 # Drello Overview
 
 ## What is Drello?
-<img width="1280" alt="drello-homepage" src="https://user-images.githubusercontent.com/12164726/151726340-aee69e0a-7867-42fc-8d6e-9fbacb15c024.png">
+<img width="1280" alt="drello-homepage" src="https://user-images.githubusercontent.com/12164726/152212089-e151b44f-265b-4b57-b049-b4759cd8d43d.gif">
 
 Drello is a symple kanban web service for your todos. We created Drello as our portfolio. <br>
 Take a look 😁 (Please read "Notes" below before checking it out 🙏) <br>
