@@ -6,7 +6,7 @@
 <img width="1280" alt="drello-homepage" src="https://user-images.githubusercontent.com/12164726/152212089-e151b44f-265b-4b57-b049-b4759cd8d43d.gif">
 
 Drello is a symple kanban web service for your todos. We created Drello as our portfolio. <br>
-Take a look 😁 (Please read the following "⚠️Notes" section before checking it out) <br>
+Take a look 😁 (Please read the following "⚠️Notes" section before going to the link) <br>
 https://drello.netlify.app/
 
 #### ⚠️ Notes
