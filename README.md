@@ -6,8 +6,9 @@
 <img width="1280" alt="drello-homepage" src="https://user-images.githubusercontent.com/12164726/152212089-e151b44f-265b-4b57-b049-b4759cd8d43d.gif">
 
 Drello is a symple kanban web service for your todos. We created Drello as our portfolio. <br>
-Take a look 😁 (Please read the following "⚠️Notes" section before going to the link) <br>
-https://drello.netlify.app/
+Take a look 😁 <br>
+https://drello.netlify.app/ <br>
+(Please read the following "⚠️Notes" section before going to the link)
 
 #### ⚠️ Notes
 - Our server is probably [sleeping](https://devcenter.heroku.com/articles/free-dyno-hours#dyno-sleeping) when you access it. So it would have a delay (usually around 30 seconds) when you log in at first.
