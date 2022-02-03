@@ -17,7 +17,7 @@ https://drello.netlify.app/ <br>
 
 ## Repositories for Drello
 We have two GitHub repositories. You can see all our codes here.
-- [`drello-api`](https://github.com/setunas/drello-api): The backend app exposes RESTful APIs connecting MySQL using Go.
+- [`drello-api`](https://github.com/setunas/drello-api): The backend app exposes RESTful APIs connecting to MySQL using Go.
 - [`drello-web`](https://github.com/setunas/drello-web): The frontend app for web mainly using React.js, Next.js and TypeScript.
 
 
