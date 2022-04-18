@@ -7,8 +7,8 @@
 
 Drello is a symple kanban web service for your todos. We created Drello as our portfolio. <br>
 Take a look 😁 <br>
+(Please read the "⚠️Notes" section below before going to the link)<br>
 https://drello.netlify.app/ <br>
-(Please read the following "⚠️Notes" section before going to the link)
 
 #### ⚠️ Notes
 - Our server is probably [sleeping](https://devcenter.heroku.com/articles/free-dyno-hours#dyno-sleeping) when you access it. So it would have a delay (usually around 30 seconds) when you log in at first.
