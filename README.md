@@ -11,7 +11,7 @@ Take a look 😁 <br>
 https://drello.netlify.app/ <br>
 
 #### ⚠️ Notes
-- Our server is probably [sleeping](https://devcenter.heroku.com/articles/free-dyno-hours#dyno-sleeping) when you access it. So it would have a delay (usually around 30 seconds) when you log in at first.
+- Our server is probably [sleeping](https://devcenter.heroku.com/articles/free-dyno-hours#dyno-sleeping) when you access it. So it would have a delay (usually around 30 seconds) when you log in for the first time.
   - This occurs because we use a free plan server of [Dyno](https://devcenter.heroku.com/categories/dynos). See more details [here](https://devcenter.heroku.com/articles/free-dyno-hours#dyno-sleeping).
 - You might have to **turn off your ad blocker** to log in since we use a popup window to log in with Firebase Authentication.
 
